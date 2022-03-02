@@ -1,0 +1,13 @@
+{
+  "env_init_true": ["x0", "y0"],
+  "env_init_false": ["x1", "x2", "y1", "y2"],
+  "sys_init_true": [],
+  "sys_init_false": ["skill0", "skill1", "skill0b", "skill1b"],
+  "sys_live": "x0 & y0\nx2 & y2\n",
+  "env_live": "",
+  "sys_trans_hard": "!(x2 & y0)\n!(x2' & y0')",
+  "reactive_variables": [],
+  "change_cons": "",
+  "not_allowed_repair": "",
+  "hard_constraints": [{"x2": "True", "y0": "True"}]
+}

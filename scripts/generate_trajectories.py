@@ -218,7 +218,7 @@ if __name__ == "__main__":
                 'm_weight': 1,
                 'epsilon': 1E-6,
                 'plt_background': None,
-                # 'plot_limits': plot_limits,
+                'plot_limits': workspace_bnds,
                 'n_epochs': [100],
                 'start_dimension': 4,
                 'dimension': 2,

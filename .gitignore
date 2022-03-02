@@ -1,2 +1,5 @@
 .idea/
-data/
+data/*/plots/
+data/*/trajectories/
+data/logs/
+data/dmps/
