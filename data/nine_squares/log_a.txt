@@ -1,0 +1,22 @@
+Seed 0 took 1 iterations
+Skill name: skill4
+Initial preconditions: 
+x0 & y0
+skill4 & !x0 & x1 & !x2 & y0 & !y1 & !y2 -> ((x0' & !x1' & !x2' & !y0' & !y1' & y2'))
+skill4 & x0 & !x1 & !x2 & !y0 & !y1 & y2 -> ((!x0' & !x1' & x2' & !y0' & !y1' & y2'))
+skill4 & x0 & !x1 & !x2 & y0 & !y1 & !y2 -> ((!x0' & x1' & !x2' & y0' & !y1' & !y2'))
+Final Postconditions:
+!x0 & !x1 & x2 & !y0 & !y1 & y2
+**********************
+================================
+Seed 1 took 1 iterations
+Skill name: skill4
+Initial preconditions: 
+x0 & y0
+skill4 & !x0 & x1 & !x2 & !y0 & y1 & !y2 -> ((!x0' & !x1' & x2' & !y0' & !y1' & y2'))
+skill4 & !x0 & x1 & !x2 & y0 & !y1 & !y2 -> ((!x0' & x1' & !x2' & !y0' & y1' & !y2'))
+skill4 & x0 & !x1 & !x2 & y0 & !y1 & !y2 -> ((!x0' & x1' & !x2' & y0' & !y1' & !y2'))
+Final Postconditions:
+!x0 & !x1 & x2 & !y0 & !y1 & y2
+**********************
+================================
