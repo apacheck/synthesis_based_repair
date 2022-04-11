@@ -3,6 +3,15 @@ from symbols import find_symbols_by_var, symbols_intersect
 import json
 
 
+def json_load_wrapper(arg_file):
+    fid = open(arg_file, "r")
+    d = json.load(fid)
+    for key, val in d.items():
+        if val == 'none':
+            d[key] = None
+    return d
+
+
 def dict_to_formula(sym_dict, prime=False, include_false=True):
     str_list = []
     for sym, val in sym_dict.items():

@@ -1,0 +1,9 @@
+{
+  "file_symbols": "../data/nine_squares/nine_squares_symbols.json",
+  "file_skills": "../data/nine_squares/nine_squares_skills.json",
+  "folder_plot": "../data/nine_squares/plots/",
+  "skill_names": ["skill0", "skill1"],
+  "file_structured_slugs": "../data/nine_squares/nine_squares_a.structuredslugs",
+  "file_log": "../data/nine_squares/log_a.txt",
+  "f_user_spec": "../data/nine_squares/nine_squares_a.json"
+}

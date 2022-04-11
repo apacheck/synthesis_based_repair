@@ -16,29 +16,52 @@ class Symbol:
         self.color = info['color']
         self.index = info['index']
         self.dims = np.array(info['dims'])
-        if self.type == 'rectangle':
+        if self.type == 'rectangle' or self.type == 'rectangle-ee':
             self.bounds = np.array(info['bounds'])
             self.center = np.zeros([2])
             self.radius = np.zeros([1])
-        elif self.type == 'circle':
+        elif self.type == 'circle' or self.type == 'circle-ee':
             self.bounds = np.zeros([2, 2])
             self.center = np.array(info['center'])
             self.radius = np.array(info['radius'])
 
     def in_symbol(self, points):
         if points.ndim == 1:
-            if self.type == 'rectangle':
+            if self.type == 'rectangle' or (self.type == 'rectangle-ee' and points.shape[0] == 2):
                 bnd_low = self.bounds[self.dims, 0]
                 bnd_high = self.bounds[self.dims, 1]
-                if np.all(bnd_low < points) and np.all(points < bnd_high):
+                if np.all(bnd_low < points[self.dims]) and np.all(points[self.dims] < bnd_high):
                     return True
                 else:
                     return False
-            elif self.type == 'circle':
-                if np.sqrt(np.sum(np.square(self.center - points))) < self.radius:
+            elif self.type == 'circle' or (self.type == 'circle-ee' and points.shape[0] == 2):
+                if np.sqrt(np.sum(np.square(self.center - points[self.dims]))) < self.radius:
                     return True
                 else:
                     return False
+            elif self.type == 'rectangle-ee' or self.type == 'circle-ee':
+                l_eff = 0.1
+                x_robot = points[0]
+                y_robot = points[1]
+                t_robot = points[2]
+                l_wrist = points[3]
+                z_wrist = points[4]
+                t_wrist = points[5]
+                x_ee = l_eff * np.cos(t_robot + t_wrist) + l_wrist * np.sin(t_robot) + x_robot
+                y_ee = l_eff * np.sin(t_robot + t_wrist) - l_wrist * np.cos(t_robot) + y_robot
+                points_eval = np.array([x_ee, y_ee])
+                if self.type == 'rectangle-ee':
+                    bnd_low = self.bounds[self.dims, 0]
+                    bnd_high = self.bounds[self.dims, 1]
+                    if np.all(bnd_low < points_eval) and np.all(points_eval < bnd_high):
+                        return True
+                    else:
+                        return False
+                elif self.type == 'circle-ee':
+                    if np.sqrt(np.sum(np.square(self.center - points_eval))) < self.radius:
+                        return True
+                    else:
+                        return False
         else:
             out = np.zeros(points.shape[0], dtype=bool)
             for ii, point in enumerate(points):
@@ -46,7 +69,7 @@ class Symbol:
             return out
 
     def get_edges(self):
-        if self.type == 'rectangle':
+        if self.type == 'rectangle' or self.type == 'rectangle-ee':
             edges = np.hstack([np.vstack(
                 [np.linspace(self.bounds[0, 0], self.bounds[0, 1], 25), np.repeat(self.bounds[1, 0], 25)]),
                                 np.vstack([np.linspace(self.bounds[0, 0], self.bounds[0, 1], 25),
@@ -55,7 +78,7 @@ class Symbol:
                                            np.linspace(self.bounds[1, 0], self.bounds[1, 1], 25)]),
                                 np.vstack([np.repeat(self.bounds[0, 1], 25),
                                            np.linspace(self.bounds[1, 0], self.bounds[1, 1], 25)])]).transpose()
-        elif self.type == 'circle':
+        elif self.type == 'circle' or self.type == 'circle-ee':
             edges = np.vstack([self.center[0] + self.radius * np.cos(np.linspace(0, 2 * np.pi, 100)),
                                 self.center[1] + self.radius * np.sin(
                                     np.linspace(0, 2 * np.pi, 100))]).transpose()
@@ -78,6 +101,8 @@ class Symbol:
                                     edgecolor='black',
                                     facecolor=self.color,
                                     **kwargs))
+        elif dim == 3:
+            pass
 
     def get_factor(self):
         return self.factor

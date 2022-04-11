@@ -7,7 +7,7 @@
   "env_live": "",
   "sys_trans_hard": "!(x2 & y0)\n!(x2' & y0')",
   "reactive_variables": [],
-  "change_cons": "",
-  "not_allowed_repair": "",
-  "hard_constraints": [{"x2": "True", "y0": "True"}]
+  "hard_constraints": [{"x2": "True", "y0": "True"}],
+  "change_cons": "!(x0' & x1')\n!(x0' & x2')\n!(x1' & x2')\n!(y0' & y1')\n!(y0' & y2')\n!(y1' & y2')\n(x0' | x1' | x2')\n(y0' | y1' | y2')\n!(x0 & x1)\n!(x0 & x2)\n!(x1 & x2)\n!(y0 & y1)\n!(y0 & y2)\n!(y1 & y2)\n(x0 | x1 | x2)\n(y0 | y1 | y2)\n(x0 <-> !x0') | (x1 <-> !x1') | (x2 <-> !x2') | ((x0 <-> x0') & (x1 <-> x1') & (x2 <-> x2'))\n(y0 <-> !y0') | (y1 <-> !y1') | (y2 <-> !y2') | ((y0 <-> y0') & (y1 <-> y1') & (y2 <-> y2'))\n!((x0 <-> x0') & (x1 <-> x1') & (x2 <-> x2') & (y0 <-> y0') & (y1 <-> y1') & (y2 <-> y2'))\n",
+  "not_allowed_repair": "!skill0b\n!skill1b\n"
 }

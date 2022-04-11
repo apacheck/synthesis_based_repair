@@ -28,6 +28,8 @@ class Skill:
 
     def get_skill_str(self, include_false=True):
         out = "Skill name: " + self.name + "\n"
+        if self.suggestion:
+            out += "Original name: " + dict_to_formula(self.original_skill, include_false=False) + "\n"
         out += "Initial preconditions: \n"
         for init_pre in self.init_pres:
             out += "{}\n".format(dict_to_formula(init_pre, prime=False, include_false=include_false))
@@ -250,11 +252,18 @@ def load_skills_from_json(file_json):
 
 
 if __name__ == "__main__":
-    folder_trajectories = '../data/nine_squares/trajectories/'
-    skill_names = ["skill0", 'skill1', 'skill2', 'skill3', 'skill4', 'skill5', 'skill6', 'skill7', 'skill8', 'skill9', 'skill10']
-    f_symbols = "../data/nine_squares/nine_squares_symbols.json"
-    f_plot = "../data/nine_squares/plots/"
-    f_skills = "../data/nine_squares/nine_squares_skills.json"
+    # folder_trajectories = '../data/nine_squares/trajectories/'
+    # skill_names = ["skill0", 'skill1', 'skill2', 'skill3', 'skill4', 'skill5', 'skill6', 'skill7', 'skill8', 'skill9', 'skill10']
+    # f_symbols = "../data/nine_squares/nine_squares_symbols.json"
+    # f_plot = "../data/nine_squares/plots/"
+    # f_skills = "../data/nine_squares/nine_squares_skills.json"
+
+    folder_trajectories = '../data/stretch/trajectories/'
+    skill_names = ["skillStretch0", 'skillStretch1']
+    f_symbols = "../data/stretch/stretch_symbols.json"
+    f_plot = "../data/stretch/plots/"
+    f_skills = "../data/stretch/stretch_skills.json"
+
     symbols = load_symbols(f_symbols)
     skills = load_skills_from_trajectories(folder_trajectories, skill_names, symbols)
     for skill_name, skill in skills.items():

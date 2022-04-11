@@ -1,0 +1,17 @@
+{
+  "return_with_one_repair": true,
+  "run_original": false,
+  "only_synthesis": false,
+  "enforce_reactive_variables": false,
+  "suggestions": "none",
+  "do_names": true,
+  "post_first": false,
+  "post_repair_cnt": 0,
+  "to_file": false,
+  "fid_base": "none",
+  "existing_skills": ["skillStretch0", "skillStretch1", "skillStretch0b", "skillStretch1b"],
+  "reactive_variables": [],
+  "reactive_variables_current": [],
+  "n_factors": 2,
+  "generate_figure": ""
+}

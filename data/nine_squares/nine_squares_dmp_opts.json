@@ -1,0 +1,23 @@
+{
+  "enforce_type": "adversarial",
+  "n_train_trajs": 32,
+  "n_val_trajs": 32,
+  "demo_folder": "../data/nine_squares/trajectories/",
+  "basis_fs": 30,
+  "dmp_folder": "../data/dmps/",
+  "dt": 0.01,
+  "c_weight": 50,
+  "m_weight": 1,
+  "epsilon": 1E-6,
+  "plt_background": "none",
+  "plot_limits": [[-0.5, 3.5], [-0.5, 3.5]],
+  "workspace_bnds": [[-0.5, 3.5], [-0.5, 3.5]],
+  "n_epochs": [100],
+  "start_dimension": 4,
+  "dimension": 2,
+  "n_states": 2,
+  "base_folder": "../data",
+  "use_previous": true,
+  "file_physical_log": "../data/logs/a_nine_squares_log.txt",
+  "constraints": [["implication_next", "always"]]
+}

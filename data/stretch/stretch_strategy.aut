@@ -1,0 +1,30 @@
+State 0 with rank 0 -> <a:1, b:0, c:0, d:0, aee:1, bee:0, cee:0, dee:0, skillStretch0:0, skillStretch1:0, skillStretch0b:0, skillStretch1b:0, skill4:0, skill5:0>
+	With successors : 1
+State 1 with rank 1 -> <a:1, b:0, c:0, d:0, aee:1, bee:0, cee:0, dee:0, skillStretch0:0, skillStretch1:0, skillStretch0b:0, skillStretch1b:0, skill4:0, skill5:0>
+	With successors : 2
+State 2 with rank 1 -> <a:1, b:0, c:0, d:0, aee:1, bee:0, cee:0, dee:0, skillStretch0:0, skillStretch1:0, skillStretch0b:0, skillStretch1b:0, skill4:0, skill5:1>
+	With successors : 3
+State 3 with rank 1 -> <a:1, b:0, c:0, d:0, aee:0, bee:1, cee:0, dee:0, skillStretch0:0, skillStretch1:0, skillStretch0b:0, skillStretch1b:0, skill4:0, skill5:1>
+	With successors : 4, 5, 6
+State 4 with rank 1 -> <a:0, b:0, c:1, d:0, aee:0, bee:1, cee:0, dee:0, skillStretch0:0, skillStretch1:0, skillStretch0b:0, skillStretch1b:0, skill4:0, skill5:1>
+	With successors : 7
+State 5 with rank 1 -> <a:0, b:0, c:1, d:0, aee:1, bee:0, cee:0, dee:0, skillStretch0:0, skillStretch1:0, skillStretch0b:0, skillStretch1b:0, skill4:0, skill5:1>
+	With successors : 8
+State 6 with rank 1 -> <a:0, b:1, c:0, d:0, aee:0, bee:1, cee:0, dee:0, skillStretch0:0, skillStretch1:0, skillStretch0b:0, skillStretch1b:0, skill4:0, skill5:1>
+	With successors : 8
+State 7 with rank 1 -> <a:0, b:0, c:1, d:0, aee:0, bee:0, cee:0, dee:1, skillStretch0:0, skillStretch1:0, skillStretch0b:0, skillStretch1b:0, skill4:0, skill5:1>
+	With successors : 9
+State 8 with rank 1 -> <a:0, b:1, c:0, d:0, aee:0, bee:0, cee:0, dee:1, skillStretch0:0, skillStretch1:0, skillStretch0b:0, skillStretch1b:0, skill4:0, skill5:1>
+	With successors : 9
+State 9 with rank 1 -> <a:0, b:0, c:0, d:1, aee:0, bee:0, cee:0, dee:1, skillStretch0:0, skillStretch1:0, skillStretch0b:0, skillStretch1b:0, skill4:0, skill5:0>
+	With successors : 10
+State 10 with rank 0 -> <a:0, b:0, c:0, d:1, aee:0, bee:0, cee:0, dee:1, skillStretch0:0, skillStretch1:0, skillStretch0b:0, skillStretch1b:0, skill4:0, skill5:0>
+	With successors : 11
+State 11 with rank 0 -> <a:0, b:0, c:0, d:1, aee:0, bee:0, cee:0, dee:1, skillStretch0:0, skillStretch1:0, skillStretch0b:0, skillStretch1b:0, skill4:1, skill5:0>
+	With successors : 12
+State 12 with rank 0 -> <a:0, b:0, c:0, d:1, aee:0, bee:1, cee:0, dee:0, skillStretch0:0, skillStretch1:0, skillStretch0b:0, skillStretch1b:0, skill4:1, skill5:0>
+	With successors : 13
+State 13 with rank 0 -> <a:0, b:1, c:0, d:0, aee:0, bee:1, cee:0, dee:0, skillStretch0:0, skillStretch1:0, skillStretch0b:0, skillStretch1b:0, skill4:1, skill5:0>
+	With successors : 14
+State 14 with rank 0 -> <a:0, b:1, c:0, d:0, aee:1, bee:0, cee:0, dee:0, skillStretch0:0, skillStretch1:0, skillStretch0b:0, skillStretch1b:0, skill4:1, skill5:0>
+	With successors : 0

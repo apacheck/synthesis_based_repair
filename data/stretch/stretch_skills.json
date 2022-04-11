@@ -1,0 +1,454 @@
+{
+ "skillStretch0": {
+  "name": "skillStretch0",
+  "intermediate_states": [
+   [
+    {
+     "a": true,
+     "b": false,
+     "c": false,
+     "d": false,
+     "aee": true,
+     "bee": false,
+     "cee": false,
+     "dee": false
+    },
+    [
+     {
+      "a": true,
+      "b": false,
+      "c": false,
+      "d": false,
+      "aee": false,
+      "bee": true,
+      "cee": false,
+      "dee": false
+     },
+     {
+      "a": true,
+      "b": false,
+      "c": false,
+      "d": false,
+      "aee": false,
+      "bee": false,
+      "cee": true,
+      "dee": false
+     }
+    ]
+   ],
+   [
+    {
+     "a": true,
+     "b": false,
+     "c": false,
+     "d": false,
+     "aee": false,
+     "bee": true,
+     "cee": false,
+     "dee": false
+    },
+    [
+     {
+      "a": false,
+      "b": false,
+      "c": true,
+      "d": false,
+      "aee": false,
+      "bee": true,
+      "cee": false,
+      "dee": false
+     },
+     {
+      "a": false,
+      "b": true,
+      "c": false,
+      "d": false,
+      "aee": false,
+      "bee": true,
+      "cee": false,
+      "dee": false
+     }
+    ]
+   ],
+   [
+    {
+     "a": false,
+     "b": false,
+     "c": true,
+     "d": false,
+     "aee": false,
+     "bee": true,
+     "cee": false,
+     "dee": false
+    },
+    [
+     {
+      "a": false,
+      "b": false,
+      "c": true,
+      "d": false,
+      "aee": false,
+      "bee": false,
+      "cee": false,
+      "dee": true
+     }
+    ]
+   ],
+   [
+    {
+     "a": false,
+     "b": false,
+     "c": true,
+     "d": false,
+     "aee": false,
+     "bee": false,
+     "cee": false,
+     "dee": true
+    },
+    [
+     {
+      "a": false,
+      "b": false,
+      "c": false,
+      "d": true,
+      "aee": false,
+      "bee": false,
+      "cee": false,
+      "dee": true
+     }
+    ]
+   ],
+   [
+    {
+     "a": false,
+     "b": true,
+     "c": false,
+     "d": false,
+     "aee": false,
+     "bee": true,
+     "cee": false,
+     "dee": false
+    },
+    [
+     {
+      "a": false,
+      "b": true,
+      "c": false,
+      "d": false,
+      "aee": false,
+      "bee": false,
+      "cee": false,
+      "dee": true
+     }
+    ]
+   ],
+   [
+    {
+     "a": false,
+     "b": true,
+     "c": false,
+     "d": false,
+     "aee": false,
+     "bee": false,
+     "cee": false,
+     "dee": true
+    },
+    [
+     {
+      "a": false,
+      "b": false,
+      "c": false,
+      "d": true,
+      "aee": false,
+      "bee": false,
+      "cee": false,
+      "dee": true
+     }
+    ]
+   ],
+   [
+    {
+     "a": true,
+     "b": false,
+     "c": false,
+     "d": false,
+     "aee": false,
+     "bee": false,
+     "cee": true,
+     "dee": false
+    },
+    [
+     {
+      "a": false,
+      "b": false,
+      "c": true,
+      "d": false,
+      "aee": false,
+      "bee": false,
+      "cee": true,
+      "dee": false
+     }
+    ]
+   ],
+   [
+    {
+     "a": false,
+     "b": false,
+     "c": true,
+     "d": false,
+     "aee": false,
+     "bee": false,
+     "cee": true,
+     "dee": false
+    },
+    [
+     {
+      "a": false,
+      "b": false,
+      "c": true,
+      "d": false,
+      "aee": false,
+      "bee": false,
+      "cee": false,
+      "dee": true
+     }
+    ]
+   ]
+  ],
+  "initial_preconditions": [
+   {
+    "a": true,
+    "b": false,
+    "c": false,
+    "d": false,
+    "aee": true,
+    "bee": false,
+    "cee": false,
+    "dee": false
+   }
+  ],
+  "final_postconditions": [
+   {
+    "a": false,
+    "b": false,
+    "c": false,
+    "d": true,
+    "aee": false,
+    "bee": false,
+    "cee": false,
+    "dee": true
+   }
+  ],
+  "folder_train": "../data/stretch/trajectories//skillStretch0/train/",
+  "folder_val": "../data/stretch/trajectories//skillStretch0/train/"
+ },
+ "skillStretch1": {
+  "name": "skillStretch1",
+  "intermediate_states": [
+   [
+    {
+     "a": false,
+     "b": false,
+     "c": false,
+     "d": true,
+     "aee": false,
+     "bee": false,
+     "cee": false,
+     "dee": true
+    },
+    [
+     {
+      "a": false,
+      "b": false,
+      "c": false,
+      "d": true,
+      "aee": false,
+      "bee": true,
+      "cee": false,
+      "dee": false
+     },
+     {
+      "a": false,
+      "b": false,
+      "c": false,
+      "d": true,
+      "aee": false,
+      "bee": false,
+      "cee": true,
+      "dee": false
+     }
+    ]
+   ],
+   [
+    {
+     "a": false,
+     "b": false,
+     "c": false,
+     "d": true,
+     "aee": false,
+     "bee": true,
+     "cee": false,
+     "dee": false
+    },
+    [
+     {
+      "a": false,
+      "b": true,
+      "c": false,
+      "d": false,
+      "aee": false,
+      "bee": true,
+      "cee": false,
+      "dee": false
+     }
+    ]
+   ],
+   [
+    {
+     "a": false,
+     "b": true,
+     "c": false,
+     "d": false,
+     "aee": false,
+     "bee": true,
+     "cee": false,
+     "dee": false
+    },
+    [
+     {
+      "a": false,
+      "b": true,
+      "c": false,
+      "d": false,
+      "aee": true,
+      "bee": false,
+      "cee": false,
+      "dee": false
+     }
+    ]
+   ],
+   [
+    {
+     "a": false,
+     "b": true,
+     "c": false,
+     "d": false,
+     "aee": true,
+     "bee": false,
+     "cee": false,
+     "dee": false
+    },
+    [
+     {
+      "a": true,
+      "b": false,
+      "c": false,
+      "d": false,
+      "aee": true,
+      "bee": false,
+      "cee": false,
+      "dee": false
+     }
+    ]
+   ],
+   [
+    {
+     "a": false,
+     "b": false,
+     "c": false,
+     "d": true,
+     "aee": false,
+     "bee": false,
+     "cee": true,
+     "dee": false
+    },
+    [
+     {
+      "a": false,
+      "b": false,
+      "c": true,
+      "d": false,
+      "aee": false,
+      "bee": false,
+      "cee": true,
+      "dee": false
+     }
+    ]
+   ],
+   [
+    {
+     "a": false,
+     "b": false,
+     "c": true,
+     "d": false,
+     "aee": false,
+     "bee": false,
+     "cee": true,
+     "dee": false
+    },
+    [
+     {
+      "a": false,
+      "b": false,
+      "c": true,
+      "d": false,
+      "aee": true,
+      "bee": false,
+      "cee": false,
+      "dee": false
+     }
+    ]
+   ],
+   [
+    {
+     "a": false,
+     "b": false,
+     "c": true,
+     "d": false,
+     "aee": true,
+     "bee": false,
+     "cee": false,
+     "dee": false
+    },
+    [
+     {
+      "a": true,
+      "b": false,
+      "c": false,
+      "d": false,
+      "aee": true,
+      "bee": false,
+      "cee": false,
+      "dee": false
+     }
+    ]
+   ]
+  ],
+  "initial_preconditions": [
+   {
+    "a": false,
+    "b": false,
+    "c": false,
+    "d": true,
+    "aee": false,
+    "bee": false,
+    "cee": false,
+    "dee": true
+   }
+  ],
+  "final_postconditions": [
+   {
+    "a": true,
+    "b": false,
+    "c": false,
+    "d": false,
+    "aee": true,
+    "bee": false,
+    "cee": false,
+    "dee": false
+   }
+  ],
+  "folder_train": "../data/stretch/trajectories//skillStretch1/train/",
+  "folder_val": "../data/stretch/trajectories//skillStretch1/train/"
+ }
+}

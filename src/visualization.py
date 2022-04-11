@@ -232,9 +232,24 @@ def plot_one_skill_trajectories_and_symbols_numpy(skill, intermediate_states,
                                             fill=False,
                                             lw=1))
 
-
     for data in data_trajectories:
-        if limits.shape[0] == 3:
+        if data.shape[1] == 6:
+            # Plot stretch example
+            ax.plot(data[:, 0], data[:, 1], np.zeros(data.shape[0]), **kwargs)
+            for d in data:
+                # ax.plot([d[0], d[0] + 0.01], [d[1], d[1] + 0.01], **kwargs)
+                l_eff = 0.1
+                x_robot = d[0]
+                y_robot = d[1]
+                t_robot = d[2]
+                l_wrist = d[3]
+                z_wrist = d[4]
+                t_wrist = d[5]
+                x_ee = l_eff * np.cos(t_robot + t_wrist) + l_wrist * np.sin(t_robot) + x_robot
+                y_ee = l_eff * np.sin(t_robot + t_wrist) - l_wrist * np.cos(t_robot) + y_robot
+                z_ee = z_wrist
+                ax.plot(x_ee, y_ee, z_ee, '.', color='yellow')
+        elif limits.shape[0] == 3:
             # if np.any(data[:, 2] < -0.18):
             #     print("here")
             # data = np.loadtxt(folder_trajectories + "/" + f, delimiter=" ", dtype=float)

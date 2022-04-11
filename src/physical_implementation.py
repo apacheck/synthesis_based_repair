@@ -279,6 +279,7 @@ def generate_trajectory_baxter(skill_name, dmp_folder, symbols, workspace_bnds, 
 
 
 def generate_trajectory_find(skill_name, dmp_folder, symbols, workspace_bnds, suggestions_pre, suggestions_post, folder_save, opts):
+    # For the stretch. Temporarily making the robot only move straight
     os.makedirs(folder_save, exist_ok=True)
     model = DMPNN(opts['start_dimension'], 1024, opts['dimension'], opts['basis_fs']).to(DEVICE)
     model.load_state_dict(torch.load(dmp_folder + skill_name + ".pt"))
@@ -292,12 +293,15 @@ def generate_trajectory_find(skill_name, dmp_folder, symbols, workspace_bnds, su
         prec = pre_cons.condition(ltd.TermStatic(torch.from_numpy(start_pose_in[np.newaxis, :])))
 
     end_pose_in = workspace_bnds[:, 0] + (0.1 + 0.8 * np.random.random(opts['dimension'])) * (workspace_bnds[:, 1] - workspace_bnds[:, 0])
+    end_pose_in[[1, 2, 3, 4, 5]] = start_pose_in[[1, 2, 3, 4, 5]]
+
     # end_pose_in = np.copy(start_pose_in)
     # end_pose_in[0, 0] += 1.5
     postc = post_cons.condition(ltd.TermStatic(torch.from_numpy(end_pose_in[np.newaxis, :])))
     while not postc.satisfy(0):
         end_pose_in = workspace_bnds[:, 0] + np.random.random(opts['dimension']) * (
                     workspace_bnds[:, 1] - workspace_bnds[:, 0])
+        end_pose_in[[1, 2, 3, 4, 5]] = start_pose_in[[1, 2, 3, 4, 5]]
         postc = post_cons.condition(ltd.TermStatic(torch.from_numpy(end_pose_in[np.newaxis, :])))
 
     start_pose = np.zeros([1, int(opts['start_dimension']/opts['dimension']), opts['dimension']], dtype=float)
@@ -361,9 +365,9 @@ def run_elaborateDMP(old_skill, new_skill, suggestion, hard_constraints, symbols
         symbols_device = dict()
         for sym, data in symbols.items():
             symbols_device[sym] = copy.deepcopy(symbols[sym])
-            if symbols[sym].get_type() == 'rectangle':
+            if symbols[sym].get_type() == 'rectangle' or symbols[sym].get_type() == 'rectangle-ee':
                 symbols_device[sym].bounds = torch.from_numpy(symbols[sym].bounds).to(DEVICE)
-            elif symbols[sym].get_type() == 'circle':
+            elif symbols[sym].get_type() == 'circle' or symbols[sym].get_type() == 'circle-ee':
                 symbols_device[sym].center = torch.from_numpy(symbols[sym].center).to(DEVICE)
                 symbols_device[sym].radius = torch.from_numpy(symbols[sym].radius).to(DEVICE)
         workspace_bnds_device = torch.from_numpy(workspace_bnds).to(DEVICE)

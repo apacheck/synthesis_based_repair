@@ -3,20 +3,32 @@ from tools import write_spec
 from symbols import load_symbols
 import json
 from skills import load_skills_from_json
+import argparse
+from tools import json_load_wrapper
+import copy
 
 
 if __name__ == "__main__":
-    f_user_spec = '../data/nine_squares/nine_squares_a.json'
-    fid = open(f_user_spec, 'r')
-    user_spec = json.load(fid)
-    fid.close()
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--user_spec", help="Name of json file with user spec", required=True)
+    parser.add_argument("--file_names", help="File names", required=True)
+    parser.add_argument("--sym_opts", help="Opts involving spec writing and repair", required=True)
+    args = parser.parse_args()
 
-    file_spec = '../data/nine_squares/nine_squares_a.structuredslugs'
-    file_symbols = '../data/nine_squares/nine_squares_symbols.json'
-    file_skills = '../data/nine_squares/nine_squares_skills.json'
-    syms = load_symbols(file_symbols)
-    skills = load_skills_from_json(file_skills)
+    user_spec = json_load_wrapper(args.user_spec)
+    file_names = json_load_wrapper(args.file_names)
+    sym_opts = json_load_wrapper(args.sym_opts)
 
-    opts = {'n_factors': 2}
+    ############################
+    # Load skills and symbols ##
+    ############################
+    symbols = load_symbols(file_names["file_symbols"])
+    skills_all = load_skills_from_json(file_names["file_skills"])
+    original_skills = dict()
+    for skill_name in file_names["skill_names"]:
+        original_skills[skill_name] = skills_all[skill_name]
 
-    write_spec(file_spec, syms, skills, user_spec, user_spec['change_cons'], user_spec['not_allowed_repair'], opts)
+    for skill_name in file_names["skill_names"]:
+        original_skills[skill_name + "b"] = copy.deepcopy(original_skills[skill_name])
+
+    write_spec(file_names["file_structured_slugs"], symbols, original_skills, user_spec, user_spec['change_cons'], user_spec['not_allowed_repair'], sym_opts)

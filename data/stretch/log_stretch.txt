@@ -1,0 +1,270 @@
+Seed 0 took 1 iterations
+Skill name: skill4
+Original name: skillStretch1
+Initial preconditions: 
+d & dee
+skill4 & !a & !b & !c & d & !aee & !bee & !cee & dee -> ((!a' & !b' & !c' & d' & !aee' & bee' & !cee' & !dee'))
+skill4 & !a & !b & !c & d & !aee & bee & !cee & !dee -> ((!a' & b' & !c' & !d' & !aee' & bee' & !cee' & !dee'))
+skill4 & !a & b & !c & !d & !aee & bee & !cee & !dee -> ((!a' & b' & !c' & !d' & aee' & !bee' & !cee' & !dee'))
+skill4 & !a & b & !c & !d & aee & !bee & !cee & !dee -> ((a' & !b' & !c' & !d' & aee' & !bee' & !cee' & !dee'))
+Final Postconditions:
+a & !b & !c & !d & aee & !bee & !cee & !dee
+**********************
+Skill name: skill5
+Original name: skillStretch0
+Initial preconditions: 
+a & aee
+skill5 & !a & !b & c & !d & !aee & !bee & !cee & dee -> ((!a' & !b' & !c' & d' & !aee' & !bee' & !cee' & dee'))
+skill5 & !a & !b & c & !d & !aee & bee & !cee & !dee -> ((!a' & !b' & c' & !d' & !aee' & !bee' & !cee' & dee'))
+skill5 & !a & !b & c & !d & aee & !bee & !cee & !dee -> ((!a' & b' & !c' & !d' & !aee' & !bee' & !cee' & dee'))
+skill5 & !a & b & !c & !d & !aee & !bee & !cee & dee -> ((!a' & !b' & !c' & d' & !aee' & !bee' & !cee' & dee'))
+skill5 & !a & b & !c & !d & !aee & bee & !cee & !dee -> ((!a' & b' & !c' & !d' & !aee' & !bee' & !cee' & dee'))
+skill5 & a & !b & !c & !d & !aee & bee & !cee & !dee -> ((!a' & !b' & c' & !d' & !aee' & bee' & !cee' & !dee') | (!a' & !b' & c' & !d' & aee' & !bee' & !cee' & !dee') | (!a' & b' & !c' & !d' & !aee' & bee' & !cee' & !dee'))
+skill5 & a & !b & !c & !d & aee & !bee & !cee & !dee -> ((a' & !b' & !c' & !d' & !aee' & bee' & !cee' & !dee'))
+Final Postconditions:
+!a & !b & !c & d & !aee & !bee & !cee & dee
+**********************
+================================
+Seed 1 took 1 iterations
+Skill name: skill4
+Original name: skillStretch1
+Initial preconditions: 
+d & dee
+skill4 & !a & !b & !c & d & !aee & !bee & !cee & dee -> ((!a' & !b' & !c' & d' & !aee' & bee' & !cee' & !dee'))
+skill4 & !a & !b & !c & d & !aee & bee & !cee & !dee -> ((!a' & b' & !c' & !d' & !aee' & bee' & !cee' & !dee'))
+skill4 & !a & b & !c & !d & !aee & bee & !cee & !dee -> ((!a' & b' & !c' & !d' & aee' & !bee' & !cee' & !dee'))
+skill4 & !a & b & !c & !d & aee & !bee & !cee & !dee -> ((a' & !b' & !c' & !d' & aee' & !bee' & !cee' & !dee'))
+Final Postconditions:
+a & !b & !c & !d & aee & !bee & !cee & !dee
+**********************
+Skill name: skill5
+Original name: skillStretch0
+Initial preconditions: 
+a & aee
+skill5 & !a & !b & c & !d & !aee & !bee & !cee & dee -> ((!a' & !b' & !c' & d' & !aee' & !bee' & !cee' & dee'))
+skill5 & !a & !b & c & !d & !aee & bee & !cee & !dee -> ((!a' & !b' & c' & !d' & !aee' & !bee' & !cee' & dee') | (!a' & b' & !c' & !d' & aee' & !bee' & !cee' & !dee'))
+skill5 & !a & b & !c & !d & !aee & !bee & !cee & dee -> ((!a' & !b' & !c' & d' & !aee' & !bee' & !cee' & dee'))
+skill5 & !a & b & !c & !d & !aee & bee & !cee & !dee -> ((!a' & b' & !c' & !d' & !aee' & !bee' & !cee' & dee'))
+skill5 & !a & b & !c & !d & aee & !bee & !cee & !dee -> ((!a' & !b' & !c' & d' & !aee' & !bee' & !cee' & dee'))
+skill5 & a & !b & !c & !d & !aee & bee & !cee & !dee -> ((!a' & !b' & c' & !d' & !aee' & bee' & !cee' & !dee') | (!a' & b' & !c' & !d' & !aee' & bee' & !cee' & !dee'))
+skill5 & a & !b & !c & !d & aee & !bee & !cee & !dee -> ((a' & !b' & !c' & !d' & !aee' & bee' & !cee' & !dee'))
+Final Postconditions:
+!a & !b & !c & d & !aee & !bee & !cee & dee
+**********************
+================================
+Seed 2 took 1 iterations
+Skill name: skill4
+Original name: skillStretch1
+Initial preconditions: 
+d & dee
+skill4 & !a & !b & !c & d & !aee & !bee & !cee & dee -> ((!a' & !b' & !c' & d' & !aee' & bee' & !cee' & !dee'))
+skill4 & !a & !b & !c & d & !aee & bee & !cee & !dee -> ((!a' & b' & !c' & !d' & !aee' & bee' & !cee' & !dee'))
+skill4 & !a & b & !c & !d & !aee & bee & !cee & !dee -> ((!a' & b' & !c' & !d' & aee' & !bee' & !cee' & !dee'))
+skill4 & !a & b & !c & !d & aee & !bee & !cee & !dee -> ((a' & !b' & !c' & !d' & aee' & !bee' & !cee' & !dee'))
+Final Postconditions:
+a & !b & !c & !d & aee & !bee & !cee & !dee
+**********************
+Skill name: skill5
+Original name: skillStretch0
+Initial preconditions: 
+a & aee
+skill5 & !a & !b & c & !d & !aee & !bee & !cee & dee -> ((!a' & !b' & !c' & d' & !aee' & !bee' & !cee' & dee'))
+skill5 & !a & !b & c & !d & !aee & bee & !cee & !dee -> ((!a' & !b' & c' & !d' & !aee' & !bee' & !cee' & dee'))
+skill5 & !a & !b & c & !d & aee & !bee & !cee & !dee -> ((!a' & !b' & !c' & d' & !aee' & !bee' & !cee' & dee'))
+skill5 & !a & b & !c & !d & !aee & !bee & !cee & dee -> ((!a' & !b' & !c' & d' & !aee' & !bee' & !cee' & dee'))
+skill5 & !a & b & !c & !d & !aee & bee & !cee & !dee -> ((!a' & !b' & c' & !d' & aee' & !bee' & !cee' & !dee') | (!a' & b' & !c' & !d' & !aee' & !bee' & !cee' & dee'))
+skill5 & a & !b & !c & !d & !aee & bee & !cee & !dee -> ((!a' & !b' & c' & !d' & !aee' & bee' & !cee' & !dee') | (!a' & b' & !c' & !d' & !aee' & bee' & !cee' & !dee'))
+skill5 & a & !b & !c & !d & aee & !bee & !cee & !dee -> ((a' & !b' & !c' & !d' & !aee' & bee' & !cee' & !dee'))
+Final Postconditions:
+!a & !b & !c & d & !aee & !bee & !cee & dee
+**********************
+================================
+Seed 3 took 1 iterations
+Skill name: skill4
+Original name: skillStretch1
+Initial preconditions: 
+d & dee
+skill4 & !a & !b & !c & d & !aee & !bee & !cee & dee -> ((!a' & !b' & !c' & d' & !aee' & bee' & !cee' & !dee'))
+skill4 & !a & !b & !c & d & !aee & bee & !cee & !dee -> ((!a' & b' & !c' & !d' & !aee' & bee' & !cee' & !dee'))
+skill4 & !a & b & !c & !d & !aee & bee & !cee & !dee -> ((!a' & b' & !c' & !d' & aee' & !bee' & !cee' & !dee'))
+skill4 & !a & b & !c & !d & aee & !bee & !cee & !dee -> ((a' & !b' & !c' & !d' & aee' & !bee' & !cee' & !dee'))
+Final Postconditions:
+a & !b & !c & !d & aee & !bee & !cee & !dee
+**********************
+Skill name: skill5
+Original name: skillStretch0
+Initial preconditions: 
+a & aee
+skill5 & !a & !b & c & !d & !aee & !bee & !cee & dee -> ((!a' & !b' & !c' & d' & !aee' & !bee' & !cee' & dee'))
+skill5 & !a & !b & c & !d & !aee & bee & !cee & !dee -> ((!a' & !b' & c' & !d' & !aee' & !bee' & !cee' & dee'))
+skill5 & !a & b & !c & !d & !aee & !bee & !cee & dee -> ((!a' & !b' & !c' & d' & !aee' & !bee' & !cee' & dee'))
+skill5 & !a & b & !c & !d & !aee & bee & !cee & !dee -> ((!a' & b' & !c' & !d' & !aee' & !bee' & !cee' & dee') | (!a' & b' & !c' & !d' & aee' & !bee' & !cee' & !dee'))
+skill5 & !a & b & !c & !d & aee & !bee & !cee & !dee -> ((!a' & !b' & !c' & d' & !aee' & !bee' & !cee' & dee'))
+skill5 & a & !b & !c & !d & !aee & bee & !cee & !dee -> ((!a' & !b' & c' & !d' & !aee' & bee' & !cee' & !dee') | (!a' & b' & !c' & !d' & !aee' & bee' & !cee' & !dee'))
+skill5 & a & !b & !c & !d & aee & !bee & !cee & !dee -> ((a' & !b' & !c' & !d' & !aee' & bee' & !cee' & !dee'))
+Final Postconditions:
+!a & !b & !c & d & !aee & !bee & !cee & dee
+**********************
+================================
+Seed 4 took 1 iterations
+Skill name: skill4
+Original name: skillStretch1
+Initial preconditions: 
+d & dee
+skill4 & !a & !b & !c & d & !aee & !bee & !cee & dee -> ((!a' & !b' & !c' & d' & !aee' & bee' & !cee' & !dee'))
+skill4 & !a & !b & !c & d & !aee & bee & !cee & !dee -> ((!a' & b' & !c' & !d' & !aee' & bee' & !cee' & !dee'))
+skill4 & !a & b & !c & !d & !aee & bee & !cee & !dee -> ((!a' & b' & !c' & !d' & aee' & !bee' & !cee' & !dee'))
+skill4 & !a & b & !c & !d & aee & !bee & !cee & !dee -> ((a' & !b' & !c' & !d' & aee' & !bee' & !cee' & !dee'))
+Final Postconditions:
+a & !b & !c & !d & aee & !bee & !cee & !dee
+**********************
+Skill name: skill5
+Original name: skillStretch0
+Initial preconditions: 
+a & aee
+skill5 & !a & !b & c & !d & !aee & !bee & !cee & dee -> ((!a' & !b' & !c' & d' & !aee' & !bee' & !cee' & dee'))
+skill5 & !a & !b & c & !d & !aee & bee & !cee & !dee -> ((!a' & !b' & c' & !d' & !aee' & !bee' & !cee' & dee'))
+skill5 & !a & b & !c & !d & !aee & !bee & !cee & dee -> ((!a' & !b' & !c' & d' & !aee' & !bee' & !cee' & dee'))
+skill5 & !a & b & !c & !d & !aee & bee & !cee & !dee -> ((!a' & b' & !c' & !d' & !aee' & !bee' & !cee' & dee'))
+skill5 & a & !b & !c & !d & !aee & !bee & !cee & dee -> ((!a' & !b' & c' & !d' & !aee' & bee' & !cee' & !dee'))
+skill5 & a & !b & !c & !d & !aee & bee & !cee & !dee -> ((!a' & !b' & c' & !d' & !aee' & bee' & !cee' & !dee') | (!a' & b' & !c' & !d' & !aee' & bee' & !cee' & !dee'))
+skill5 & a & !b & !c & !d & aee & !bee & !cee & !dee -> ((a' & !b' & !c' & !d' & !aee' & !bee' & !cee' & dee') | (a' & !b' & !c' & !d' & !aee' & bee' & !cee' & !dee'))
+Final Postconditions:
+!a & !b & !c & d & !aee & !bee & !cee & dee
+**********************
+================================
+Seed 5 took 1 iterations
+Skill name: skill4
+Original name: skillStretch1
+Initial preconditions: 
+d & dee
+skill4 & !a & !b & !c & d & !aee & !bee & !cee & dee -> ((!a' & !b' & !c' & d' & !aee' & bee' & !cee' & !dee'))
+skill4 & !a & !b & !c & d & !aee & bee & !cee & !dee -> ((!a' & b' & !c' & !d' & !aee' & bee' & !cee' & !dee'))
+skill4 & !a & b & !c & !d & !aee & bee & !cee & !dee -> ((!a' & b' & !c' & !d' & aee' & !bee' & !cee' & !dee'))
+skill4 & !a & b & !c & !d & aee & !bee & !cee & !dee -> ((a' & !b' & !c' & !d' & aee' & !bee' & !cee' & !dee'))
+Final Postconditions:
+a & !b & !c & !d & aee & !bee & !cee & !dee
+**********************
+Skill name: skill5
+Original name: skillStretch0
+Initial preconditions: 
+a & aee
+skill5 & !a & !b & c & !d & !aee & !bee & !cee & dee -> ((!a' & !b' & !c' & d' & !aee' & !bee' & !cee' & dee'))
+skill5 & !a & !b & c & !d & !aee & bee & !cee & !dee -> ((!a' & !b' & c' & !d' & !aee' & !bee' & !cee' & dee'))
+skill5 & !a & !b & c & !d & aee & !bee & !cee & !dee -> ((!a' & !b' & c' & !d' & !aee' & !bee' & !cee' & dee'))
+skill5 & !a & b & !c & !d & !aee & !bee & !cee & dee -> ((!a' & !b' & !c' & d' & !aee' & !bee' & !cee' & dee'))
+skill5 & !a & b & !c & !d & !aee & bee & !cee & !dee -> ((!a' & b' & !c' & !d' & !aee' & !bee' & !cee' & dee'))
+skill5 & a & !b & !c & !d & !aee & bee & !cee & !dee -> ((!a' & !b' & c' & !d' & !aee' & bee' & !cee' & !dee') | (!a' & !b' & c' & !d' & aee' & !bee' & !cee' & !dee') | (!a' & b' & !c' & !d' & !aee' & bee' & !cee' & !dee'))
+skill5 & a & !b & !c & !d & aee & !bee & !cee & !dee -> ((a' & !b' & !c' & !d' & !aee' & bee' & !cee' & !dee'))
+Final Postconditions:
+!a & !b & !c & d & !aee & !bee & !cee & dee
+**********************
+================================
+Seed 6 took 1 iterations
+Skill name: skill4
+Original name: skillStretch1
+Initial preconditions: 
+d & dee
+skill4 & !a & !b & !c & d & !aee & !bee & !cee & dee -> ((!a' & !b' & !c' & d' & !aee' & bee' & !cee' & !dee'))
+skill4 & !a & !b & !c & d & !aee & bee & !cee & !dee -> ((!a' & b' & !c' & !d' & !aee' & bee' & !cee' & !dee'))
+skill4 & !a & b & !c & !d & !aee & bee & !cee & !dee -> ((!a' & b' & !c' & !d' & aee' & !bee' & !cee' & !dee'))
+skill4 & !a & b & !c & !d & aee & !bee & !cee & !dee -> ((a' & !b' & !c' & !d' & aee' & !bee' & !cee' & !dee'))
+Final Postconditions:
+a & !b & !c & !d & aee & !bee & !cee & !dee
+**********************
+Skill name: skill5
+Original name: skillStretch0
+Initial preconditions: 
+a & aee
+skill5 & !a & !b & c & !d & !aee & !bee & !cee & dee -> ((!a' & !b' & !c' & d' & !aee' & !bee' & !cee' & dee'))
+skill5 & !a & !b & c & !d & !aee & bee & !cee & !dee -> ((!a' & !b' & c' & !d' & !aee' & !bee' & !cee' & dee'))
+skill5 & !a & b & !c & !d & !aee & !bee & !cee & dee -> ((!a' & !b' & !c' & d' & !aee' & !bee' & !cee' & dee'))
+skill5 & !a & b & !c & !d & !aee & bee & !cee & !dee -> ((!a' & b' & !c' & !d' & !aee' & !bee' & !cee' & dee') | (!a' & b' & !c' & !d' & aee' & !bee' & !cee' & !dee'))
+skill5 & !a & b & !c & !d & aee & !bee & !cee & !dee -> ((!a' & !b' & !c' & d' & !aee' & !bee' & !cee' & dee'))
+skill5 & a & !b & !c & !d & !aee & bee & !cee & !dee -> ((!a' & !b' & c' & !d' & !aee' & bee' & !cee' & !dee') | (!a' & b' & !c' & !d' & !aee' & bee' & !cee' & !dee'))
+skill5 & a & !b & !c & !d & aee & !bee & !cee & !dee -> ((a' & !b' & !c' & !d' & !aee' & bee' & !cee' & !dee'))
+Final Postconditions:
+!a & !b & !c & d & !aee & !bee & !cee & dee
+**********************
+================================
+Seed 7 took 1 iterations
+Skill name: skill4
+Original name: skillStretch1
+Initial preconditions: 
+d & dee
+skill4 & !a & !b & !c & d & !aee & !bee & !cee & dee -> ((!a' & !b' & !c' & d' & !aee' & bee' & !cee' & !dee'))
+skill4 & !a & !b & !c & d & !aee & bee & !cee & !dee -> ((!a' & b' & !c' & !d' & !aee' & bee' & !cee' & !dee'))
+skill4 & !a & b & !c & !d & !aee & bee & !cee & !dee -> ((!a' & b' & !c' & !d' & aee' & !bee' & !cee' & !dee'))
+skill4 & !a & b & !c & !d & aee & !bee & !cee & !dee -> ((a' & !b' & !c' & !d' & aee' & !bee' & !cee' & !dee'))
+Final Postconditions:
+a & !b & !c & !d & aee & !bee & !cee & !dee
+**********************
+Skill name: skill5
+Original name: skillStretch0
+Initial preconditions: 
+a & aee
+skill5 & !a & !b & c & !d & !aee & !bee & !cee & dee -> ((!a' & !b' & !c' & d' & !aee' & !bee' & !cee' & dee'))
+skill5 & !a & !b & c & !d & !aee & bee & !cee & !dee -> ((!a' & !b' & c' & !d' & !aee' & !bee' & !cee' & dee'))
+skill5 & !a & b & !c & !d & !aee & !bee & !cee & dee -> ((!a' & !b' & !c' & d' & !aee' & !bee' & !cee' & dee'))
+skill5 & !a & b & !c & !d & !aee & bee & !cee & !dee -> ((!a' & b' & !c' & !d' & !aee' & !bee' & !cee' & dee'))
+skill5 & a & !b & !c & !d & !aee & !bee & !cee & dee -> ((!a' & b' & !c' & !d' & !aee' & bee' & !cee' & !dee'))
+skill5 & a & !b & !c & !d & !aee & bee & !cee & !dee -> ((!a' & !b' & c' & !d' & !aee' & bee' & !cee' & !dee') | (!a' & b' & !c' & !d' & !aee' & bee' & !cee' & !dee'))
+skill5 & a & !b & !c & !d & aee & !bee & !cee & !dee -> ((a' & !b' & !c' & !d' & !aee' & !bee' & !cee' & dee') | (a' & !b' & !c' & !d' & !aee' & bee' & !cee' & !dee'))
+Final Postconditions:
+!a & !b & !c & d & !aee & !bee & !cee & dee
+**********************
+================================
+Seed 8 took 1 iterations
+Skill name: skill4
+Original name: skillStretch1
+Initial preconditions: 
+d & dee
+skill4 & !a & !b & !c & d & !aee & !bee & !cee & dee -> ((!a' & !b' & !c' & d' & !aee' & bee' & !cee' & !dee'))
+skill4 & !a & !b & !c & d & !aee & bee & !cee & !dee -> ((!a' & b' & !c' & !d' & !aee' & bee' & !cee' & !dee'))
+skill4 & !a & b & !c & !d & !aee & bee & !cee & !dee -> ((!a' & b' & !c' & !d' & aee' & !bee' & !cee' & !dee'))
+skill4 & !a & b & !c & !d & aee & !bee & !cee & !dee -> ((a' & !b' & !c' & !d' & aee' & !bee' & !cee' & !dee'))
+Final Postconditions:
+a & !b & !c & !d & aee & !bee & !cee & !dee
+**********************
+Skill name: skill5
+Original name: skillStretch0
+Initial preconditions: 
+a & aee
+skill5 & !a & !b & c & !d & !aee & !bee & !cee & dee -> ((!a' & !b' & !c' & d' & !aee' & !bee' & !cee' & dee'))
+skill5 & !a & !b & c & !d & !aee & bee & !cee & !dee -> ((!a' & !b' & c' & !d' & !aee' & !bee' & !cee' & dee'))
+skill5 & !a & !b & c & !d & aee & !bee & !cee & !dee -> ((!a' & !b' & c' & !d' & !aee' & !bee' & !cee' & dee'))
+skill5 & !a & b & !c & !d & !aee & !bee & !cee & dee -> ((!a' & !b' & !c' & d' & !aee' & !bee' & !cee' & dee'))
+skill5 & !a & b & !c & !d & !aee & bee & !cee & !dee -> ((!a' & b' & !c' & !d' & !aee' & !bee' & !cee' & dee'))
+skill5 & a & !b & !c & !d & !aee & bee & !cee & !dee -> ((!a' & !b' & c' & !d' & !aee' & bee' & !cee' & !dee') | (!a' & !b' & c' & !d' & aee' & !bee' & !cee' & !dee') | (!a' & b' & !c' & !d' & !aee' & bee' & !cee' & !dee'))
+skill5 & a & !b & !c & !d & aee & !bee & !cee & !dee -> ((a' & !b' & !c' & !d' & !aee' & bee' & !cee' & !dee'))
+Final Postconditions:
+!a & !b & !c & d & !aee & !bee & !cee & dee
+**********************
+================================
+Seed 9 took 1 iterations
+Skill name: skill4
+Original name: skillStretch1
+Initial preconditions: 
+d & dee
+skill4 & !a & !b & !c & d & !aee & !bee & !cee & dee -> ((!a' & !b' & !c' & d' & !aee' & bee' & !cee' & !dee'))
+skill4 & !a & !b & !c & d & !aee & bee & !cee & !dee -> ((!a' & b' & !c' & !d' & !aee' & bee' & !cee' & !dee'))
+skill4 & !a & b & !c & !d & !aee & bee & !cee & !dee -> ((!a' & b' & !c' & !d' & aee' & !bee' & !cee' & !dee'))
+skill4 & !a & b & !c & !d & aee & !bee & !cee & !dee -> ((a' & !b' & !c' & !d' & aee' & !bee' & !cee' & !dee'))
+Final Postconditions:
+a & !b & !c & !d & aee & !bee & !cee & !dee
+**********************
+Skill name: skill5
+Original name: skillStretch0
+Initial preconditions: 
+a & aee
+skill5 & !a & !b & c & !d & !aee & !bee & !cee & dee -> ((!a' & !b' & !c' & d' & !aee' & !bee' & !cee' & dee'))
+skill5 & !a & !b & c & !d & !aee & bee & !cee & !dee -> ((!a' & !b' & c' & !d' & !aee' & !bee' & !cee' & dee') | (!a' & !b' & c' & !d' & aee' & !bee' & !cee' & !dee'))
+skill5 & !a & !b & c & !d & aee & !bee & !cee & !dee -> ((!a' & !b' & !c' & d' & !aee' & !bee' & !cee' & dee'))
+skill5 & !a & b & !c & !d & !aee & !bee & !cee & dee -> ((!a' & !b' & !c' & d' & !aee' & !bee' & !cee' & dee'))
+skill5 & !a & b & !c & !d & !aee & bee & !cee & !dee -> ((!a' & b' & !c' & !d' & !aee' & !bee' & !cee' & dee'))
+skill5 & a & !b & !c & !d & !aee & bee & !cee & !dee -> ((!a' & !b' & c' & !d' & !aee' & bee' & !cee' & !dee') | (!a' & b' & !c' & !d' & !aee' & bee' & !cee' & !dee'))
+skill5 & a & !b & !c & !d & aee & !bee & !cee & !dee -> ((a' & !b' & !c' & !d' & !aee' & bee' & !cee' & !dee'))
+Final Postconditions:
+!a & !b & !c & d & !aee & !bee & !cee & dee
+**********************
+================================

@@ -1,0 +1,23 @@
+{
+  "enforce_type": "adversarial",
+  "n_train_trajs": 32,
+  "n_val_trajs": 32,
+  "demo_folder": "../data/stretch/trajectories/",
+  "basis_fs": 30,
+  "dmp_folder": "../data/dmps/",
+  "dt": 0.01,
+  "c_weight": 50,
+  "m_weight": 1,
+  "epsilon": 1E-6,
+  "plt_background": "none",
+  "plot_limits": [[-0.5, 3.5], [-0.5, 2.5], [-0.1, 0.5]],
+  "workspace_bnds": [[-0.5, 3.5], [-0.5, 2.5], [0, 6.28], [0, 1], [0, 1], [0, 6.28]],
+  "n_epochs": [100],
+  "start_dimension": 12,
+  "dimension": 6,
+  "n_states": 2,
+  "base_folder": "../data",
+  "use_previous": false,
+  "file_physical_log": "../data/logs/stretch_log.txt",
+  "constraints": [["implication_next", "always"]]
+}

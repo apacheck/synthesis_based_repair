@@ -1,0 +1,13 @@
+{
+  "env_init_true": ["a", "aee"],
+  "env_init_false": ["b", "c", "d", "bee", "cee", "dee"],
+  "sys_init_true": [],
+  "sys_init_false": ["skillStretch0", "skillStretch1", "skillStretch0b", "skillStretch1b"],
+  "sys_live": "a & aee\n d & dee\n",
+  "env_live": "",
+  "sys_trans_hard": "!(!aee & !bee & cee & !dee)\n!(!aee' & !bee' & cee' & !dee')",
+  "reactive_variables": [],
+  "change_cons": "!(a' & b')\n!(a' & d')\n!(b' & c')\n!(a' & c')\n!(b' & d')\n!(c' & d')\n(a' | b' | c' | d')\n!(aee' & bee')\n!(aee' & cee')\n!(aee' & dee')\n!(bee' & cee')\n!(bee' & dee')\n!(cee' & dee')\n(aee' | bee' | cee' | dee')\n!(a & b)\n!(a & c)\n!(a & d)\n!(b & c)\n!(b & d)\n!(c & d)\n(a | b | c | d)\n!(aee & bee)\n!(aee & cee)\n!(aee & dee)\n!(bee & cee)\n!(bee & dee)\n!(cee & dee)\n(aee | bee | cee | dee)\n!((a <-> a') & (b <-> b') & (c <-> c') & (d <-> d') & (aee <-> aee') & (bee <-> bee') & (cee <-> cee'))\n!(a & d')\n!(d & a')\n!(c & d')\n!(b & d')\n!(b & a')\n!(c & a')\n!(a & b')\n!(a & c')\n!(d & c')\n!(d & b')",
+  "not_allowed_repair": "!skillStretch0b\n!skillStretch1b\n",
+  "hard_constraints": []
+}
