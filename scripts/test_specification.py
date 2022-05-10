@@ -1,10 +1,9 @@
 #!/usr/bin/env python
-from tools import write_spec
-from symbols import load_symbols
+from src.tools import write_spec, json_load_wrapper
+from src.symbols import load_symbols
 import json
-from skills import load_skills_from_json
+from src.skills import load_skills_from_json
 import argparse
-from tools import json_load_wrapper
 import copy
 
 

@@ -15,8 +15,6 @@ skillStretch0
 skillStretch1
 skillStretch0b
 skillStretch1b
-skill4
-skill5
 
 [ENV_INIT]
 
@@ -35,8 +33,6 @@ aee
 !skillStretch1
 !skillStretch0b
 !skillStretch1b
-!skill4
-!skill5
 
 [ENV_TRANS]
 
@@ -70,17 +66,6 @@ skillStretch1b & !a & b & !c & !d & aee & !bee & !cee & !dee -> ((a' & !b' & !c'
 skillStretch1b & !a & !b & !c & d & !aee & !bee & cee & !dee -> ((!a' & !b' & c' & !d' & !aee' & !bee' & cee' & !dee'))
 skillStretch1b & !a & !b & c & !d & !aee & !bee & cee & !dee -> ((!a' & !b' & c' & !d' & aee' & !bee' & !cee' & !dee'))
 skillStretch1b & !a & !b & c & !d & aee & !bee & !cee & !dee -> ((a' & !b' & !c' & !d' & aee' & !bee' & !cee' & !dee'))
-skill4 & !a & !b & !c & d & !aee & !bee & !cee & dee -> ((!a' & !b' & !c' & d' & !aee' & bee' & !cee' & !dee'))
-skill4 & !a & !b & !c & d & !aee & bee & !cee & !dee -> ((!a' & b' & !c' & !d' & !aee' & bee' & !cee' & !dee'))
-skill4 & !a & b & !c & !d & !aee & bee & !cee & !dee -> ((!a' & b' & !c' & !d' & aee' & !bee' & !cee' & !dee'))
-skill4 & !a & b & !c & !d & aee & !bee & !cee & !dee -> ((a' & !b' & !c' & !d' & aee' & !bee' & !cee' & !dee'))
-skill5 & !a & !b & c & !d & !aee & !bee & !cee & dee -> ((!a' & !b' & !c' & d' & !aee' & !bee' & !cee' & dee'))
-skill5 & !a & !b & c & !d & !aee & bee & !cee & !dee -> ((!a' & !b' & c' & !d' & !aee' & !bee' & !cee' & dee') | (!a' & !b' & c' & !d' & aee' & !bee' & !cee' & !dee'))
-skill5 & !a & !b & c & !d & aee & !bee & !cee & !dee -> ((!a' & !b' & !c' & d' & !aee' & !bee' & !cee' & dee'))
-skill5 & !a & b & !c & !d & !aee & !bee & !cee & dee -> ((!a' & !b' & !c' & d' & !aee' & !bee' & !cee' & dee'))
-skill5 & !a & b & !c & !d & !aee & bee & !cee & !dee -> ((!a' & b' & !c' & !d' & !aee' & !bee' & !cee' & dee'))
-skill5 & a & !b & !c & !d & !aee & bee & !cee & !dee -> ((!a' & !b' & c' & !d' & !aee' & bee' & !cee' & !dee') | (!a' & b' & !c' & !d' & !aee' & bee' & !cee' & !dee'))
-skill5 & a & !b & !c & !d & aee & !bee & !cee & !dee -> ((a' & !b' & !c' & !d' & !aee' & bee' & !cee' & !dee'))
 
 [ENV_TRANS_HARD]
 !(a' & b')
@@ -111,16 +96,14 @@ skill5 & a & !b & !c & !d & aee & !bee & !cee & !dee -> ((a' & !b' & !c' & !d' &
 !(cee & dee)
 (a | b | c | d)
 (aee | bee | cee | dee)
-(!skillStretch0 & !skillStretch1 & !skillStretch0b & !skillStretch1b & !skill4 & !skill5) -> ((a <-> a') & (b <-> b') & (c <-> c') & (d <-> d') & (aee <-> aee') & (bee <-> bee') & (cee <-> cee') & (dee <-> dee'))
-(skillStretch0 & !skillStretch1 & !skillStretch0b & !skillStretch1b & !skill4 & !skill5) | (!skillStretch0 & skillStretch1 & !skillStretch0b & !skillStretch1b & !skill4 & !skill5) | (!skillStretch0 & !skillStretch1 & skillStretch0b & !skillStretch1b & !skill4 & !skill5) | (!skillStretch0 & !skillStretch1 & !skillStretch0b & skillStretch1b & !skill4 & !skill5) | (!skillStretch0 & !skillStretch1 & !skillStretch0b & !skillStretch1b & skill4 & !skill5) | (!skillStretch0 & !skillStretch1 & !skillStretch0b & !skillStretch1b & !skill4 & skill5) | (!skillStretch0 & !skillStretch1 & !skillStretch0b & !skillStretch1b & !skill4 & !skill5)
+(!skillStretch0 & !skillStretch1 & !skillStretch0b & !skillStretch1b) -> ((a <-> a') & (b <-> b') & (c <-> c') & (d <-> d') & (aee <-> aee') & (bee <-> bee') & (cee <-> cee') & (dee <-> dee'))
+(skillStretch0 & !skillStretch1 & !skillStretch0b & !skillStretch1b) | (!skillStretch0 & skillStretch1 & !skillStretch0b & !skillStretch1b) | (!skillStretch0 & !skillStretch1 & skillStretch0b & !skillStretch1b) | (!skillStretch0 & !skillStretch1 & !skillStretch0b & skillStretch1b) | (!skillStretch0 & !skillStretch1 & !skillStretch0b & !skillStretch1b)
 [SYS_TRANS]
 
 !((a & !b & !c & !d & aee & !bee & !cee & !dee & skillStretch0 & a' & !b' & !c' & !d' & !aee' & bee' & !cee' & !dee') | (a & !b & !c & !d & aee & !bee & !cee & !dee & skillStretch0 & a' & !b' & !c' & !d' & !aee' & !bee' & cee' & !dee') | (a & !b & !c & !d & !aee & bee & !cee & !dee & skillStretch0 & !a' & !b' & c' & !d' & !aee' & bee' & !cee' & !dee') | (a & !b & !c & !d & !aee & bee & !cee & !dee & skillStretch0 & !a' & b' & !c' & !d' & !aee' & bee' & !cee' & !dee') | (!a & !b & c & !d & !aee & bee & !cee & !dee & skillStretch0 & !a' & !b' & c' & !d' & !aee' & !bee' & !cee' & dee') | (!a & b & !c & !d & !aee & bee & !cee & !dee & skillStretch0 & !a' & b' & !c' & !d' & !aee' & !bee' & !cee' & dee') | (a & !b & !c & !d & !aee & !bee & cee & !dee & skillStretch0 & !a' & !b' & c' & !d' & !aee' & !bee' & cee' & !dee') | (!a & !b & c & !d & !aee & !bee & cee & !dee & skillStretch0 & !a' & !b' & c' & !d' & !aee' & !bee' & !cee' & dee') | (a' & !b' & !c' & !d' & aee' & !bee' & !cee' & !dee')) -> !skillStretch0'
 !((!a & !b & !c & d & !aee & !bee & !cee & dee & skillStretch1 & !a' & !b' & !c' & d' & !aee' & bee' & !cee' & !dee') | (!a & !b & !c & d & !aee & !bee & !cee & dee & skillStretch1 & !a' & !b' & !c' & d' & !aee' & !bee' & cee' & !dee') | (!a & !b & !c & d & !aee & bee & !cee & !dee & skillStretch1 & !a' & b' & !c' & !d' & !aee' & bee' & !cee' & !dee') | (!a & b & !c & !d & !aee & bee & !cee & !dee & skillStretch1 & !a' & b' & !c' & !d' & aee' & !bee' & !cee' & !dee') | (!a & !b & !c & d & !aee & !bee & cee & !dee & skillStretch1 & !a' & !b' & c' & !d' & !aee' & !bee' & cee' & !dee') | (!a & !b & c & !d & !aee & !bee & cee & !dee & skillStretch1 & !a' & !b' & c' & !d' & aee' & !bee' & !cee' & !dee') | (!a' & !b' & !c' & d' & !aee' & !bee' & !cee' & dee')) -> !skillStretch1'
 !((a & !b & !c & !d & aee & !bee & !cee & !dee & skillStretch0b & a' & !b' & !c' & !d' & !aee' & bee' & !cee' & !dee') | (a & !b & !c & !d & aee & !bee & !cee & !dee & skillStretch0b & a' & !b' & !c' & !d' & !aee' & !bee' & cee' & !dee') | (a & !b & !c & !d & !aee & bee & !cee & !dee & skillStretch0b & !a' & !b' & c' & !d' & !aee' & bee' & !cee' & !dee') | (a & !b & !c & !d & !aee & bee & !cee & !dee & skillStretch0b & !a' & b' & !c' & !d' & !aee' & bee' & !cee' & !dee') | (!a & !b & c & !d & !aee & bee & !cee & !dee & skillStretch0b & !a' & !b' & c' & !d' & !aee' & !bee' & !cee' & dee') | (!a & b & !c & !d & !aee & bee & !cee & !dee & skillStretch0b & !a' & b' & !c' & !d' & !aee' & !bee' & !cee' & dee') | (a & !b & !c & !d & !aee & !bee & cee & !dee & skillStretch0b & !a' & !b' & c' & !d' & !aee' & !bee' & cee' & !dee') | (!a & !b & c & !d & !aee & !bee & cee & !dee & skillStretch0b & !a' & !b' & c' & !d' & !aee' & !bee' & !cee' & dee') | (a' & !b' & !c' & !d' & aee' & !bee' & !cee' & !dee')) -> !skillStretch0b'
 !((!a & !b & !c & d & !aee & !bee & !cee & dee & skillStretch1b & !a' & !b' & !c' & d' & !aee' & bee' & !cee' & !dee') | (!a & !b & !c & d & !aee & !bee & !cee & dee & skillStretch1b & !a' & !b' & !c' & d' & !aee' & !bee' & cee' & !dee') | (!a & !b & !c & d & !aee & bee & !cee & !dee & skillStretch1b & !a' & b' & !c' & !d' & !aee' & bee' & !cee' & !dee') | (!a & b & !c & !d & !aee & bee & !cee & !dee & skillStretch1b & !a' & b' & !c' & !d' & aee' & !bee' & !cee' & !dee') | (!a & !b & !c & d & !aee & !bee & cee & !dee & skillStretch1b & !a' & !b' & c' & !d' & !aee' & !bee' & cee' & !dee') | (!a & !b & c & !d & !aee & !bee & cee & !dee & skillStretch1b & !a' & !b' & c' & !d' & aee' & !bee' & !cee' & !dee') | (!a' & !b' & !c' & d' & !aee' & !bee' & !cee' & dee')) -> !skillStretch1b'
-!((!a & !b & !c & d & !aee & !bee & !cee & dee & skill4 & !a' & !b' & !c' & d' & !aee' & bee' & !cee' & !dee') | (!a & !b & !c & d & !aee & bee & !cee & !dee & skill4 & !a' & b' & !c' & !d' & !aee' & bee' & !cee' & !dee') | (!a & b & !c & !d & !aee & bee & !cee & !dee & skill4 & !a' & b' & !c' & !d' & aee' & !bee' & !cee' & !dee') | (!a' & !b' & !c' & d' & !aee' & !bee' & !cee' & dee')) -> !skill4'
-!((!a & !b & c & !d & !aee & bee & !cee & !dee & skill5 & !a' & !b' & c' & !d' & !aee' & !bee' & !cee' & dee') | (!a & !b & c & !d & !aee & bee & !cee & !dee & skill5 & !a' & !b' & c' & !d' & aee' & !bee' & !cee' & !dee') | (!a & b & !c & !d & !aee & bee & !cee & !dee & skill5 & !a' & b' & !c' & !d' & !aee' & !bee' & !cee' & dee') | (a & !b & !c & !d & !aee & bee & !cee & !dee & skill5 & !a' & !b' & c' & !d' & !aee' & bee' & !cee' & !dee') | (a & !b & !c & !d & !aee & bee & !cee & !dee & skill5 & !a' & b' & !c' & !d' & !aee' & bee' & !cee' & !dee') | (a & !b & !c & !d & aee & !bee & !cee & !dee & skill5 & a' & !b' & !c' & !d' & !aee' & bee' & !cee' & !dee') | (a' & !b' & !c' & !d' & aee' & !bee' & !cee' & !dee')) -> !skill5'
 (a & !b & !c & !d & aee & !bee & !cee & !dee & skillStretch0 & a' & !b' & !c' & !d' & !aee' & bee' & !cee' & !dee') -> skillStretch0'
 (a & !b & !c & !d & aee & !bee & !cee & !dee & skillStretch0 & a' & !b' & !c' & !d' & !aee' & !bee' & cee' & !dee') -> skillStretch0'
 (a & !b & !c & !d & !aee & bee & !cee & !dee & skillStretch0 & !a' & !b' & c' & !d' & !aee' & bee' & !cee' & !dee') -> skillStretch0'
@@ -149,18 +132,9 @@ skill5 & a & !b & !c & !d & aee & !bee & !cee & !dee -> ((a' & !b' & !c' & !d' &
 (!a & b & !c & !d & !aee & bee & !cee & !dee & skillStretch1b & !a' & b' & !c' & !d' & aee' & !bee' & !cee' & !dee') -> skillStretch1b'
 (!a & !b & !c & d & !aee & !bee & cee & !dee & skillStretch1b & !a' & !b' & c' & !d' & !aee' & !bee' & cee' & !dee') -> skillStretch1b'
 (!a & !b & c & !d & !aee & !bee & cee & !dee & skillStretch1b & !a' & !b' & c' & !d' & aee' & !bee' & !cee' & !dee') -> skillStretch1b'
-(!a & !b & !c & d & !aee & !bee & !cee & dee & skill4 & !a' & !b' & !c' & d' & !aee' & bee' & !cee' & !dee') -> skill4'
-(!a & !b & !c & d & !aee & bee & !cee & !dee & skill4 & !a' & b' & !c' & !d' & !aee' & bee' & !cee' & !dee') -> skill4'
-(!a & b & !c & !d & !aee & bee & !cee & !dee & skill4 & !a' & b' & !c' & !d' & aee' & !bee' & !cee' & !dee') -> skill4'
-(!a & !b & c & !d & !aee & bee & !cee & !dee & skill5 & !a' & !b' & c' & !d' & !aee' & !bee' & !cee' & dee') -> skill5'
-(!a & !b & c & !d & !aee & bee & !cee & !dee & skill5 & !a' & !b' & c' & !d' & aee' & !bee' & !cee' & !dee') -> skill5'
-(!a & b & !c & !d & !aee & bee & !cee & !dee & skill5 & !a' & b' & !c' & !d' & !aee' & !bee' & !cee' & dee') -> skill5'
-(a & !b & !c & !d & !aee & bee & !cee & !dee & skill5 & !a' & !b' & c' & !d' & !aee' & bee' & !cee' & !dee') -> skill5'
-(a & !b & !c & !d & !aee & bee & !cee & !dee & skill5 & !a' & b' & !c' & !d' & !aee' & bee' & !cee' & !dee') -> skill5'
-(a & !b & !c & !d & aee & !bee & !cee & !dee & skill5 & a' & !b' & !c' & !d' & !aee' & bee' & !cee' & !dee') -> skill5'
 
 [SYS_TRANS_HARD]
-(skillStretch0' & !skillStretch1' & !skillStretch0b' & !skillStretch1b' & !skill4' & !skill5') | (!skillStretch0' & skillStretch1' & !skillStretch0b' & !skillStretch1b' & !skill4' & !skill5') | (!skillStretch0' & !skillStretch1' & skillStretch0b' & !skillStretch1b' & !skill4' & !skill5') | (!skillStretch0' & !skillStretch1' & !skillStretch0b' & skillStretch1b' & !skill4' & !skill5') | (!skillStretch0' & !skillStretch1' & !skillStretch0b' & !skillStretch1b' & skill4' & !skill5') | (!skillStretch0' & !skillStretch1' & !skillStretch0b' & !skillStretch1b' & !skill4' & skill5') | (!skillStretch0' & !skillStretch1' & !skillStretch0b' & !skillStretch1b' & !skill4' & !skill5')
+(skillStretch0' & !skillStretch1' & !skillStretch0b' & !skillStretch1b') | (!skillStretch0' & skillStretch1' & !skillStretch0b' & !skillStretch1b') | (!skillStretch0' & !skillStretch1' & skillStretch0b' & !skillStretch1b') | (!skillStretch0' & !skillStretch1' & !skillStretch0b' & skillStretch1b') | (!skillStretch0' & !skillStretch1' & !skillStretch0b' & !skillStretch1b')
 
 # User SYS_TRANS_HARD
 !(!aee & !bee & cee & !dee)

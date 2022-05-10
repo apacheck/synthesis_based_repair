@@ -1,5 +1,5 @@
 #!/usr/bin/env
-from symbols import find_symbols_by_var, symbols_intersect
+from .symbols import find_symbols_by_var, symbols_intersect
 import json
 
 

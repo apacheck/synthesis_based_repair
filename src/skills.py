@@ -2,9 +2,9 @@
 
 import numpy as np
 import matplotlib.pyplot as plt
-from tools import dict_to_formula, pre_posts_to_env_formula, sym_list_to_dict
+from .tools import dict_to_formula, pre_posts_to_env_formula, sym_list_to_dict
 import os
-from symbols import in_symbols, find_symbols_true_and_false, load_symbols, plot_symbolic_state
+from .symbols import in_symbols, find_symbols_true_and_false, load_symbols, plot_symbolic_state
 import json
 
 
@@ -252,17 +252,17 @@ def load_skills_from_json(file_json):
 
 
 if __name__ == "__main__":
-    # folder_trajectories = '../data/nine_squares/trajectories/'
-    # skill_names = ["skill0", 'skill1', 'skill2', 'skill3', 'skill4', 'skill5', 'skill6', 'skill7', 'skill8', 'skill9', 'skill10']
-    # f_symbols = "../data/nine_squares/nine_squares_symbols.json"
-    # f_plot = "../data/nine_squares/plots/"
-    # f_skills = "../data/nine_squares/nine_squares_skills.json"
+    folder_trajectories = '../data/nine_squares/trajectories/'
+    skill_names = ["skill0", 'skill1', 'skill2', 'skill3', 'skill4', 'skill5', 'skill6', 'skill7', 'skill8', 'skill9', 'skill10']
+    f_symbols = "../data/nine_squares/nine_squares_symbols.json"
+    f_plot = "../data/nine_squares/plots/"
+    f_skills = "../data/nine_squares/nine_squares_skills.json"
 
-    folder_trajectories = '../data/stretch/trajectories/'
-    skill_names = ["skillStretch0", 'skillStretch1']
-    f_symbols = "../data/stretch/stretch_symbols.json"
-    f_plot = "../data/stretch/plots/"
-    f_skills = "../data/stretch/stretch_skills.json"
+    # folder_trajectories = '../data/stretch/trajectories/'
+    # skill_names = ["skillStretch0", 'skillStretch1']
+    # f_symbols = "../data/stretch/stretch_symbols.json"
+    # f_plot = "../data/stretch/plots/"
+    # f_skills = "../data/stretch/stretch_skills.json"
 
     symbols = load_symbols(f_symbols)
     skills = load_skills_from_trajectories(folder_trajectories, skill_names, symbols)
