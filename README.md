@@ -10,7 +10,7 @@ This repository provides the code associated with [Physically-Feasible Repair of
 
 #### Other repositories:
 
-The repository [dl2_lfd](https://github.com/craigiedon/dl2_lfd) must be installed.
+The repository [dl2_lfd](https://github.com/craigiedon/dl2_lfd) must be installed and added to PYTHONPATH.
 
 ```shell
 git clone --recurse-submodules git@github.com:craigiedon/dl2_lfd.git
@@ -25,7 +25,7 @@ Full instructions are found at the repository, but this may suffice:
 ```shell
 git clone git@github.com:tulip-control/dd
 cd dd
-pip install cython  # not needed if building from PyPI distro
+pip install cython
 python setup.py install --fetch --cudd
 ```
 
@@ -38,7 +38,7 @@ python setup.py install --fetch --cudd
 - pydot
 - astutils
 
-Add to path:
+Add the folder to the PYTHONPATH:
 
 ```shell
 export PYTHONPATH=$PYTHONPATH:[PATH_TO_SYNTHESIS_BASED_REPAIR]
