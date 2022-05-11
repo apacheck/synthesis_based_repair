@@ -1,16 +1,15 @@
 #!/usr/bin/env python
 import importlib as importlib
 
-from tools import write_spec, clear_file, dict_to_formula
+from src.tools import write_spec, clear_file, dict_to_formula, json_load_wrapper
 import matplotlib.pyplot as plt
 import copy
-from symbolic_repair import run_repair
+from src.symbolic_repair import run_repair
 import numpy as np
-from symbols import load_symbols
-from skills import load_skills_from_json, Skill, write_skills_str
+from src.symbols import load_symbols
+from src.skills import load_skills_from_json, Skill, write_skills_str
 import json
-from physical_implementation import run_elaborateDMP, spoof_elaborateDMP
-from tools import json_load_wrapper
+from src.physical_implementation import run_elaborateDMP
 import argparse
 
 
@@ -164,7 +163,3 @@ if __name__ == "__main__":
             fid.close()
 
             iteration_count += 1
-
-
-
-

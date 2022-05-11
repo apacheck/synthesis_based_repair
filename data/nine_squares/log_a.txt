@@ -1,76 +1,28 @@
-Seed 0 Suggestion # 1
+Seed 0 took 1 iterations
+Skill name: skill4
+Original name: skill0
+Initial preconditions: 
+x0 & y0
+skill4 & !x0 & x1 & !x2 & y0 & !y1 & !y2 -> ((x0' & !x1' & !x2' & !y0' & !y1' & y2'))
+skill4 & x0 & !x1 & !x2 & !y0 & !y1 & y2 -> ((!x0' & !x1' & x2' & !y0' & !y1' & y2'))
+skill4 & x0 & !x1 & !x2 & y0 & !y1 & !y2 -> ((!x0' & x1' & !x2' & y0' & !y1' & !y2'))
+Final Postconditions:
+!x0 & !x1 & x2 & !y0 & !y1 & y2
+**********************
 ================================
+Seed 1 took 1 iterations
+Skill name: skill4
+Original name: skill0
+Initial preconditions: 
+x0 & y0
+skill4 & !x0 & x1 & !x2 & !y0 & y1 & !y2 -> ((!x0' & !x1' & x2' & !y0' & !y1' & y2'))
+skill4 & !x0 & x1 & !x2 & y0 & !y1 & !y2 -> ((!x0' & x1' & !x2' & !y0' & y1' & !y2'))
+skill4 & x0 & !x1 & !x2 & y0 & !y1 & !y2 -> ((!x0' & x1' & !x2' & y0' & !y1' & !y2'))
+Final Postconditions:
+!x0 & !x1 & x2 & !y0 & !y1 & y2
+**********************
 ================================
-Val_losses: {'0': [array([nan, nan, nan,  0.])]}
-intermediate sat: {'0': [array([[nan, nan, nan,  0.]]), array([[nan, nan, nan,  0.]]), array([[nan, nan, nan,  1.]])]}
-Additional not allowed repair:
-!(!x0 & x1 & !x2 & y0 & !y1 & !y2 & skill0 & x0' & !x1' & !x2' & !y0' & !y1' & y2')
-!(x0 & !x1 & !x2 & !y0 & !y1 & y2 & skill0 & !x0' & !x1' & x2' & !y0' & !y1' & y2')
-********************
-Seed 0 Suggestion # 2
-================================
-================================
-Val_losses: {'0': [array([nan, nan, nan,  0.])]}
-intermediate sat: {'0': [array([[nan, nan, nan,  1.]]), array([[nan, nan, nan,  0.]]), array([[nan, nan, nan,  0.]]), array([[nan, nan, nan,  1.]])]}
-Additional not allowed repair:
-!(!x0 & x1 & !x2 & y0 & !y1 & !y2 & skill0 & x0' & !x1' & !x2' & !y0' & y1' & !y2')
-!(x0 & !x1 & !x2 & !y0 & y1 & !y2 & skill0 & !x0' & !x1' & x2' & !y0' & y1' & !y2')
-********************
-Seed 0 Suggestion # 3
-================================
-================================
-Val_losses: {'0': [array([nan, nan, nan,  0.])]}
-intermediate sat: {'0': [array([[nan, nan, nan,  1.]]), array([[nan, nan, nan,  0.]]), array([[nan, nan, nan,  0.]]), array([[nan, nan, nan,  1.]])]}
-Additional not allowed repair:
-!(!x0 & x1 & !x2 & !y0 & !y1 & y2 & skill0 & !x0' & !x1' & x2' & !y0' & y1' & !y2')
-!(!x0 & x1 & !x2 & y0 & !y1 & !y2 & skill0 & !x0' & x1' & !x2' & !y0' & !y1' & y2')
-********************
-Seed 0 Suggestion # 4
-================================
-================================
-Val_losses: {'0': [array([nan, nan, nan,  0.])]}
-intermediate sat: {'0': [array([[nan, nan, nan,  1.]]), array([[nan, nan, nan,  1.]]), array([[nan, nan, nan,  1.]]), array([[nan, nan, nan,  1.]])]}
-Additional not allowed repair:
-********************
-Seed 0 Suggestion # 5
-================================
-================================
-Val_losses: {'0': [array([nan, nan, nan,  0.])]}
-intermediate sat: {'0': [array([[nan, nan, nan,  0.]]), array([[nan, nan, nan,  1.]]), array([[nan, nan, nan,  1.]])]}
-Additional not allowed repair:
-!(!x0 & x1 & !x2 & !y0 & y1 & !y2 & skill0 & !x0' & !x1' & x2' & !y0' & !y1' & y2')
-********************
-Seed 0 Suggestion # 6
-================================
-================================
-Val_losses: {'0': [array([nan, nan, nan,  0.])]}
-intermediate sat: {'0': [array([[nan, nan, nan,  1.]]), array([[nan, nan, nan,  1.]]), array([[nan, nan, nan,  1.]]), array([[nan, nan, nan,  0.]]), array([[nan, nan, nan,  1.]])]}
-Additional not allowed repair:
-!(x0 & !x1 & !x2 & !y0 & !y1 & y2 & skill0 & !x0' & !x1' & x2' & !y0' & y1' & !y2')
-********************
-Seed 0 Suggestion # 7
-================================
-================================
-Val_losses: {'0': [array([nan, nan, nan,  0.])]}
-intermediate sat: {'0': [array([[nan, nan, nan,  1.]]), array([[nan, nan, nan,  1.]]), array([[nan, nan, nan,  1.]]), array([[nan, nan, nan,  1.]])]}
-Additional not allowed repair:
-********************
-Seed 0 Suggestion # 8
-================================
-================================
-Val_losses: {'0': [array([nan, nan, nan,  0.])]}
-intermediate sat: {'0': [array([[nan, nan, nan,  1.]]), array([[nan, nan, nan,  0.]])]}
-Additional not allowed repair:
-!(x0 & !x1 & !x2 & y0 & !y1 & !y2 & skill0 & !x0' & x1' & !x2' & !y0' & !y1' & y2')
-********************
-Seed 0 Suggestion # 9
-================================
-================================
-Val_losses: {'0': [array([nan, nan, nan,  1.])]}
-intermediate sat: {'0': [array([[nan, nan, nan,  1.]]), array([[nan, nan, nan,  1.]]), array([[nan, nan, nan,  1.]]), array([[nan, nan, nan,  1.]])]}
-Additional not allowed repair:
-********************
-Seed 0 took 10 iterations
+Seed 2 took 1 iterations
 Skill name: skill4
 Original name: skill0
 Initial preconditions: 
@@ -78,6 +30,18 @@ x0 & y0
 skill4 & !x0 & !x1 & x2 & !y0 & y1 & !y2 -> ((!x0' & !x1' & x2' & !y0' & !y1' & y2'))
 skill4 & !x0 & x1 & !x2 & !y0 & y1 & !y2 -> ((!x0' & !x1' & x2' & !y0' & y1' & !y2'))
 skill4 & !x0 & x1 & !x2 & y0 & !y1 & !y2 -> ((!x0' & x1' & !x2' & !y0' & y1' & !y2'))
+skill4 & x0 & !x1 & !x2 & y0 & !y1 & !y2 -> ((!x0' & x1' & !x2' & y0' & !y1' & !y2'))
+Final Postconditions:
+!x0 & !x1 & x2 & !y0 & !y1 & y2
+**********************
+================================
+Seed 3 took 1 iterations
+Skill name: skill4
+Original name: skill0
+Initial preconditions: 
+x0 & y0
+skill4 & !x0 & x1 & !x2 & !y0 & !y1 & y2 -> ((!x0' & !x1' & x2' & !y0' & !y1' & y2'))
+skill4 & !x0 & x1 & !x2 & y0 & !y1 & !y2 -> ((!x0' & !x1' & x2' & !y0' & !y1' & y2') | (!x0' & x1' & !x2' & !y0' & !y1' & y2'))
 skill4 & x0 & !x1 & !x2 & y0 & !y1 & !y2 -> ((!x0' & x1' & !x2' & y0' & !y1' & !y2'))
 Final Postconditions:
 !x0 & !x1 & x2 & !y0 & !y1 & y2

@@ -4,18 +4,18 @@ import sys
 import torch
 from torch import nn, optim, autograd
 import os
-import additional_constraints as constraints
+import src.additional_constraints as constraints
 from dl2_lfd.dmps.dmp import load_dmp_demos, DMP
 from dl2_lfd.helper_funcs.conversions import np_to_pgpu
 from dl2_lfd.helper_funcs.utils import t_stamp
 from torch.utils.data import TensorDataset, DataLoader
-from tools import write_spec, clear_file, dict_to_formula
+from src.tools import write_spec, clear_file, dict_to_formula
 import copy
 import numpy as np
-from symbols import load_symbols
-from skills import load_skills_from_json, Skill, write_skills_str
+from src.symbols import load_symbols
+from src.skills import load_skills_from_json, Skill, write_skills_str
 import json
-from physical_implementation import rollout_error
+from src.physical_implementation import rollout_error
 from dl2_lfd.nns.dmp_nn import DMPNN
 from dl2_lfd.ltl_diff import oracle
 

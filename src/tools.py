@@ -61,7 +61,7 @@ def write_symbols(file_spec, heading, symbols, symbols_reactive):
     fid.close()
 
 
-def write_init(file_spec: str, heading: str, symbols_true: list, symbols_false: list):
+def write_init(file_spec, heading, symbols_true, symbols_false):
 
     if heading != 'ENV_INIT' and heading != 'SYS_INIT':
         raise Exception('heading should be ENV_INIT or SYS_INIT')
@@ -254,7 +254,3 @@ def write_spec(file_spec, symbols, skills, user_spec, change_cons, not_allowed_r
     write_section(file_spec, "CHANGE_CONS", change_cons)
 
     write_section(file_spec, "NOT_ALLOWED_REPAIR", not_allowed_repair)
-
-
-
-

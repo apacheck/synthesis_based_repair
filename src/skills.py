@@ -127,6 +127,9 @@ class Skill:
         nrows = len(self.intermediate_states)
 
         fig, ax = plt.subplots(nrows=nrows, ncols=ncols)
+        ax[0, 0].set_title("Precondition")
+        for ii in range(1, ncols):
+            ax[ii, 0].set_title("Postcondition")
         for ii, (pre, posts) in enumerate(self.intermediate_states):
             plot_symbolic_state(pre, symbols, ax[nrows-(ii+1), 0], xlims, ylims, **kwargs)
             ax[ii, 0].set_xticks([])
@@ -276,9 +279,3 @@ if __name__ == "__main__":
         plt.savefig(f_plot + skill_name + ".png")
         plt.close()
     write_skills_json(skills, f_skills)
-
-
-
-
-
-

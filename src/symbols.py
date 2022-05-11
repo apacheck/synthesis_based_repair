@@ -86,6 +86,8 @@ class Symbol:
         return edges
 
     def plot(self, ax, dim=2, **kwargs):
+        if 'alpha' not in kwargs.keys():
+            kwargs["alpha"] = 0.5
         if dim == 2:
             if self.type == 'rectangle':
                 x_low = self.bounds[0, 0]
@@ -99,7 +101,7 @@ class Symbol:
             if self.type == 'circle':
                 ax.add_patch(Circle(self.center, self.radius,
                                     edgecolor='black',
-                                    facecolor=self.color,
+                                    facecolor=self.color
                                     **kwargs))
         elif dim == 3:
             pass
@@ -210,4 +212,3 @@ if __name__ == "__main__":
     ax.set_xticks([0, 1, 2, 3])
     ax.set_yticks([0, 1, 2, 3])
     plt.savefig(f_plot)
-

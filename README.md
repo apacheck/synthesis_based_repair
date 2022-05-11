@@ -38,11 +38,11 @@ python setup.py install --fetch --cudd
 - pydot
 - astutils
 
-<!-- Add to path:
+Add to path:
 
 ```shell
-export PYTHONPATH=$PYTHONPATH:/home/adam/repos:/home/adam/repos/synthesis_based_repair:/home/adam/repos/synthesis_based_repair/src
-``` -->
+export PYTHONPATH=$PYTHONPATH:[PATH_TO_SYNTHESIS_BASED_REPAIR]
+```
 
 ## Usage
 
@@ -131,28 +131,28 @@ For the nine squares example in the paper, see `synthesis_based_repair/data/nine
 }
 ```
 
-To generate the specification for the Nine Squares example, from `synthesis_based_repair\src\` run:
+To generate the specification for the Nine Squares example, from `synthesis_based_repair\scripts` run:
 
 ```shell
-python test_specification.py
+python run_create_specification.py --user_spec "../data/nine_squares/nine_squares_a.json" --file_names "../data/nine_squares/nine_squares_files.json" --sym_opts "../data/nine_squares/nine_squares_sym_opts.json"
 ```
 
 ### Synthesis-Based Repair without Physical Feedback
 
 The synthesis-based repair algorithm is in `run_repair` in `synthesis_based_repair\src\symbolic_repair`.
-To run the Nine Squares example, from `synthesis_based_repair\src`, run:
+To run the Nine Squares example, from `synthesis_based_repair\scripts`, run:
 
 ```shell
-python test_symbolic_repair.py
+python run_symbolic_repair.py --user_spec "../data/nine_squares/nine_squares_a.json" --file_names "../data/nine_squares/nine_squares_files.json" --sym_opts "../data/nine_squares/nine_squares_sym_opts.json"
 ```
 
 ### Synthesis-Based Repair with Physical Feedback
 
 The physical portion of the repair algorithm is in `run_elaborateDMP` in `synthesis_based_repair\src\physical_implementation`.
-To run the Nine Squares example, from `synthesis_based_repair\src`, run:
+To run the Nine Squares example, from `synthesis_based_repair\scripts`, run:
 
 ```shell
-python test_symbolic_physical_integration_repair.py
+python run_symbolic_physical_integration_repair.py --user_spec "../data/nine_squares/nine_squares_a.json" --file_names "../data/nine_squares/nine_squares_files.json" --sym_opts "../data/nine_squares/nine_squares_sym_opts.json" --dmp_opts "../data/nine_squares/nine_squares_dmp_opts.json" --loss_threshold 0.8
 ```
 
 Note that this will use the DMPs and may take some time.
