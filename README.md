@@ -73,8 +73,7 @@ Example part of a .json file for y2 in Fig. 1 of the paper:
         "factor": 1,
         "color": "orange",
         "type": "rectangle"}
-      }
-  }
+}
 ```
 
 "dims" is the dimensions the proposition grounds to, "bounds" are the lower and upper limits for the proposition, "index" just keeps a count of the propositions, "factor" defines the different factors if propositions only ground to some dimensions of the state space, "color" is the shading for visualization.
