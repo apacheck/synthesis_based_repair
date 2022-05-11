@@ -81,8 +81,8 @@ Type can be either "rectangle" or "circle".
 
 #### Visualizing Propositions
 
-The symbol class (`synthesis_based_repair/src/symbols.py`) has a function that plots the symbol.
-To generate a sample plot for the Nine Squares example, from /synthesis_based_repair/src, run:
+The symbol class (`synthesis_based_repair/synthesis_based_repair/symbols.py`) has a function that plots the symbol.
+To generate a sample plot for the Nine Squares example, from /synthesis_based_repair/synthesis_based_repair, run:
 
 ```shell
 python symbols.py
@@ -109,9 +109,9 @@ to Line 11.
 
 #### Visualizing Trajectories
 
-The skills class (`synthesis_based_repair/src/skills.py`) has a trajectory plotting function.
+The skills class (`synthesis_based_repair/synthesis_based_repair/skills.py`) has a trajectory plotting function.
 Symbols can also be visualized under the trajectory.
-To see an example, from `synthesis_based_repair/src` run:
+To see an example, from `synthesis_based_repair/synthesis_based_repair` run:
 
 ```shell
 python skills.py
@@ -148,7 +148,7 @@ python run_create_specification.py --user_spec "../data/nine_squares/nine_square
 
 ### Synthesis-Based Repair without Physical Feedback
 
-The synthesis-based repair algorithm is in `run_repair` in `synthesis_based_repair\src\symbolic_repair`.
+The synthesis-based repair algorithm is in `run_repair` in `synthesis_based_repair\synthesis_based_repair\symbolic_repair`.
 To run the Nine Squares example, from `synthesis_based_repair\scripts`, run:
 
 ```shell
@@ -157,7 +157,7 @@ python run_symbolic_repair.py --user_spec "../data/nine_squares/nine_squares_a.j
 
 ### Synthesis-Based Repair with Physical Feedback
 
-The physical portion of the repair algorithm is in `run_elaborateDMP` in `synthesis_based_repair\src\physical_implementation`.
+The physical portion of the repair algorithm is in `run_elaborateDMP` in `synthesis_based_repair\synthesis_based_repair\physical_implementation`.
 To run the Nine Squares example, from `synthesis_based_repair\scripts`, run:
 
 ```shell
