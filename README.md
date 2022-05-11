@@ -90,11 +90,11 @@ cd scripts
 python generate_trajectories.py
 ```
 
-If you want the code to run faster, you will want to comment out Line 8 of `dl2_lfd/ltl_diff/constraints.py` and add:
+<!-- If you want the code to run faster, you will want to comment out Line 8 of `dl2_lfd/ltl_diff/constraints.py` and add:
 
 ```python
 neg_losses = torch.zeros(sat.shape)
-```
+``` -->
 
 to Line 11.
 
