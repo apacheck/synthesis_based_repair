@@ -38,12 +38,22 @@ python setup.py install --fetch --cudd
 - pydot
 - astutils
 
-Add the folder to the PYTHONPATH:
+#### Install
+
+Clone and build the repository:
+
+```shell
+git@github.com:apacheck/synthesis_based_repair.git
+cd synthesis_based_repair
+python setup.py install
+```
+
+<!-- Add the folder to the PYTHONPATH:
 
 ```shell
 export PYTHONPATH=$PYTHONPATH:[PATH_TO_SYNTHESIS_BASED_REPAIR]
 ```
-
+ -->
 ## Usage
 
 ### Propositions
