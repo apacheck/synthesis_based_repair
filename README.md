@@ -10,10 +10,10 @@ This repository provides the code associated with [Physically-Feasible Repair of
 
 #### Other repositories:
 
-The repository dl2_lfd must be installed.
+The repository [dl2_lfd](https://github.com/craigiedon/dl2_lfd) must be installed.
 
 ```shell
-git clone git@github.com:craigiedon/dl2_lfd.git
+git clone --recurse-submodules git@github.com:craigiedon/dl2_lfd.git
 ```
 
 Currently, the dl2_lfd repository is hardcoded to use cuda instead of cpu.
