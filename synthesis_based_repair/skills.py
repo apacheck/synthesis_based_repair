@@ -2,9 +2,9 @@
 
 import numpy as np
 import matplotlib.pyplot as plt
-from .tools import dict_to_formula, pre_posts_to_env_formula, sym_list_to_dict
+from synthesis_based_repair.tools import dict_to_formula, pre_posts_to_env_formula, sym_list_to_dict
 import os
-from .symbols import in_symbols, find_symbols_true_and_false, load_symbols, plot_symbolic_state
+from synthesis_based_repair.symbols import in_symbols, find_symbols_true_and_false, load_symbols, plot_symbolic_state
 import json
 
 

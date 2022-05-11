@@ -1,8 +1,8 @@
 #!/usr/bin/env python
 import os
 import numpy as np
-from src.physical_implementation import run_elaborateDMP
-from src.symbols import load_symbols
+from synthesis_based_repair.physical_implementation import run_elaborateDMP
+from synthesis_based_repair.symbols import load_symbols
 
 
 def generate_trajectories_nine_squares(folder_demo_trajectories, n_train_trajs, n_val_trajs, n_start_rows, skill_names):

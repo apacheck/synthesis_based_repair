@@ -1,8 +1,8 @@
 #!/usr/bin/env python
-from src.tools import write_spec, json_load_wrapper
-from src.symbols import load_symbols
+from synthesis_based_repair.tools import write_spec, json_load_wrapper
+from synthesis_based_repair.symbols import load_symbols
 import json
-from src.skills import load_skills_from_json
+from synthesis_based_repair.skills import load_skills_from_json
 import argparse
 import copy
 

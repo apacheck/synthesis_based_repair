@@ -4,8 +4,7 @@ import sys
 import torch
 import os
 from torch import nn, optim, autograd
-from dl2_lfd.ltl_diff import oracle
-import additional_constraints as constraints
+from dl2_lfd.ltl_diff import oracle, constraints
 from os.path import join
 from dl2_lfd.nns.dmp_nn import DMPNN
 from dl2_lfd.dmps.dmp import load_dmp_demos, DMP
@@ -15,10 +14,9 @@ from torch.utils.data import TensorDataset, DataLoader
 import numpy as np
 import matplotlib.pyplot as plt
 import dl2_lfd.ltl_diff.ltldiff as ltd
-import additional_ltldiff as ltd2
 import time
 import copy
-from visualization import plot_one_skill_trajectories_and_symbols_numpy
+from synthesis_based_repair.visualization import plot_one_skill_trajectories_and_symbols_numpy
 
 DEVICE = "cpu"
 
@@ -341,7 +339,7 @@ def run_elaborateDMP(old_skill, new_skill, suggestion, hard_constraints, symbols
             else:
                 folder_train_val = 'val'
             opts['f_name_add'] = str(ii)
-            generate_trajectory_find(old_skill, opts['dmp_folder'], symbols, workspace_bnds,
+            generate_trajectory(old_skill, opts['dmp_folder'], symbols, workspace_bnds,
                                 suggestion['initial_preconditions'], suggestion['final_postconditions'],
                                 opts['demo_folder'] + "/" + folder_train_val, opts)
 

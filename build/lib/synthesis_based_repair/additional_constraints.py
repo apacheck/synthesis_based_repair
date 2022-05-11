@@ -2,7 +2,7 @@
 
 from dl2_lfd.ltl_diff.constraints import fully_global_ins
 # import dl2_lfd.ltl_diff.ltldiff as ltd
-import src.additional_ltldiff as ltd
+import synthesis_based_repair.additional_ltldiff as ltd
 import torch
 import numpy as np
 

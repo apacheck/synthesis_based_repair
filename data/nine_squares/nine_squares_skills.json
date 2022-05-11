@@ -382,18 +382,18 @@
     [
      {
       "x0": false,
-      "x1": false,
-      "x2": true,
-      "y0": true,
-      "y1": false,
-      "y2": false
-     },
-     {
-      "x0": false,
       "x1": true,
       "x2": false,
       "y0": false,
       "y1": true,
+      "y2": false
+     },
+     {
+      "x0": false,
+      "x1": false,
+      "x2": true,
+      "y0": true,
+      "y1": false,
       "y2": false
      }
     ]
@@ -412,18 +412,18 @@
   "final_postconditions": [
    {
     "x0": false,
-    "x1": false,
-    "x2": true,
-    "y0": true,
-    "y1": false,
-    "y2": false
-   },
-   {
-    "x0": false,
     "x1": true,
     "x2": false,
     "y0": false,
     "y1": true,
+    "y2": false
+   },
+   {
+    "x0": false,
+    "x1": false,
+    "x2": true,
+    "y0": true,
+    "y1": false,
     "y2": false
    }
   ],
@@ -436,10 +436,10 @@
    [
     {
      "x0": false,
-     "x1": false,
-     "x2": true,
-     "y0": true,
-     "y1": false,
+     "x1": true,
+     "x2": false,
+     "y0": false,
+     "y1": true,
      "y2": false
     },
     [
@@ -476,10 +476,10 @@
    [
     {
      "x0": false,
-     "x1": true,
-     "x2": false,
-     "y0": false,
-     "y1": true,
+     "x1": false,
+     "x2": true,
+     "y0": true,
+     "y1": false,
      "y2": false
     },
     [
@@ -497,18 +497,18 @@
   "initial_preconditions": [
    {
     "x0": false,
-    "x1": false,
-    "x2": true,
-    "y0": true,
-    "y1": false,
-    "y2": false
-   },
-   {
-    "x0": false,
     "x1": true,
     "x2": false,
     "y0": false,
     "y1": true,
+    "y2": false
+   },
+   {
+    "x0": false,
+    "x1": false,
+    "x2": true,
+    "y0": true,
+    "y1": false,
     "y2": false
    }
   ],
@@ -560,18 +560,18 @@
     [
      {
       "x0": false,
-      "x1": false,
-      "x2": true,
-      "y0": true,
-      "y1": false,
-      "y2": false
-     },
-     {
-      "x0": false,
       "x1": true,
       "x2": false,
       "y0": false,
       "y1": true,
+      "y2": false
+     },
+     {
+      "x0": false,
+      "x1": false,
+      "x2": true,
+      "y0": true,
+      "y1": false,
       "y2": false
      }
     ]
@@ -579,10 +579,10 @@
    [
     {
      "x0": false,
-     "x1": false,
-     "x2": true,
-     "y0": true,
-     "y1": false,
+     "x1": true,
+     "x2": false,
+     "y0": false,
+     "y1": true,
      "y2": false
     },
     [
@@ -619,10 +619,10 @@
    [
     {
      "x0": false,
-     "x1": true,
-     "x2": false,
-     "y0": false,
-     "y1": true,
+     "x1": false,
+     "x2": true,
+     "y0": true,
+     "y1": false,
      "y2": false
     },
     [
@@ -694,31 +694,31 @@
     },
     [
      {
-      "x0": true,
-      "x1": false,
-      "x2": false,
-      "y0": false,
-      "y1": false,
-      "y2": true
-     },
-     {
       "x0": false,
       "x1": true,
       "x2": false,
       "y0": false,
       "y1": true,
       "y2": false
+     },
+     {
+      "x0": true,
+      "x1": false,
+      "x2": false,
+      "y0": false,
+      "y1": false,
+      "y2": true
      }
     ]
    ],
    [
     {
-     "x0": true,
-     "x1": false,
+     "x0": false,
+     "x1": true,
      "x2": false,
      "y0": false,
-     "y1": false,
-     "y2": true
+     "y1": true,
+     "y2": false
     },
     [
      {
@@ -753,12 +753,12 @@
    ],
    [
     {
-     "x0": false,
-     "x1": true,
+     "x0": true,
+     "x1": false,
      "x2": false,
      "y0": false,
-     "y1": true,
-     "y2": false
+     "y1": false,
+     "y2": true
     },
     [
      {
@@ -983,17 +983,17 @@
     },
     [
      {
-      "x0": false,
+      "x0": true,
       "x1": false,
-      "x2": true,
+      "x2": false,
       "y0": true,
       "y1": false,
       "y2": false
      },
      {
-      "x0": true,
+      "x0": false,
       "x1": false,
-      "x2": false,
+      "x2": true,
       "y0": true,
       "y1": false,
       "y2": false
@@ -1013,17 +1013,17 @@
   ],
   "final_postconditions": [
    {
-    "x0": false,
+    "x0": true,
     "x1": false,
-    "x2": true,
+    "x2": false,
     "y0": true,
     "y1": false,
     "y2": false
    },
    {
-    "x0": true,
+    "x0": false,
     "x1": false,
-    "x2": false,
+    "x2": true,
     "y0": true,
     "y1": false,
     "y2": false

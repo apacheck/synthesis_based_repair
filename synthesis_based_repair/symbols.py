@@ -5,6 +5,7 @@ import matplotlib.pyplot as plt
 from matplotlib.patches import Rectangle, Circle
 import json
 import copy
+import os
 
 
 class Symbol:
@@ -202,6 +203,7 @@ def find_symbols_by_var(symbols, n_factors):
 
 if __name__ == "__main__":
     f_symbols = "../data/nine_squares/nine_squares_symbols.json"
+    os.makedirs("../data/nine_squares/plots/", exist_ok=True)
     f_plot = "../data/nine_squares/plots/nine_squares_symbols.png"
     symbols = load_symbols(f_symbols)
     fig, ax = plt.subplots()

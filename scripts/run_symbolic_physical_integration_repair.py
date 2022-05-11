@@ -1,15 +1,15 @@
 #!/usr/bin/env python
 import importlib as importlib
 
-from src.tools import write_spec, clear_file, dict_to_formula, json_load_wrapper
+from synthesis_based_repair.tools import write_spec, clear_file, dict_to_formula, json_load_wrapper
 import matplotlib.pyplot as plt
 import copy
-from src.symbolic_repair import run_repair
+from synthesis_based_repair.symbolic_repair import run_repair
 import numpy as np
-from src.symbols import load_symbols
-from src.skills import load_skills_from_json, Skill, write_skills_str
+from synthesis_based_repair.symbols import load_symbols
+from synthesis_based_repair.skills import load_skills_from_json, Skill, write_skills_str
 import json
-from src.physical_implementation import run_elaborateDMP
+from synthesis_based_repair.physical_implementation import run_elaborateDMP
 import argparse
 
 
