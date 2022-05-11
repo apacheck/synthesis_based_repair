@@ -16,8 +16,8 @@ This [fork](https://github.com/apacheck/dl2_lfd) of the repository [dl2_lfd](htt
 git clone --recurse-submodules git@github.com:apacheck/dl2_lfd.git
 ```
 
-Currently, the dl2_lfd repository is hardcoded to use cuda instead of cpu.
-If you want to use cpu instead of cuda, you will need to change mentions of "cuda" in dl2_lfd/dmps/dmp.py to "cpu".
+<!-- Currently, the dl2_lfd repository is hardcoded to use cuda instead of cpu.
+If you want to use cpu instead of cuda, you will need to change mentions of "cuda" in dl2_lfd/dmps/dmp.py to "cpu". -->
 
 We use the dd package from tulip-control to handle the BDDs (<https://github.com/tulip-control/dd>).
 Full instructions are found at the repository, but this may suffice:
