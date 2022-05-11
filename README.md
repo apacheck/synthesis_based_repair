@@ -10,10 +10,10 @@ This repository provides the code associated with [Physically-Feasible Repair of
 
 #### Other repositories:
 
-The repository dl2_lfd must be installed.
+This [fork](https://github.com/apacheck/dl2_lfd) of the repository [dl2_lfd](https://github.com/craigiedon/dl2_lfd) must be installed and added to PYTHONPATH.
 
 ```shell
-git clone git@github.com:craigiedon/dl2_lfd.git
+git clone --recurse-submodules git@github.com:apacheck/dl2_lfd.git
 ```
 
 Currently, the dl2_lfd repository is hardcoded to use cuda instead of cpu.
@@ -25,7 +25,7 @@ Full instructions are found at the repository, but this may suffice:
 ```shell
 git clone git@github.com:tulip-control/dd
 cd dd
-pip install cython  # not needed if building from PyPI distro
+pip install cython
 python setup.py install --fetch --cudd
 ```
 
@@ -38,7 +38,7 @@ python setup.py install --fetch --cudd
 - pydot
 - astutils
 
-Add to path:
+Add the folder to the PYTHONPATH:
 
 ```shell
 export PYTHONPATH=$PYTHONPATH:[PATH_TO_SYNTHESIS_BASED_REPAIR]
@@ -90,11 +90,11 @@ cd scripts
 python generate_trajectories.py
 ```
 
-If you want the code to run faster, you will want to comment out Line 8 of `dl2_lfd/ltl_diff/constraints.py` and add:
+<!-- If you want the code to run faster, you will want to comment out Line 8 of `dl2_lfd/ltl_diff/constraints.py` and add:
 
 ```python
 neg_losses = torch.zeros(sat.shape)
-```
+``` -->
 
 to Line 11.
 
