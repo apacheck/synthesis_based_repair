@@ -6,6 +6,8 @@ This repository provides the code associated with [Physically-Feasible Repair of
 
 ## Setup
 
+This code requires python > 3 to run.
+
 ### Installing Required Software
 
 #### Other repositories:
