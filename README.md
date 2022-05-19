@@ -6,7 +6,7 @@ This repository provides the code associated with [Physically-Feasible Repair of
 
 ## Setup
 
-This code requires python > 3 to run.
+This code requires python > 3 to run and has been tested on Ubuntu 18.04 and 20.04.
 
 ### Installing Required Software
 
