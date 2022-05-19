@@ -1,72 +1,122 @@
-Seed 0 Suggestion # 1
+Seed 0 took 1 iterations
+Skill name: skill4
+Original name: skill0
+Initial preconditions: 
+x0 & y0
+skill4 & !x0 & x1 & !x2 & y0 & !y1 & !y2 -> ((x0' & !x1' & !x2' & !y0' & !y1' & y2'))
+skill4 & x0 & !x1 & !x2 & !y0 & !y1 & y2 -> ((!x0' & !x1' & x2' & !y0' & !y1' & y2'))
+skill4 & x0 & !x1 & !x2 & y0 & !y1 & !y2 -> ((!x0' & x1' & !x2' & y0' & !y1' & !y2'))
+Final Postconditions:
+!x0 & !x1 & x2 & !y0 & !y1 & y2
+**********************
 ================================
+Seed 1 took 1 iterations
+Skill name: skill4
+Original name: skill0
+Initial preconditions: 
+x0 & y0
+skill4 & !x0 & x1 & !x2 & !y0 & y1 & !y2 -> ((!x0' & !x1' & x2' & !y0' & !y1' & y2'))
+skill4 & !x0 & x1 & !x2 & y0 & !y1 & !y2 -> ((!x0' & x1' & !x2' & !y0' & y1' & !y2'))
+skill4 & x0 & !x1 & !x2 & y0 & !y1 & !y2 -> ((!x0' & x1' & !x2' & y0' & !y1' & !y2'))
+Final Postconditions:
+!x0 & !x1 & x2 & !y0 & !y1 & y2
+**********************
 ================================
-Val_losses: {'0': [array([ 0.25632727,  0.4551979 , 23.016222  ,  0.        ])]}
-intermediate sat: {'0': [array([[ 0.25632727,  0.35104528, 17.80858994,  0.        ]]), array([[0.25632727, 0.00849884, 0.68126941, 1.        ]]), array([[0.25632727, 0.01005705, 0.75917959, 0.96875   ]])]}
-Additional not allowed repair:
-!(!x0 & x1 & !x2 & y0 & !y1 & !y2 & skill0 & x0' & !x1' & !x2' & !y0' & !y1' & y2')
-********************
-Seed 0 Suggestion # 2
-================================
-================================
-Val_losses: {'0': [array([0.26146337, 0.01278296, 0.90061152, 0.        ])]}
-intermediate sat: {'0': [array([[0.26146337, 0.0112949 , 0.82620835, 1.        ]]), array([[ 0.26146337,  0.30039927, 15.28142643,  0.        ]]), array([[0.26146337, 0.0085611 , 0.68951857, 1.        ]]), array([[0.26146337, 0.00953383, 0.73815477, 1.        ]])]}
-Additional not allowed repair:
-!(!x0 & x1 & !x2 & y0 & !y1 & !y2 & skill0 & !x0' & !x1' & x2' & !y0' & !y1' & y2')
-!(!x0 & x1 & !x2 & y0 & !y1 & !y2 & skill0 & x0' & !x1' & !x2' & !y0' & y1' & !y2')
-********************
-Seed 0 Suggestion # 3
-================================
-================================
-Val_losses: {'0': [array([0.35335124, 0.01215999, 0.96135086, 0.        ])]}
-intermediate sat: {'0': [array([[0.35335124, 0.01079585, 0.89314371, 1.        ]]), array([[0.35335124, 0.01787727, 1.24721456, 0.        ]]), array([[0.35335124, 0.01310769, 1.0087359 , 1.        ]]), array([[0.35335124, 0.0086246 , 0.78458101, 1.        ]]), array([[0.35335124, 0.01006176, 0.85643923, 1.        ]]), array([[0.35335124, 0.00961776, 0.83423901, 1.        ]])]}
-Additional not allowed repair:
-!(!x0 & x1 & !x2 & !y0 & y1 & !y2 & skill0 & !x0' & !x1' & x2' & !y0' & !y1' & y2')
-********************
-Seed 0 Suggestion # 4
-================================
-================================
-Val_losses: {'0': [array([0.23428242, 0.02126155, 1.29736006, 0.        ])]}
-intermediate sat: {'0': [array([[0.23428242, 0.01033297, 0.75093114, 1.        ]]), array([[0.23428242, 0.00959254, 0.71390933, 1.        ]]), array([[ 0.23428242,  0.30786359, 15.62746239,  0.        ]]), array([[0.23428242, 0.00923177, 0.69587094, 1.        ]])]}
-Additional not allowed repair:
-!(!x0 & x1 & !x2 & y0 & !y1 & !y2 & skill0 & !x0' & x1' & !x2' & !y0' & !y1' & y2')
-********************
-Seed 0 Suggestion # 5
-================================
-================================
-Val_losses: {'0': [array([0.75241661, 0.08588823, 5.04682827, 0.        ])]}
-intermediate sat: {'0': [array([[ 0.75241661,  0.33821142, 17.66298676,  0.        ]]), array([[0.75241661, 0.06410588, 3.95771074, 0.375     ]]), array([[0.75241661, 0.06497219, 4.00102615, 0.125     ]])]}
-Additional not allowed repair:
-!(!x0 & x1 & !x2 & !y0 & y1 & !y2 & skill0 & x0' & !x1' & !x2' & !y0' & y1' & !y2')
-!(x0 & !x1 & !x2 & !y0 & y1 & !y2 & skill0 & !x0' & !x1' & x2' & !y0' & !y1' & y2')
-!(x0 & !x1 & !x2 & y0 & !y1 & !y2 & skill0 & !x0' & x1' & !x2' & !y0' & y1' & !y2')
-********************
-Seed 0 Suggestion # 6
-================================
-================================
-Val_losses: {'0': [array([ 0.88458997,  0.45938531, 23.85385513,  0.        ])]}
-intermediate sat: {'0': [array([[0.88458997, 0.00878493, 1.32383621, 1.        ]]), array([[0.88458997, 0.15102232, 8.43570614, 0.03125   ]]), array([[0.88458997, 0.01148401, 1.45879054, 0.96875   ]])]}
-Additional not allowed repair:
-!(x0 & !x1 & !x2 & !y0 & y1 & !y2 & skill0 & x0' & !x1' & !x2' & !y0' & !y1' & y2')
-********************
-Seed 0 Suggestion # 7
-================================
-================================
-Val_losses: {'0': [array([0.55428606, 0.01212402, 1.16048694, 0.9375    ])]}
-intermediate sat: {'0': [array([[0.55428606, 0.00962957, 1.03576469, 1.        ]]), array([[0.55428606, 0.01089876, 1.09922421, 0.9375    ]]), array([[0.55428606, 0.01375209, 1.24189055, 0.9375    ]]), array([[0.55428606, 0.01359927, 1.23424959, 1.        ]]), array([[0.55428606, 0.00825538, 0.96705496, 1.        ]]), array([[0.55428606, 0.00960764, 1.03466809, 1.        ]]), array([[0.55428606, 0.01092419, 1.10049534, 1.        ]])]}
-Additional not allowed repair:
-********************
-Seed 0 took 8 iterations
+Seed 2 took 1 iterations
 Skill name: skill4
 Original name: skill0
 Initial preconditions: 
 x0 & y0
 skill4 & !x0 & !x1 & x2 & !y0 & y1 & !y2 -> ((!x0' & !x1' & x2' & !y0' & !y1' & y2'))
-skill4 & !x0 & x1 & !x2 & !y0 & !y1 & y2 -> ((!x0' & !x1' & x2' & !y0' & y1' & !y2'))
 skill4 & !x0 & x1 & !x2 & !y0 & y1 & !y2 -> ((!x0' & !x1' & x2' & !y0' & y1' & !y2'))
-skill4 & !x0 & x1 & !x2 & y0 & !y1 & !y2 -> ((!x0' & x1' & !x2' & !y0' & !y1' & y2') | (!x0' & x1' & !x2' & !y0' & y1' & !y2') | (x0' & !x1' & !x2' & !y0' & y1' & !y2'))
-skill4 & x0 & !x1 & !x2 & !y0 & !y1 & y2 -> ((!x0' & !x1' & x2' & !y0' & !y1' & y2'))
-skill4 & x0 & !x1 & !x2 & !y0 & y1 & !y2 -> ((!x0' & !x1' & x2' & !y0' & y1' & !y2') | (x0' & !x1' & !x2' & !y0' & !y1' & y2'))
+skill4 & !x0 & x1 & !x2 & y0 & !y1 & !y2 -> ((!x0' & x1' & !x2' & !y0' & y1' & !y2'))
+skill4 & x0 & !x1 & !x2 & y0 & !y1 & !y2 -> ((!x0' & x1' & !x2' & y0' & !y1' & !y2'))
+Final Postconditions:
+!x0 & !x1 & x2 & !y0 & !y1 & y2
+**********************
+================================
+Seed 3 took 1 iterations
+Skill name: skill4
+Original name: skill0
+Initial preconditions: 
+x0 & y0
+skill4 & !x0 & x1 & !x2 & !y0 & !y1 & y2 -> ((!x0' & !x1' & x2' & !y0' & !y1' & y2'))
+skill4 & !x0 & x1 & !x2 & y0 & !y1 & !y2 -> ((!x0' & !x1' & x2' & !y0' & !y1' & y2') | (!x0' & x1' & !x2' & !y0' & !y1' & y2'))
+skill4 & x0 & !x1 & !x2 & y0 & !y1 & !y2 -> ((!x0' & x1' & !x2' & y0' & !y1' & !y2'))
+Final Postconditions:
+!x0 & !x1 & x2 & !y0 & !y1 & y2
+**********************
+================================
+Seed 4 took 1 iterations
+Skill name: skill4
+Original name: skill0
+Initial preconditions: 
+x0 & y0
+skill4 & !x0 & x1 & !x2 & !y0 & !y1 & y2 -> ((!x0' & !x1' & x2' & !y0' & !y1' & y2'))
+skill4 & !x0 & x1 & !x2 & y0 & !y1 & !y2 -> ((!x0' & !x1' & x2' & !y0' & !y1' & y2') | (!x0' & x1' & !x2' & !y0' & !y1' & y2') | (x0' & !x1' & !x2' & !y0' & y1' & !y2'))
+skill4 & x0 & !x1 & !x2 & !y0 & y1 & !y2 -> ((!x0' & !x1' & x2' & !y0' & !y1' & y2'))
+skill4 & x0 & !x1 & !x2 & y0 & !y1 & !y2 -> ((!x0' & x1' & !x2' & y0' & !y1' & !y2'))
+Final Postconditions:
+!x0 & !x1 & x2 & !y0 & !y1 & y2
+**********************
+================================
+Seed 5 took 1 iterations
+Skill name: skill4
+Original name: skill0
+Initial preconditions: 
+x0 & y0
+skill4 & !x0 & x1 & !x2 & !y0 & !y1 & y2 -> ((!x0' & !x1' & x2' & !y0' & !y1' & y2'))
+skill4 & !x0 & x1 & !x2 & y0 & !y1 & !y2 -> ((!x0' & x1' & !x2' & !y0' & !y1' & y2'))
+skill4 & x0 & !x1 & !x2 & y0 & !y1 & !y2 -> ((!x0' & x1' & !x2' & y0' & !y1' & !y2'))
+Final Postconditions:
+!x0 & !x1 & x2 & !y0 & !y1 & y2
+**********************
+================================
+Seed 6 took 1 iterations
+Skill name: skill4
+Original name: skill0
+Initial preconditions: 
+x0 & y0
+skill4 & !x0 & x1 & !x2 & !y0 & y1 & !y2 -> ((!x0' & !x1' & x2' & !y0' & !y1' & y2'))
+skill4 & !x0 & x1 & !x2 & y0 & !y1 & !y2 -> ((!x0' & !x1' & x2' & !y0' & !y1' & y2') | (!x0' & x1' & !x2' & !y0' & y1' & !y2'))
+skill4 & x0 & !x1 & !x2 & y0 & !y1 & !y2 -> ((!x0' & x1' & !x2' & y0' & !y1' & !y2'))
+Final Postconditions:
+!x0 & !x1 & x2 & !y0 & !y1 & y2
+**********************
+================================
+Seed 7 took 1 iterations
+Skill name: skill4
+Original name: skill0
+Initial preconditions: 
+x0 & y0
+skill4 & !x0 & !x1 & x2 & !y0 & y1 & !y2 -> ((!x0' & !x1' & x2' & !y0' & !y1' & y2'))
+skill4 & !x0 & x1 & !x2 & y0 & !y1 & !y2 -> ((x0' & !x1' & !x2' & !y0' & y1' & !y2'))
+skill4 & x0 & !x1 & !x2 & !y0 & y1 & !y2 -> ((!x0' & !x1' & x2' & !y0' & y1' & !y2'))
+skill4 & x0 & !x1 & !x2 & y0 & !y1 & !y2 -> ((!x0' & x1' & !x2' & y0' & !y1' & !y2'))
+Final Postconditions:
+!x0 & !x1 & x2 & !y0 & !y1 & y2
+**********************
+================================
+Seed 8 took 1 iterations
+Skill name: skill4
+Original name: skill0
+Initial preconditions: 
+x0 & y0
+skill4 & !x0 & x1 & !x2 & !y0 & !y1 & y2 -> ((!x0' & !x1' & x2' & !y0' & !y1' & y2'))
+skill4 & !x0 & x1 & !x2 & y0 & !y1 & !y2 -> ((!x0' & !x1' & x2' & !y0' & !y1' & y2') | (!x0' & x1' & !x2' & !y0' & !y1' & y2'))
+skill4 & x0 & !x1 & !x2 & y0 & !y1 & !y2 -> ((!x0' & x1' & !x2' & y0' & !y1' & !y2'))
+Final Postconditions:
+!x0 & !x1 & x2 & !y0 & !y1 & y2
+**********************
+================================
+Seed 9 took 1 iterations
+Skill name: skill4
+Original name: skill0
+Initial preconditions: 
+x0 & y0
+skill4 & !x0 & !x1 & x2 & !y0 & y1 & !y2 -> ((!x0' & !x1' & x2' & !y0' & !y1' & y2'))
+skill4 & !x0 & x1 & !x2 & y0 & !y1 & !y2 -> ((x0' & !x1' & !x2' & !y0' & !y1' & y2'))
+skill4 & x0 & !x1 & !x2 & !y0 & !y1 & y2 -> ((!x0' & !x1' & x2' & !y0' & y1' & !y2'))
 skill4 & x0 & !x1 & !x2 & y0 & !y1 & !y2 -> ((!x0' & x1' & !x2' & y0' & !y1' & !y2'))
 Final Postconditions:
 !x0 & !x1 & x2 & !y0 & !y1 & y2

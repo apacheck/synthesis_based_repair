@@ -15,18 +15,18 @@ import numpy as np
 DEBUG_THRESH = 121
 
 PRINT_EXPR = True
-DEBUG_PRE = True
-DEBUG = True
-DEBUG_WS_COMPUTE = False
-DEBUG_DETERMINIZE = False
-DEBUG_REVISION = True
-
-PRINT_EXPR = False
 DEBUG_PRE = False
 DEBUG = False
 DEBUG_WS_COMPUTE = False
 DEBUG_DETERMINIZE = False
-DEBUG_REVISION = False
+DEBUG_REVISION = True
+
+# PRINT_EXPR = False
+# DEBUG_PRE = False
+# DEBUG = False
+# DEBUG_WS_COMPUTE = False
+# DEBUG_DETERMINIZE = False
+# DEBUG_REVISION = False
 
 class Specification:
     def __init__(self, file_in_internal, bdd_internal):
