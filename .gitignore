@@ -3,3 +3,6 @@ data/*/plots/
 data/*/trajectories/
 data/logs/
 data/dmps/
+dist/
+build/
+synthesis_based_repair.egg-info
