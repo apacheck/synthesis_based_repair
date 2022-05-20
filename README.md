@@ -15,7 +15,7 @@ This code requires python > 3 to run and has been tested on Ubuntu 18.04 and 20.
 This [fork](https://github.com/apacheck/dl2_lfd) of the repository [dl2_lfd](https://github.com/craigiedon/dl2_lfd) must be installed and added to PYTHONPATH.
 
 ```shell
-git clone --recurse-submodules git@github.com:apacheck/dl2_lfd.git
+git clone --recurse-submodules https://github.com/apacheck/dl2_lfd.git
 ```
 
 <!-- Currently, the dl2_lfd repository is hardcoded to use cuda instead of cpu.
@@ -25,7 +25,7 @@ We use the dd package from tulip-control to handle the BDDs (<https://github.com
 Full instructions are found at the repository, but this may suffice:
 
 ```shell
-git clone git@github.com:tulip-control/dd
+git clone https://github.com/tulip-control/dd.git
 cd dd
 pip install cython
 python setup.py install --fetch --cudd
@@ -45,7 +45,7 @@ python setup.py install --fetch --cudd
 Clone and build the repository:
 
 ```shell
-git@github.com:apacheck/synthesis_based_repair.git
+git clone https://github.com/apacheck/synthesis_based_repair.git
 cd synthesis_based_repair
 python setup.py install
 ```
