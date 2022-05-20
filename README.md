@@ -15,7 +15,7 @@ This code requires python > 3 to run and has been tested on Ubuntu 18.04 and 20.
 This [fork](https://github.com/apacheck/dl2_lfd) of the repository [dl2_lfd](https://github.com/craigiedon/dl2_lfd) must be installed and added to PYTHONPATH.
 
 ```shell
-git clone --recurse-submodules git@github.com:apacheck/dl2_lfd.git
+git clone --recurse-submodules [git@github.com:apacheck/dl2_lfd.git](https://github.com/apacheck/dl2_lfd)
 ```
 
 <!-- Currently, the dl2_lfd repository is hardcoded to use cuda instead of cpu.
