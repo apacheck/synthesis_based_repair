@@ -29,6 +29,7 @@ git clone https://github.com/tulip-control/dd.git
 cd dd
 pip install cython
 python setup.py install --fetch --cudd
+cd ..
 ```
 
 #### Required python packages:
@@ -48,6 +49,7 @@ Clone and build the repository:
 git clone https://github.com/apacheck/synthesis_based_repair.git
 cd synthesis_based_repair
 python setup.py install
+cd ..
 ```
 
 <!-- Add the folder to the PYTHONPATH:
@@ -87,7 +89,9 @@ The symbol class (`synthesis_based_repair/synthesis_based_repair/symbols.py`) ha
 To generate a sample plot for the Nine Squares example, from `/synthesis_based_repair/synthesis_based_repair`, run:
 
 ```shell
+cd synthesis_based_repair
 python symbols.py
+cd ..
 ```
 
 A plot of the propositions will be generated in `/synthesis_based_repair/data/nine_squares/plots`.
