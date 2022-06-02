@@ -16,6 +16,7 @@ This [fork](https://github.com/apacheck/dl2_lfd) of the repository [dl2_lfd](htt
 
 ```shell
 git clone --recurse-submodules https://github.com/apacheck/dl2_lfd.git
+export PYTHONPATH=$PYTHONPATH:\[PARENT DIRECTORY OF dl2_lfd\]/dl2_lfd
 ```
 
 <!-- Currently, the dl2_lfd repository is hardcoded to use cuda instead of cpu.
