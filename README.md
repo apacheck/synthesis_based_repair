@@ -105,8 +105,11 @@ To generate trajectory data for the Nine Squares example, from `synthesis_based_
 ```shell
 cd scripts
 python generate_trajectories.py
+cd ..
 ```
-A plot of a sample of the trajectories associated with the skills will be generated in `/synthesis_based_repair/data/nine_squares/plots`.
+
+By default the data for the trajectories will be saved in `/synthesis_based_repair/data/nine_squares/trajectories/`.
+The dynamic motion primitive associated with the skills will be save in `/synthesis_based_repair/data/dmps/`.
 
 #### Visualizing Trajectories
 
@@ -115,8 +118,12 @@ Symbols can also be visualized under the trajectory.
 To see an example, from `synthesis_based_repair/synthesis_based_repair` run:
 
 ```shell
+cd synthesis_based_repair
 python skills.py
+cd ..
 ```
+
+A plot of a sample of the trajectories associated with the skills will be generated in `/synthesis_based_repair/data/nine_squares/plots`.
 
 ### Specification
 
