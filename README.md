@@ -84,11 +84,13 @@ Type can be either "rectangle" or "circle".
 #### Visualizing Propositions
 
 The symbol class (`synthesis_based_repair/synthesis_based_repair/symbols.py`) has a function that plots the symbol.
-To generate a sample plot for the Nine Squares example, from /synthesis_based_repair/synthesis_based_repair, run:
+To generate a sample plot for the Nine Squares example, from `/synthesis_based_repair/synthesis_based_repair`, run:
 
 ```shell
 python symbols.py
 ```
+
+A plot of the propositions will be generated in `/synthesis_based_repair/data/nine_squares/plots`.
 
 ### Skills
 
@@ -100,14 +102,7 @@ To generate trajectory data for the Nine Squares example, from `synthesis_based_
 cd scripts
 python generate_trajectories.py
 ```
-
-<!-- If you want the code to run faster, you will want to comment out Line 8 of `dl2_lfd/ltl_diff/constraints.py` and add:
-
-```python
-neg_losses = torch.zeros(sat.shape)
-``` -->
-
-to Line 11.
+A plot of a sample of the trajectories associated with the skills will be generated in `/synthesis_based_repair/data/nine_squares/plots`.
 
 #### Visualizing Trajectories
 
