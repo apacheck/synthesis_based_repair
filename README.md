@@ -155,7 +155,7 @@ To generate the specification for the Nine Squares example, from `synthesis_base
 python run_create_specification.py --user_spec "../data/nine_squares/nine_squares_a.json" --file_names "../data/nine_squares/nine_squares_files.json" --sym_opts "../data/nine_squares/nine_squares_sym_opts.json"
 ```
 
-The specification will be in `/synthesis_based_repair/data/nine_squares/nine_squares.structuredslugs`.
+The specification will be in `/synthesis_based_repair/data/nine_squares/nine_squares_a.structuredslugs`.
 
 ### Synthesis-Based Repair without Physical Feedback
 
