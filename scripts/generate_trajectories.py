@@ -215,7 +215,8 @@ def generate_trajectories_stretch(folder_demo_trajectories, n_train_trajs, n_val
 
         t_robot = 0
 
-        l_start = 0 + np.random.random(1) * 0.2
+        l_start = np.array([0.4])
+        # l_start = 0 + np.random.random(1) * 0.2
         # l_end = 0 + np.random.random(1) * 0.2
         l_end = l_start
 
@@ -223,7 +224,7 @@ def generate_trajectories_stretch(folder_demo_trajectories, n_train_trajs, n_val
         # z_end = 0.2 + np.random.random(1) * 0.2
         z_end = z_start
 
-        t_wrist_start = 0 + np.random.random(1) * 0.2
+        t_wrist_start = np.array([0]) #+ np.random.random(1) * 0.2
         # t_wrist_end = 0 + np.random.random(1) * 0.2
         t_wrist_end = t_wrist_start
 
@@ -288,10 +289,49 @@ def make_folders(folder_demo_trajectories, skill_names):
 
 
 if __name__ == "__main__":
-    folder_demo_trajectories = "../data/nine_squares/trajectories/"
-    skill_names = ["skill0", 'skill1', 'skill2', 'skill3', 'skill4', 'skill5', 'skill6', 'skill7', 'skill8', 'skill9', 'skill10']
-    symbols = load_symbols("../data/nine_squares/nine_squares_symbols.json")
-    workspace_bnds = np.array([[-0.5, 3.5], [-0.5, 3.5]])
+    # folder_demo_trajectories = "../data/nine_squares/trajectories/"
+    # skill_names = ["skill0", 'skill1', 'skill2', 'skill3', 'skill4', 'skill5', 'skill6', 'skill7', 'skill8', 'skill9', 'skill10']
+    # symbols = load_symbols("../data/nine_squares/nine_squares_symbols.json")
+    # workspace_bnds = np.array([[-0.5, 3.5], [-0.5, 3.5]])
+    # 
+    # dmp_opts = {'enforce_type': 'unconstrained',
+    #             'n_train_trajs': 32,
+    #             'n_val_trajs': 32,
+    #             'demo_folder': folder_demo_trajectories,
+    #             'basis_fs': 30,
+    #             'dmp_folder': '../data/dmps/',
+    #             'dt': 0.01,
+    #             'c_weight': 50,
+    #             'm_weight': 1,
+    #             'epsilon': 1E-6,
+    #             'plt_background': None,
+    #             'plot_limits': workspace_bnds,
+    #             'n_epochs': [100],
+    #             'start_dimension': 4,
+    #             'dimension': 2,
+    #             'n_states': 2,
+    #             'base_folder': '../data',
+    #             'use_previous': False,
+    #             'symbols': symbols,
+    #             'file_physical_log': "../data/logs/a_nine_squares_log.txt",
+    #             'constraints': [['implication_next', 'always']]
+    #             }
+    # 
+    # n_train_trajs = 32
+    # n_val_trajs = 32
+    # n_start_rows = 2
+    # 
+    # generate_trajectories_nine_squares(folder_demo_trajectories, n_train_trajs, n_val_trajs, n_start_rows, skill_names)
+    # 
+    # for skill in skill_names:
+    #     dmp_opts['skill_name'] = skill
+    #     dmp_opts['demo_folder'] = folder_demo_trajectories + '/' + skill + '/'
+    #     _, _, _ = run_elaborateDMP(None, skill, None, None, symbols, workspace_bnds, dmp_opts)
+
+    folder_demo_trajectories = "../data/stretch/trajectories/"
+    skill_names = ["skillStretch0", "skillStretch1"]
+    symbols = load_symbols("../data/stretch/stretch_symbols.json")
+    workspace_bnds = np.array([[-0.5, 5.5], [-2.5, 2.5], [-0.1, 0.5]])
 
     dmp_opts = {'enforce_type': 'unconstrained',
                 'n_train_trajs': 32,
@@ -305,14 +345,14 @@ if __name__ == "__main__":
                 'epsilon': 1E-6,
                 'plt_background': None,
                 'plot_limits': workspace_bnds,
-                'n_epochs': [100],
-                'start_dimension': 4,
-                'dimension': 2,
+                'n_epochs': [10],
+                'start_dimension': 12,
+                'dimension': 6,
                 'n_states': 2,
                 'base_folder': '../data',
                 'use_previous': False,
                 'symbols': symbols,
-                'file_physical_log': "../data/logs/a_nine_squares_log.txt",
+                'file_physical_log': "../data/logs/stretch_log.txt",
                 'constraints': [['implication_next', 'always']]
                 }
 
@@ -320,46 +360,7 @@ if __name__ == "__main__":
     n_val_trajs = 32
     n_start_rows = 2
 
-    generate_trajectories_nine_squares(folder_demo_trajectories, n_train_trajs, n_val_trajs, n_start_rows, skill_names)
-
-    for skill in skill_names:
-        dmp_opts['skill_name'] = skill
-        dmp_opts['demo_folder'] = folder_demo_trajectories + '/' + skill + '/'
-        _, _, _ = run_elaborateDMP(None, skill, None, None, symbols, workspace_bnds, dmp_opts)
-
-    # folder_demo_trajectories = "../data/stretch/trajectories/"
-    # skill_names = ["skillStretch0", "skillStretch1"]
-    # symbols = load_symbols("../data/stretch/stretch_symbols.json")
-    # workspace_bnds = np.array([[-0.5, 5.5], [-2.5, 2.5], [-0.1, 0.5]])
-    #
-    # dmp_opts = {'enforce_type': 'unconstrained',
-    #             'n_train_trajs': 32,
-    #             'n_val_trajs': 32,
-    #             'demo_folder': folder_demo_trajectories,
-    #             'basis_fs': 30,
-    #             'dmp_folder': '../data/dmps/',
-    #             'dt': 0.01,
-    #             'c_weight': 50,
-    #             'm_weight': 1,
-    #             'epsilon': 1E-6,
-    #             'plt_background': None,
-    #             'plot_limits': workspace_bnds,
-    #             'n_epochs': [10],
-    #             'start_dimension': 12,
-    #             'dimension': 6,
-    #             'n_states': 2,
-    #             'base_folder': '../data',
-    #             'use_previous': False,
-    #             'symbols': symbols,
-    #             'file_physical_log': "../data/logs/stretch_log.txt",
-    #             'constraints': [['implication_next', 'always']]
-    #             }
-    #
-    # n_train_trajs = 32
-    # n_val_trajs = 32
-    # n_start_rows = 2
-    #
-    # generate_trajectories_stretch(folder_demo_trajectories, n_train_trajs, n_val_trajs, n_start_rows, skill_names)
+    generate_trajectories_stretch(folder_demo_trajectories, n_train_trajs, n_val_trajs, n_start_rows, skill_names)
 
     for skill in skill_names:
         dmp_opts['skill_name'] = skill

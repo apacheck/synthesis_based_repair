@@ -10,9 +10,10 @@ import json
 
 class Skill:
 
-    def __init__(self, info, suggestion=False):
+    def __init__(self, info, suggestion=False, stretch_eff=0.1):
         self.name = info['name']
         self.suggestion = suggestion
+        self.stretch_eff = stretch_eff
         if suggestion:
             self.original_skill = info['original_skill']
             self.new_skill = info['new_skill']
@@ -48,13 +49,33 @@ class Skill:
         fid.write('**********************\n')
         fid.close()
 
-    def plot(self, ax, data, **kwargs):
+    def stretch_joints_to_cartesian(self, data):
+        """ Convert the stretch joint angles to cartesian end effector positions"""
+        # x, y, theta, arm length, z, wrist theta
+        x = data[:, 0]
+        y = data[:, 1]
+        theta = data[:, 2]
+        arm = data[:, 3]
+        z = data[:, 4]
+        theta_wrist = data[:, 5]
 
+        x_ee = self.stretch_eff * np.cos(theta + theta_wrist) + arm * np.sin(theta) + x
+        y_ee = self.stretch_eff * np.sin(theta + theta_wrist) - arm * np.cos(theta) + y
+        z_ee = z
+
+        out = np.hstack((x_ee[:, np.newaxis], y_ee[:, np.newaxis], z_ee[:, np.newaxis]))
+        return out
+
+    def plot(self, ax, data, **kwargs):
         for d in data:
             if d.shape[1] == 2:
                 ax.plot(d[:, 0], d[:, 1], **kwargs)
             elif d.shape[1] == 3:
                 ax.plot(d[:, 0], d[:, 1], d[:, 2], **kwargs)
+            elif d.shape[1] == 6:
+                ee = self.stretch_joints_to_cartesian(d)
+                ax.plot(ee[:, 0], ee[:, 1], ee[:, 2], **kwargs)
+                ax.plot(d[:, 0], d[:, 1], np.zeros(ee[:, 1].shape), **kwargs)
 
     def plot_original(self, ax, train=True, **kwargs):
         if train:
@@ -67,6 +88,35 @@ class Skill:
         data = np.stack([np.loadtxt(os.path.join(folder_trajectories, rp), ndmin=2) for rp in files_traj])
 
         self.plot(ax, data, **kwargs)
+
+    def plot_nice(self, ax, plot_limits, symbols, train=True, idx=0, **kwargs):
+        if train:
+            folder_trajectories = self.folder_train
+        else:
+            folder_trajectories = self.folder_val
+        files_folder = [f for f in os.listdir(folder_trajectories) if
+                        os.path.isfile(os.path.join(folder_trajectories, f))]
+        files_traj = [f for f in files_folder if 'rollout' in f]
+        data = np.stack([np.loadtxt(os.path.join(folder_trajectories, rp), ndmin=2) for rp in files_traj])
+        d = data[idx, :, :]
+        ee = self.stretch_joints_to_cartesian(d)
+
+        ax.set_xlim(plot_limits[0])
+        ax.set_ylim(plot_limits[1])
+        ax.set_zlim(plot_limits[2])
+        ax.set_xlabel("x")
+        ax.set_ylabel("y")
+        ax.set_zlabel("z")
+
+        for sym_name, sym in symbols.items():
+            sym.plot(ax, dim=3, fill=True, lw=1, alpha=0.1)
+
+        ax.plot(ee[:, 0], ee[:, 1], ee[:, 2], color='g')
+        ax.plot(ee[:, 0], ee[:, 1], np.zeros(ee[:, 1].shape), ':', color='g')
+        ax.plot(d[:, 0], d[:, 1], np.zeros(ee[:, 1].shape), color='r')
+        for ii in range(0, np.shape(d)[0], 20):
+            ax.plot(np.array([d[ii, 0], d[ii, 0]]), np.array([d[ii, 1], d[ii, 1]]), np.array([0, 0.4]), color='k')
+            ax.plot(np.array([d[ii, 0], ee[ii, 0]]), np.array([d[ii, 1], ee[ii, 1]]), np.array([d[ii, 4], d[ii, 4]]), color='k')
 
     def sample_start_end_states(self, limits, sym_defs, n_points=32, n_rows=2, dim=2):
         out_points = np.zeros([n_rows, dim, n_points])
