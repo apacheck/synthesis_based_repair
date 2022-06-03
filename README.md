@@ -16,6 +16,7 @@ This [fork](https://github.com/apacheck/dl2_lfd) of the repository [dl2_lfd](htt
 
 ```shell
 git clone --recurse-submodules https://github.com/apacheck/dl2_lfd.git
+export PYTHONPATH=$PYTHONPATH:[PARENT DIRECTORY OF dl2_lfd]
 ```
 
 <!-- Currently, the dl2_lfd repository is hardcoded to use cuda instead of cpu.
@@ -50,12 +51,6 @@ cd synthesis_based_repair
 python setup.py install
 ```
 
-<!-- Add the folder to the PYTHONPATH:
-
-```shell
-export PYTHONPATH=$PYTHONPATH:[PATH_TO_SYNTHESIS_BASED_REPAIR]
-```
- -->
 ## Usage
 
 ### Propositions
@@ -83,41 +78,41 @@ Type can be either "rectangle" or "circle".
 
 #### Visualizing Propositions
 
-The symbol class (`synthesis_based_repair/synthesis_based_repair/symbols.py`) has a function that plots the symbol.
-To generate a sample plot for the Nine Squares example, from /synthesis_based_repair/synthesis_based_repair, run:
+The symbol class (`[PARENT DIRECTORY TO SYNTHESIS_BASED_REPAIR]/synthesis_based_repair/synthesis_based_repair/symbols.py`) has a function that plots the symbol.
+To generate a sample plot for the Nine Squares example, from `[PARENT DIRECTORY TO SYNTHESIS_BASED_REPAIR]/synthesis_based_repair/scripts`, run:
 
 ```shell
-python symbols.py
+python run_plot_symbols.py --file_names "../data/nine_squares/nine_squares_files.json" --sym_opts "../data/nine_squares/nine_squares_sym_opts.json" --dmp_opts "../data/nine_squares/nine_squares_dmp_opts.json"
 ```
+
+A plot of the propositions will be generated in `[PARENT DIRECTORY TO SYNTHESIS_BASED_REPAIR]/synthesis_based_repair/data/nine_squares/plots`.
 
 ### Skills
 
 #### Generate Trajectories
 
-To generate trajectory data for the Nine Squares example, from `synthesis_based_repair` run:
+To generate trajectory data for the Nine Squares example, from `[PARENT DIRECTORY TO SYNTHESIS_BASED_REPAIR]/synthesis_based_repair/scripts` run:
 
 ```shell
-cd scripts
-python generate_trajectories.py
+python run_generate_trajectories.py --file_names "../data/nine_squares/nine_squares_files.json" --sym_opts "../data/nine_squares/nine_squares_sym_opts.json" --dmp_opts "../data/nine_squares/nine_squares_dmp_opts.json" --do_plot
 ```
 
-<!-- If you want the code to run faster, you will want to comment out Line 8 of `dl2_lfd/ltl_diff/constraints.py` and add:
-
-```python
-neg_losses = torch.zeros(sat.shape)
-``` -->
-
-to Line 11.
+By default the data for the trajectories will be saved in `[PARENT DIRECTORY TO SYNTHESIS_BASED_REPAIR]/synthesis_based_repair/data/nine_squares/trajectories/`.
+The dynamic motion primitive associated with the skills will be save in `[PARENT DIRECTORY TO SYNTHESIS_BASED_REPAIR]/synthesis_based_repair/data/dmps/`.
+The .json file associate with the skills that is used when creating the specification will be saved in `[PARENT DIRECTORY TO SYNTHESIS_BASED_REPAIR]/synthesis_based_repair/data/nine_squares/nine_squares_skills.json`.
+With used of the flag "--do_plot", a plot of each skill will be saved to `[PARENT DIRECTORY TO SYNTHESIS_BASED_REPAIR]/synthesis_based_repair/data/nine_squares/plots/[SKILL_NAME].png`.
 
 #### Visualizing Trajectories
 
-The skills class (`synthesis_based_repair/synthesis_based_repair/skills.py`) has a trajectory plotting function.
-Symbols can also be visualized under the trajectory.
-To see an example, from `synthesis_based_repair/synthesis_based_repair` run:
+The skills class (`[PARENT DIRECTORY TO SYNTHESIS_BASED_REPAIR]/synthesis_based_repair/synthesis_based_repair/skills.py`) has a trajectory plotting function.
+Symbols can also be visualized under the trajectory without generating new data if desired.
+To see an example, from `[PARENT DIRECTORY TO SYNTHESIS_BASED_REPAIR]/synthesis_based_repair/scripts` run:
 
 ```shell
-python skills.py
+python plot_skills.py --file_names "../data/nine_squares/nine_squares_files.json" --sym_opts "../data/nine_squares/nine_squares_sym_opts.json" --dmp_opts "../data/nine_squares/nine_squares_dmp_opts.json"
 ```
+
+A plot of a sample of the trajectories associated with the skills will be generated in `[PARENT DIRECTORY TO SYNTHESIS_BASED_REPAIR]/synthesis_based_repair/data/nine_squares/plots/[SKILL_NAME].png`.
 
 ### Specification
 
@@ -142,31 +137,52 @@ For the nine squares example in the paper, see `synthesis_based_repair/data/nine
 }
 ```
 
-To generate the specification for the Nine Squares example, from `synthesis_based_repair\scripts` run:
+The syntax for the initial conditions is to list all the propositions that must be true and must be false.
+This will be transformed into the approriate specification in the structuredslugs file.
+For the system liveness guarantess, write out the guarantees as it would appear in a structured slugs file.
+In the example above, the system liveness is interpretted as "Always eventually x2 and y0 AND Always eventually x2 and y2".
+
+Any user defined hard constraints should be written in "sys_trans_hard".
+These will be added to [SYS_TRANS_HARD] in the structuredslugs file.
+**NOTE:** If the robot should always avoid a certain combination of propositions, the specification should be written such that it avoids the propositions at both the current and next step.
+
+The change constraints in this example constrains that the propositions are mutually exclusive.
+One can add further constraints about which propositions can change to other propositions if desired.
+
+The not_allowed_repair should be initialized to specificy that the repair process cannot change the duplicate skills.
+
+To generate the specification for the Nine Squares example, from `[PARENT DIRECTORY TO SYNTHESIS_BASED_REPAIR]/synthesis_based_repair/scripts` run:
 
 ```shell
 python run_create_specification.py --user_spec "../data/nine_squares/nine_squares_a.json" --file_names "../data/nine_squares/nine_squares_files.json" --sym_opts "../data/nine_squares/nine_squares_sym_opts.json"
 ```
 
+The specification will be in `[PARENT DIRECTORY TO SYNTHESIS_BASED_REPAIR]/synthesis_based_repair/data/nine_squares/nine_squares_a.structuredslugs`.
+
 ### Synthesis-Based Repair without Physical Feedback
 
-The synthesis-based repair algorithm is in `run_repair` in `synthesis_based_repair\synthesis_based_repair\symbolic_repair`.
-To run the Nine Squares example, from `synthesis_based_repair\scripts`, run:
+The synthesis-based repair algorithm is in `run_repair` in `[PARENT DIRECTORY TO SYNTHESIS_BASED_REPAIR]/synthesis_based_repair/synthesis_based_repair/symbolic_repair`.
+To run the Nine Squares example, from `[PARENT DIRECTORY TO SYNTHESIS_BASED_REPAIR]/synthesis_based_repair/scripts`, run:
 
 ```shell
 python run_symbolic_repair.py --user_spec "../data/nine_squares/nine_squares_a.json" --file_names "../data/nine_squares/nine_squares_files.json" --sym_opts "../data/nine_squares/nine_squares_sym_opts.json"
 ```
 
+The results of the repair process will be displayed to the screen.
+
 ### Synthesis-Based Repair with Physical Feedback
 
-The physical portion of the repair algorithm is in `run_elaborateDMP` in `synthesis_based_repair\synthesis_based_repair\physical_implementation`.
-To run the Nine Squares example, from `synthesis_based_repair\scripts`, run:
+The physical portion of the repair algorithm is in `run_elaborateDMP` in `[PARENT DIRECTORY TO SYNTHESIS_BASED_REPAIR]/synthesis_based_repair/synthesis_based_repair/physical_implementation`.
+To run the Nine Squares example, from `[PARENT DIRECTORY TO SYNTHESIS_BASED_REPAIR]/synthesis_based_repair/scripts`, run:
 
 ```shell
 python run_symbolic_physical_integration_repair.py --user_spec "../data/nine_squares/nine_squares_a.json" --file_names "../data/nine_squares/nine_squares_files.json" --sym_opts "../data/nine_squares/nine_squares_sym_opts.json" --dmp_opts "../data/nine_squares/nine_squares_dmp_opts.json" --loss_threshold 0.8
 ```
 
 Note that this will use the DMPs and may take some time.
+The results of the repair will be displayed to the screen.
+Plot of the intermediate modifications of the repair can be seen in `[PARENT DIRECTORY TO SYNTHESIS_BASED_REPAIR]/synthesis_based_repair/data/logs/`.
+The final new dmps will be saved in `[PARENT DIRECTORY TO SYNTHESIS_BASED_REPAIR]/synthesis_based_repair/data/dmps/`.
 
 ### Creating your own example
 
@@ -177,6 +193,26 @@ To create your own example, you will need:
 3. Specification
 
 in the formats described above.
+
+#### Symbols
+To create the symbols, you can create a .json file by hand.
+
+#### Trajectories/DMPs
+To create the trajectories you can modify the "run_generate_trajectories.py" script by adding a function to generate trajectories for your specific case.
+You will also need to construct files similar to: nine_squares_files.json, nine_squares_dmp_opts.json, and nine_squares_sym_opts.json.
+For more details on these files see below.
+
+#### Specification
+Create a file similar to nine_squares_a.json that contains the user provided aspects of the specification.
+The parts of the specification relating to the skills will be automatically added with "run_generate_specification.py".
+
+#### Files containing options/parameters
+
+##### [EXAMPLE]_files.json
+
+##### [EXAMPLE]_dmp_opts.json
+
+##### [EXAMPLE]_sym_opts.json
 
 ## Notes
 

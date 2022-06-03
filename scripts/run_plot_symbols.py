@@ -27,6 +27,7 @@ if __name__ == "__main__":
     os.makedirs(file_names["folder_plot"], exist_ok=True)
     f_plot = file_names["folder_plot"] + "symbols.png"
 
+    # Plot symbols together on the same figure
     dim = len(dmp_opts["plot_limits"])
     fig = plt.figure()
     if dim == 3:
@@ -42,3 +43,22 @@ if __name__ == "__main__":
     # ax.set_xticks([0, 1, 2, 3])
     # ax.set_yticks([0, 1, 2, 3])
     plt.savefig(f_plot)
+
+    # Plot symbols individually
+    for sym_name, sym in symbols.items():
+        f_plot = file_names["folder_plot"] + sym_name + ".png"
+
+        dim = len(dmp_opts["plot_limits"])
+        fig = plt.figure()
+        if dim == 3:
+            ax = plt.axes(projection="3d")
+        elif dim == 2:
+            ax = plt.axes()
+        sym.plot(ax, dim=dim, fill=True, lw=1, alpha=0.4)
+        ax.set_xlim(dmp_opts["plot_limits"][0])
+        ax.set_ylim(dmp_opts["plot_limits"][1])
+        if dim == 3:
+            ax.set_zlim(dmp_opts["plot_limits"][2])
+        # ax.set_xticks([0, 1, 2, 3])
+        # ax.set_yticks([0, 1, 2, 3])
+        plt.savefig(f_plot)
