@@ -310,7 +310,6 @@ if __name__ == "__main__":
     dmp_opts = json_load_wrapper(args.dmp_opts)
     folder_trajectories = file_names["folder_trajectories"]
 
-    folder_demo_trajectories = dmp_opts["demo_folder"]
     skill_names = file_names["skill_names"]
     symbols = load_symbols(file_names["file_symbols"])
     workspace_bnds = np.array(dmp_opts["workspace_bnds"])
@@ -319,7 +318,11 @@ if __name__ == "__main__":
     # Generate trajectories and save the raw trajectories in the demo_folder #
     ##########################################################################
 
-    generate_trajectories_stretch(folder_demo_trajectories, dmp_opts["n_train_trajs"], dmp_opts["n_val_trajs"], dmp_opts["n_states"], skill_names)
+    if file_names['file_symbols'].split('/')[2] == 'nine_squares':
+        generate_trajectories_nine_squares(folder_trajectories, dmp_opts["n_train_trajs"], dmp_opts["n_val_trajs"], dmp_opts["n_states"], skill_names)
+    elif file_names['file_symbols'].split('/')[2] == 'stretch':
+        generate_trajectories_stretch(folder_trajectories, dmp_opts["n_train_trajs"], dmp_opts["n_val_trajs"], dmp_opts["n_states"], skill_names)
+
 
     ##############################################################################
     # Create DMP from the generated trajectories and save them in the dmp folder #
@@ -328,9 +331,10 @@ if __name__ == "__main__":
     dmp_opts['enforce_type'] = 'unconstrained'
     dmp_opts['symbols'] = symbols
     dmp_opts['plot_limits'] = np.array(dmp_opts['plot_limits'])
+    dmp_opts['use_previous'] = False
     for skill in skill_names:
         dmp_opts['skill_name'] = skill
-        dmp_opts['demo_folder'] = folder_demo_trajectories + '/' + skill + '/'
+        dmp_opts['demo_folder'] = folder_trajectories + '/' + skill + '/'
         _, _, _ = run_elaborateDMP(None, skill, None, None, symbols, workspace_bnds, dmp_opts)
 
 
