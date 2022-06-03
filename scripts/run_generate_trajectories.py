@@ -3,6 +3,10 @@ import os
 import numpy as np
 from synthesis_based_repair.physical_implementation import run_elaborateDMP
 from synthesis_based_repair.symbols import load_symbols
+import argparse
+from synthesis_based_repair.tools import json_load_wrapper
+from synthesis_based_repair.skills import load_skills_from_trajectories, write_skills_json
+import matplotlib.pyplot as plt
 
 
 def generate_trajectories_nine_squares(folder_demo_trajectories, n_train_trajs, n_val_trajs, n_start_rows, skill_names):
@@ -289,80 +293,74 @@ def make_folders(folder_demo_trajectories, skill_names):
 
 
 if __name__ == "__main__":
-    # folder_demo_trajectories = "../data/nine_squares/trajectories/"
-    # skill_names = ["skill0", 'skill1', 'skill2', 'skill3', 'skill4', 'skill5', 'skill6', 'skill7', 'skill8', 'skill9', 'skill10']
-    # symbols = load_symbols("../data/nine_squares/nine_squares_symbols.json")
-    # workspace_bnds = np.array([[-0.5, 3.5], [-0.5, 3.5]])
-    # 
-    # dmp_opts = {'enforce_type': 'unconstrained',
-    #             'n_train_trajs': 32,
-    #             'n_val_trajs': 32,
-    #             'demo_folder': folder_demo_trajectories,
-    #             'basis_fs': 30,
-    #             'dmp_folder': '../data/dmps/',
-    #             'dt': 0.01,
-    #             'c_weight': 50,
-    #             'm_weight': 1,
-    #             'epsilon': 1E-6,
-    #             'plt_background': None,
-    #             'plot_limits': workspace_bnds,
-    #             'n_epochs': [100],
-    #             'start_dimension': 4,
-    #             'dimension': 2,
-    #             'n_states': 2,
-    #             'base_folder': '../data',
-    #             'use_previous': False,
-    #             'symbols': symbols,
-    #             'file_physical_log': "../data/logs/a_nine_squares_log.txt",
-    #             'constraints': [['implication_next', 'always']]
-    #             }
-    # 
-    # n_train_trajs = 32
-    # n_val_trajs = 32
-    # n_start_rows = 2
-    # 
-    # generate_trajectories_nine_squares(folder_demo_trajectories, n_train_trajs, n_val_trajs, n_start_rows, skill_names)
-    # 
-    # for skill in skill_names:
-    #     dmp_opts['skill_name'] = skill
-    #     dmp_opts['demo_folder'] = folder_demo_trajectories + '/' + skill + '/'
-    #     _, _, _ = run_elaborateDMP(None, skill, None, None, symbols, workspace_bnds, dmp_opts)
 
-    folder_demo_trajectories = "../data/stretch/trajectories/"
-    skill_names = ["skillStretch0", "skillStretch1"]
-    symbols = load_symbols("../data/stretch/stretch_symbols.json")
-    workspace_bnds = np.array([[-0.5, 5.5], [-2.5, 2.5], [-0.1, 0.5]])
+    #########################################
+    # Parse arguments and unpack parameters #
+    #########################################
 
-    dmp_opts = {'enforce_type': 'unconstrained',
-                'n_train_trajs': 32,
-                'n_val_trajs': 32,
-                'demo_folder': folder_demo_trajectories,
-                'basis_fs': 30,
-                'dmp_folder': '../data/dmps/',
-                'dt': 0.01,
-                'c_weight': 50,
-                'm_weight': 1,
-                'epsilon': 1E-6,
-                'plt_background': None,
-                'plot_limits': workspace_bnds,
-                'n_epochs': [10],
-                'start_dimension': 12,
-                'dimension': 6,
-                'n_states': 2,
-                'base_folder': '../data',
-                'use_previous': False,
-                'symbols': symbols,
-                'file_physical_log': "../data/logs/stretch_log.txt",
-                'constraints': [['implication_next', 'always']]
-                }
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--file_names", help="File names", required=True)
+    parser.add_argument("--sym_opts", help="Opts involving spec writing and repair", required=True)
+    parser.add_argument("--dmp_opts", help="Opts involving plotting, repair, dmps", required=True)
+    parser.add_argument("--do_plot", help="Plot the skills?", action='store_true', default=False)
+    args = parser.parse_args()
 
-    n_train_trajs = 32
-    n_val_trajs = 32
-    n_start_rows = 2
+    file_names = json_load_wrapper(args.file_names)
+    sym_opts = json_load_wrapper(args.sym_opts)
+    dmp_opts = json_load_wrapper(args.dmp_opts)
+    folder_trajectories = file_names["folder_trajectories"]
 
-    generate_trajectories_stretch(folder_demo_trajectories, n_train_trajs, n_val_trajs, n_start_rows, skill_names)
+    folder_demo_trajectories = dmp_opts["demo_folder"]
+    skill_names = file_names["skill_names"]
+    symbols = load_symbols(file_names["file_symbols"])
+    workspace_bnds = np.array(dmp_opts["workspace_bnds"])
 
+    ##########################################################################
+    # Generate trajectories and save the raw trajectories in the demo_folder #
+    ##########################################################################
+
+    generate_trajectories_stretch(folder_demo_trajectories, dmp_opts["n_train_trajs"], dmp_opts["n_val_trajs"], dmp_opts["n_states"], skill_names)
+
+    ##############################################################################
+    # Create DMP from the generated trajectories and save them in the dmp folder #
+    ##############################################################################
+
+    dmp_opts['enforce_type'] = 'unconstrained'
+    dmp_opts['symbols'] = symbols
+    dmp_opts['plot_limits'] = np.array(dmp_opts['plot_limits'])
     for skill in skill_names:
         dmp_opts['skill_name'] = skill
         dmp_opts['demo_folder'] = folder_demo_trajectories + '/' + skill + '/'
         _, _, _ = run_elaborateDMP(None, skill, None, None, symbols, workspace_bnds, dmp_opts)
+
+
+    ################################################################
+    # Generate the symbolic/abstract representation of the skills  #
+    # for use when writing the specification and save it in a json #
+    # file                                                         #
+    ################################################################
+
+    skills = load_skills_from_trajectories(folder_trajectories, file_names["skill_names"], symbols)
+    write_skills_json(skills, file_names['file_skills'])
+
+    ##############################
+    # Plot if skills if desired  #
+    ##############################
+
+    if args.do_plot:
+        os.makedirs(file_names["folder_plot"], exist_ok=True)
+        dim = len(dmp_opts["plot_limits"])
+        if args.do_plot:
+            for skill_name, skill in skills.items():
+                fig = plt.figure()
+                if dim == 3:
+                    ax = plt.axes(projection="3d")
+                elif dim == 2:
+                    ax = plt.axes()
+                skill.plot_original(ax)
+                ax.set_xlim(dmp_opts["plot_limits"][0])
+                ax.set_ylim(dmp_opts["plot_limits"][1])
+                if dim == 3:
+                    ax.set_zlim(dmp_opts["plot_limits"][2])
+                plt.savefig(file_names["folder_plot"] + skill_name + ".png")
+                plt.close()

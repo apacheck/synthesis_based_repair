@@ -4,20 +4,20 @@ import sys
 import torch
 from torch import nn, optim, autograd
 import os
-import src.additional_constraints as constraints
+from dl2_lfd.ltl_diff import oracle, constraints
 from dl2_lfd.dmps.dmp import load_dmp_demos, DMP
 from dl2_lfd.helper_funcs.conversions import np_to_pgpu
 from dl2_lfd.helper_funcs.utils import t_stamp
 from torch.utils.data import TensorDataset, DataLoader
-from src.tools import write_spec, clear_file, dict_to_formula
+from synthesis_based_repair.tools import write_spec, clear_file, dict_to_formula
 import copy
 import numpy as np
-from src.symbols import load_symbols
-from src.skills import load_skills_from_json, Skill, write_skills_str
+from synthesis_based_repair.symbols import load_symbols
+from synthesis_based_repair.skills import load_skills_from_json, Skill, write_skills_str
 import json
-from src.physical_implementation import rollout_error
+from synthesis_based_repair.physical_implementation import rollout_error
 from dl2_lfd.nns.dmp_nn import DMPNN
-from dl2_lfd.ltl_diff import oracle
+# from dl2_lfd.ltl_diff import oracle
 
 DEVICE = "cpu"
 

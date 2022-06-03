@@ -105,7 +105,53 @@ class Symbol:
                                     facecolor=self.color
                                     **kwargs))
         elif dim == 3:
-            pass
+            x_low = self.bounds[0, 0]
+            x_high = self.bounds[0, 1]
+            y_low = self.bounds[1, 0]
+            y_high = self.bounds[1, 1]
+            if len(self.bounds) == 3:
+                z_low = self.bounds[2, 0]
+                z_high = self.bounds[2, 1]
+            else:
+                z_lim = ax.get_zlim()
+                if z_lim[0] < 0:
+                    z_low = z_lim[0]
+                    z_high = z_lim[0]
+                else:
+                    z_low = 0
+                    z_high = 0
+
+            x = np.array(
+                [
+                    [x_high, x_low, x_low, x_high, x_high],
+                    [x_high, x_low, x_low, x_high, x_high],
+                    [x_low, x_high, x_high, x_low, x_low],
+                    [x_low, x_high, x_high, x_low, x_low],
+                    [x_high, x_low, x_low, x_high, x_high],
+                ]
+            )
+
+            y = np.array(
+                [
+                    [y_high, y_high, y_low, y_low, y_high],
+                    [y_high, y_high, y_low, y_low, y_high],
+                    [y_low, y_low, y_high, y_high, y_low],
+                    [y_low, y_low, y_high, y_high, y_low],
+                    [y_high, y_high, y_low, y_low, y_high],
+                ]
+            )
+
+            z = np.array(
+                [
+                    [z_high, z_high, z_high, z_high, z_high],
+                    [z_low, z_low, z_low, z_low, z_low],
+                    [z_low, z_low, z_low, z_low, z_low],
+                    [z_high, z_high, z_high, z_high, z_high],
+                    [z_high, z_high, z_high, z_high, z_high],
+                ]
+            )
+            kwargs.pop("fill", None)
+            ax.plot_surface(x, y, z, **kwargs)
 
     def get_factor(self):
         return self.factor

@@ -182,3 +182,19 @@ The chosen format for the specifications is structuredslugs.
 This means specifications are compatible with [Slugs](https://github.com/VerifiableRobotics/slugs).
 However, the [SYS_TRANS_HARD], [ENV_TRANS_HARD], [CHANGE_CONS], and [NOT_ALLOWED_REPAIR] are not allowed in Slugs.
 This [fork](https://github.com/apacheck/slugs) allows Slugs to handle it the specifications with these headings.
+
+#### Stretch Example
+
+### Symbols for the Stretch
+
+Symbols are defined in `stretch_symbols.json`.
+There are 4 regions.
+There are separate symbols for the base and end-effector in each of these regions.
+
+To plot these regions, from `\synthesis_based_repair` run:
+```
+cd scripts
+python run_plot_symbols.py --file_names "../data/stretch/stretch_files.json" --sym_opts "../data/stretch/stretch_sym_opts.json" --dmp_opts "../data/stretch/stretch_dmp_opts.json"
+```
+
+Plots will be generated in `synthesis_based_repair/data/stretch/plots/`.
