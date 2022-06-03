@@ -30,7 +30,6 @@ git clone https://github.com/tulip-control/dd.git
 cd dd
 pip install cython
 python setup.py install --fetch --cudd
-cd ..
 ```
 
 #### Required python packages:
@@ -50,15 +49,8 @@ Clone and build the repository:
 git clone https://github.com/apacheck/synthesis_based_repair.git
 cd synthesis_based_repair
 python setup.py install
-cd ..
 ```
 
-<!-- Add the folder to the PYTHONPATH:
-
-```shell
-export PYTHONPATH=$PYTHONPATH:[PATH_TO_SYNTHESIS_BASED_REPAIR]
-```
- -->
 ## Usage
 
 ### Propositions
@@ -87,39 +79,34 @@ Type can be either "rectangle" or "circle".
 #### Visualizing Propositions
 
 The symbol class (`synthesis_based_repair/synthesis_based_repair/symbols.py`) has a function that plots the symbol.
-To generate a sample plot for the Nine Squares example, from `/synthesis_based_repair/synthesis_based_repair`, run:
+To generate a sample plot for the Nine Squares example, from `[PARENT DIRECTORY TO SYNTHESIS_BASED_REPAIR]/synthesis_based_repair/scripts`, run:
 
 ```shell
-cd synthesis_based_repair
-python symbols.py
-cd ..
+python run_plot_symbols.py --file_names "../data/nine_squares/nine_squares_files.json" --sym_opts "../data/nine_squares/nine_squares_sym_opts.json" --dmp_opts "../data/nine_squares/nine_squares_dmp_opts.json"
 ```
 
-A plot of the propositions will be generated in `/synthesis_based_repair/data/nine_squares/plots`.
+A plot of the propositions will be generated in `[PARENT DIRECTORY TO SYNTHESIS_BASED_REPAIR]/synthesis_based_repair/data/nine_squares/plots`.
 
 ### Skills
 
 #### Generate Trajectories
 
-To generate trajectory data for the Nine Squares example, from `synthesis_based_repair` run:
+To generate trajectory data for the Nine Squares example, from `[PARENT DIRECTORY TO SYNTHESIS_BASED_REPAIR]/synthesis_based_repair/scripts` run:
 
 ```shell
-cd scripts
 python generate_trajectories.py
-cd ..
 ```
 
-By default the data for the trajectories will be saved in `/synthesis_based_repair/data/nine_squares/trajectories/`.
-The dynamic motion primitive associated with the skills will be save in `/synthesis_based_repair/data/dmps/`.
+By default the data for the trajectories will be saved in `[PARENT DIRECTORY TO SYNTHESIS_BASED_REPAIR]/synthesis_based_repair/data/nine_squares/trajectories/`.
+The dynamic motion primitive associated with the skills will be save in `[PARENT DIRECTORY TO SYNTHESIS_BASED_REPAIR]/synthesis_based_repair/data/dmps/`.
 
 #### Visualizing Trajectories
 
-The skills class (`synthesis_based_repair/synthesis_based_repair/skills.py`) has a trajectory plotting function.
+The skills class (`[PARENT DIRECTORY TO SYNTHESIS_BASED_REPAIR]/synthesis_based_repair/synthesis_based_repair/skills.py`) has a trajectory plotting function.
 Symbols can also be visualized under the trajectory.
-To see an example, from `synthesis_based_repair/synthesis_based_repair` run:
+To see an example, from `[PARENT DIRECTORY TO SYNTHESIS_BASED_REPAIR]/synthesis_based_repair/scripts` run:
 
 ```shell
-cd synthesis_based_repair
 python skills.py
 cd ..
 ```
