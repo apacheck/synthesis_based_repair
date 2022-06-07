@@ -17,6 +17,7 @@ import dl2_lfd.ltl_diff.ltldiff as ltd
 import time
 import copy
 from synthesis_based_repair.visualization import plot_one_skill_trajectories_and_symbols_numpy
+import shutil
 
 DEVICE = "cpu"
 
@@ -41,6 +42,11 @@ def training_loop(train_set, val_set, constraint_list, enforce_constraint, adver
     train_losses, val_losses = [], []
 
     def batch_learn(arg_constraint, data_loader, enf_c, adv, optimize=False, do_plot=False, only_sat=False):
+        # Losses are:
+        # [0] main_loss = how close it is to the old trajectories
+        # [1] constraint_loss = how it satisfies the ltl constraint
+        # [2] full_loss = combination of main_loss and constraint_loss
+        # [3] What percent of trajectories satisfy the ltl constraint
         losses = []
         for batch_idx, (starts, rollouts) in enumerate(data_loader):
             batch_size, T, dims = rollouts.shape
@@ -58,6 +64,7 @@ def training_loop(train_set, val_set, constraint_list, enforce_constraint, adver
                     starts, rollouts, arg_constraint, model, dmp.rollout_torch, adv)
 
             if do_plot:
+                # TODO: Put into a function
                 if rollouts.shape[2] == 2:
                     _, ax = plt.subplots(ncols=3, figsize=(12,4))
                 else:
@@ -67,18 +74,16 @@ def training_loop(train_set, val_set, constraint_list, enforce_constraint, adver
                     ax[1] = fig.add_subplot(1, 3, 2, projection='3d')
                     ax[2] = fig.add_subplot(1, 3, 3, projection='3d')
                     ax = np.array(ax)
-                    # ax = [[None, None], [None, None]]
-                    # ax[0][0] = fig.add_subplot(2, 2, 1, projection='3d')
-                    # ax[0][1] = fig.add_subplot(2, 2, 2)
-                    # ax[1][0] = fig.add_subplot(2, 2, 3)
-                    # ax[1][1] = fig.add_subplot(2, 2, 4)
-                    # ax = np.array(ax)
                 plot_one_skill_trajectories_and_symbols_numpy(None, None, rollouts.cpu().detach().numpy(), opts['symbols'], opts['plot_limits'], ax=ax[0], color='b', linestyle='--')
+                ax[0].set_title("Initial Trajectories")
                 if arg_constraint is not None:
                     plot_one_skill_trajectories_and_symbols_numpy(None, None, learned_rollouts.cpu().detach().numpy()[c_sat.cpu().detach().numpy().astype(bool)], opts['symbols'], opts['plot_limits'], ax=ax[1], color='g')
                     plot_one_skill_trajectories_and_symbols_numpy(None, None, learned_rollouts.cpu().detach().numpy()[np.logical_not(c_sat.cpu().detach().numpy().astype(bool))], opts['symbols'], opts['plot_limits'], ax=ax[-1], color='r')
+                    ax[1].set_title("Satisfy Constraint")
+                    ax[2].set_title("Violate Constraint")
                 else:
                     plot_one_skill_trajectories_and_symbols_numpy(None, None, learned_rollouts.cpu().detach().numpy(), opts['symbols'], opts['plot_limits'], ax=ax[1], color='g')
+                    ax[1].set_title("Trajectories from new DMP")
                 # plot_one_skill_trajectories_and_symbols_numpy(None, None, rollouts.cpu().detach().numpy(),
                 #                                               opts['symbols'], opts['plot_limits'], ax=ax, color='b',
                 #                                               linestyle='--')
@@ -110,6 +115,18 @@ def training_loop(train_set, val_set, constraint_list, enforce_constraint, adver
 
     # int_sat = []
     constraint_idx = 0
+    # TODO: Put into function
+    if train_loader.dataset.tensors[0].shape[2] == 2:
+        _, ax = plt.subplots(ncols=3, figsize=(12, 4))
+    else:
+        fig = plt.figure(figsize=(15, 5))
+        ax = [None, None, None]
+        ax[0] = fig.add_subplot(1, 3, 1, projection='3d')
+        ax[1] = fig.add_subplot(1, 3, 2, projection='3d')
+        ax[2] = fig.add_subplot(1, 3, 3, projection='3d')
+        ax = np.array(ax)
+    plot_one_skill_trajectories_and_symbols_numpy(None, None, train_loader.dataset.tensors[1].cpu().detach().numpy(), opts['symbols'],
+                                                  opts['plot_limits'], ax=ax[0], color='b', linestyle='--')
     for epoch in range(sum(opts['n_epochs'])):
         epoch_start = time.time()
         do_plot = False
@@ -139,14 +156,11 @@ def training_loop(train_set, val_set, constraint_list, enforce_constraint, adver
         else:
             print("e{}\t t: {}".format(epoch, avg_train_loss[0, :]))
 
-        # int_sat = []
-        # for int_constraint in intermediate_constraints:
-        #     int_sat.append(batch_learn(int_constraint, val_loader, True, False, False, do_plot=False, only_sat=True))
-        #
-        # print("intermediate sat: ", end="")
-        # for i_s in int_sat:
-        #     print("{}\t".format(i_s[-1][3]), end="")
-        # print("")
+        # Determine which part of the internal constraints are satisfied
+        print("Intermediate satisfaction: ")
+        for int_constraint in intermediate_constraints:
+            epoch_int_sat = batch_learn(int_constraint, val_loader, True, False, False, do_plot=False, only_sat=True)
+            print("{} : {}% satisfy".format(int_constraint.string(), 100 * epoch_int_sat))
 
         # if epoch % 10 == 0:
         #     torch.save(model.state_dict(), join(results_folder, "learned_model_epoch_{}.pt".format(epoch)))
@@ -194,6 +208,19 @@ def parse_user_symbols(arg_user_symbols):
 
 
 def generate_trajectory(skill_name, dmp_folder, symbols, workspace_bnds, suggestions_pre, suggestions_post, folder_save, opts):
+    """
+    Generate trajectories based on the dmp and randomly sampling from the preconditions and postconditions
+
+    :param skill_name:
+    :param dmp_folder:
+    :param symbols:
+    :param workspace_bnds:
+    :param suggestions_pre:
+    :param suggestions_post:
+    :param folder_save:
+    :param opts:
+    :return:
+    """
     os.makedirs(folder_save, exist_ok=True)
     model = DMPNN(opts['start_dimension'], 1024, opts['dimension'], opts['basis_fs']).to(DEVICE)
     model.load_state_dict(torch.load(dmp_folder + skill_name + ".pt"))
@@ -319,10 +346,19 @@ def generate_trajectory_find(skill_name, dmp_folder, symbols, workspace_bnds, su
 
 
 def run_elaborateDMP(old_skill, new_skill, suggestion, hard_constraints, symbols, workspace_bnds, opts):
-    results_root = opts['base_folder'] + "/logs/generalized-exps-{}".format(t_stamp())
-    os.makedirs(opts['demo_folder'], exist_ok=True)
-    os.makedirs(opts['demo_folder'] + "/train", exist_ok=True)
-    os.makedirs(opts['demo_folder'] + "/val", exist_ok=True)
+    """
+    Create a dynamic motion primite that will generate trajectories that mimic the initial trajectories while also
+    obeying the hard constraints if desired
+
+    :param old_skill:
+    :param new_skill:
+    :param suggestion:
+    :param hard_constraints:
+    :param symbols:
+    :param workspace_bnds:
+    :param opts:
+    :return:
+    """
 
     if opts['enforce_type'] == "unconstrained":
         enforce, adversarial = False, False
@@ -331,17 +367,38 @@ def run_elaborateDMP(old_skill, new_skill, suggestion, hard_constraints, symbols
     if opts['enforce_type'] == "adversarial":
         enforce, adversarial = True, True
 
-    if opts['enforce_type'] == 'adversarial':
-        # Find the trajectory from when the block is grasped
-        for ii in range(opts['n_train_trajs'] + opts['n_val_trajs']):
-            if ii < opts['n_train_trajs']:
-                folder_train_val = 'train'
-            else:
-                folder_train_val = 'val'
-            opts['f_name_add'] = str(ii)
-            generate_trajectory(old_skill, opts['dmp_folder'], symbols, workspace_bnds,
-                                suggestion['initial_preconditions'], suggestion['final_postconditions'],
-                                opts['demo_folder'] + "/" + folder_train_val, opts)
+    # Sometimes the necessary folders don't already exist. The demo folder is where the raw trajectories for the
+    # skills exist. They may not exist if we are modifying a skill and need to generate new trajectories
+    results_root = opts['base_folder'] + "/logs/generalized-exps-{}".format(t_stamp())
+    results_folder = join(results_root, "{}-{}-{}".format(new_skill, opts['enforce_type'], opts['c_weight']))
+    os.makedirs(results_folder, exist_ok=True)
+
+    # The directory can't exist when duplicating the raw trajectories
+    # os.makedirs(opts['demo_folder'], exist_ok=True)
+    # os.makedirs(opts['demo_folder'] + "/train", exist_ok=True)
+    # os.makedirs(opts['demo_folder'] + "/val", exist_ok=True)
+
+    # # When enforcing adversarial constraints, generate new trajectories by sampling from the preconditions/
+    # # postconditions and running the DMP
+    # if opts['enforce_type'] == 'adversarial':
+    #     # Find the trajectory from when the block is grasped
+    #     for ii in range(opts['n_train_trajs'] + opts['n_val_trajs']):
+    #         if ii < opts['n_train_trajs']:
+    #             folder_train_val = 'train'
+    #         else:
+    #             folder_train_val = 'val'
+    #         opts['f_name_add'] = str(ii)
+    #         generate_trajectory(old_skill, opts['dmp_folder'], symbols, workspace_bnds,
+    #                             suggestion['initial_preconditions'], suggestion['final_postconditions'],
+    #                             opts['demo_folder'] + "/" + folder_train_val, opts)
+
+    # When enforcing adversarial constraints, copy the original skill trajectories
+    # TODO: Pass original skill folder in opts
+    if opts['enforce_type'] == 'adversarial' and not os.path.isdir(opts['demo_folder']):
+        dst = opts['demo_folder']
+        src = '/'.join(opts['demo_folder'].split('/')[:-2]) + "/" + old_skill
+        print("Creating {} and copying data from {}".format(dst, src))
+        shutil.copytree(src, dst)
 
     # t_start_states, t_pose_hists = load_dmp_demos(opts['demo_folder'] + "/train", n_interp_pts=int(1/opts['dt']), opts=opts)
     t_start_states, t_pose_hists = load_dmp_demos(opts['demo_folder'] + "/train")
@@ -353,13 +410,13 @@ def run_elaborateDMP(old_skill, new_skill, suggestion, hard_constraints, symbols
     v_start_states, v_pose_hists = np_to_pgpu(v_start_states), np_to_pgpu(v_pose_hists)
     val_set = TensorDataset(v_start_states, v_pose_hists)
 
-    results_folder = join(results_root, "{}-{}-{}".format(new_skill, opts['enforce_type'], opts['c_weight']))
-    os.makedirs(results_folder, exist_ok=True)
-
+    # Create the constraints based on the suggestion
+    # Or set it to just duplicate the trajectories
     if opts['enforce_type'] == 'unconstrained':
         constraint_list = [None]
         intermediate_constraints = [None]
     else:
+        # Create the symbols as constraints
         symbols_device = dict()
         for sym, data in symbols.items():
             symbols_device[sym] = copy.deepcopy(symbols[sym])
@@ -370,11 +427,15 @@ def run_elaborateDMP(old_skill, new_skill, suggestion, hard_constraints, symbols
                 symbols_device[sym].radius = torch.from_numpy(symbols[sym].radius).to(DEVICE)
         workspace_bnds_device = torch.from_numpy(workspace_bnds).to(DEVICE)
         constraint_list = []
+
+        # Constraints on transitioning between the correct states
         for constraint_type in opts['constraints']:
             constraint_list.append(constraints.AutomaticSkill(symbols_device, suggestion['intermediate_states_all_pres'],
                                                     suggestion['intermediate_states'],
                                                     suggestion['final_postconditions'], suggestion['unique_states'],
                                                     suggestion['avoid_states'], workspace_bnds_device, opts['epsilon'], constraint_type))
+
+        # Constraints on always being in one of the intermediate states
         intermediate_constraints = []
         for suggestion_intermediate_all_posts in suggestion['intermediate_states']:
             intermediate_constraints.append(constraints.AutomaticIntermediateSteps(symbols_device,

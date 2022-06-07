@@ -125,4 +125,5 @@ x2 & y2
 
 !skill0b
 !skill1b
+!(!x0 & x1 & !x2 & y0 & !y1 & !y2 & skill0 & x0' & !x1' & !x2' & !y0' & !y1' & y2')
 

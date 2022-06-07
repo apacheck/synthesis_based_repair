@@ -40,8 +40,8 @@
     [
      {
       "a": false,
-      "b": true,
-      "c": false,
+      "b": false,
+      "c": true,
       "d": false,
       "aee": false,
       "bee": true,
@@ -50,8 +50,8 @@
      },
      {
       "a": false,
-      "b": false,
-      "c": true,
+      "b": true,
+      "c": false,
       "d": false,
       "aee": false,
       "bee": true,
@@ -63,54 +63,6 @@
    [
     {
      "a": false,
-     "b": true,
-     "c": false,
-     "d": false,
-     "aee": false,
-     "bee": true,
-     "cee": false,
-     "dee": false
-    },
-    [
-     {
-      "a": false,
-      "b": true,
-      "c": false,
-      "d": false,
-      "aee": false,
-      "bee": false,
-      "cee": false,
-      "dee": true
-     }
-    ]
-   ],
-   [
-    {
-     "a": false,
-     "b": true,
-     "c": false,
-     "d": false,
-     "aee": false,
-     "bee": false,
-     "cee": false,
-     "dee": true
-    },
-    [
-     {
-      "a": false,
-      "b": false,
-      "c": false,
-      "d": true,
-      "aee": false,
-      "bee": false,
-      "cee": false,
-      "dee": true
-     }
-    ]
-   ],
-   [
-    {
-     "a": false,
      "b": false,
      "c": true,
      "d": false,
@@ -158,12 +110,12 @@
    ],
    [
     {
-     "a": true,
-     "b": false,
+     "a": false,
+     "b": true,
      "c": false,
      "d": false,
      "aee": false,
-     "bee": false,
+     "bee": true,
      "cee": false,
      "dee": false
     },
@@ -176,7 +128,7 @@
       "aee": false,
       "bee": false,
       "cee": false,
-      "dee": false
+      "dee": true
      }
     ]
    ],
@@ -189,7 +141,7 @@
      "aee": false,
      "bee": false,
      "cee": false,
-     "dee": false
+     "dee": true
     },
     [
      {
@@ -200,7 +152,7 @@
       "aee": false,
       "bee": false,
       "cee": false,
-      "dee": false
+      "dee": true
      }
     ]
    ]
@@ -212,16 +164,6 @@
     "c": false,
     "d": false,
     "aee": true,
-    "bee": false,
-    "cee": false,
-    "dee": false
-   },
-   {
-    "a": true,
-    "b": false,
-    "c": false,
-    "d": false,
-    "aee": false,
     "bee": false,
     "cee": false,
     "dee": false
@@ -237,16 +179,6 @@
     "bee": false,
     "cee": false,
     "dee": true
-   },
-   {
-    "a": false,
-    "b": false,
-    "c": false,
-    "d": true,
-    "aee": false,
-    "bee": false,
-    "cee": false,
-    "dee": false
    }
   ],
   "folder_train": "../data/stretch/trajectories//skillStretch0/train/",

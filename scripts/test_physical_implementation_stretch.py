@@ -58,7 +58,8 @@ if __name__ == "__main__":
         original_skills[skill_name + "b"] = copy.deepcopy(original_skills[skill_name])
 
     fid = open(file_names["file_suggestions"], 'r')
-    suggestion = json.load(fid)
+    suggestions = json.load(fid)
+    suggestion = suggestions['0']
     fid.close()
 
     iteration_count = 0
