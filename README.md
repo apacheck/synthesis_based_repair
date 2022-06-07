@@ -223,7 +223,13 @@ This means specifications are compatible with [Slugs](https://github.com/Verifia
 However, the [SYS_TRANS_HARD], [ENV_TRANS_HARD], [CHANGE_CONS], and [NOT_ALLOWED_REPAIR] are not allowed in Slugs.
 This [fork](https://github.com/apacheck/slugs) allows Slugs to handle it the specifications with these headings.
 
-#### Stretch Example
+## Stretch Example
+
+[INFORMATION ON WHAT THIS EXAMPLE IS SHOWING]
+
+### Workspace
+
+[VARIABLES, NAMES, LIMITS]
 
 ### Symbols for the Stretch
 
@@ -238,3 +244,9 @@ python run_plot_symbols.py --file_names "../data/stretch/stretch_files.json" --s
 ```
 
 Plots will be generated in `synthesis_based_repair/data/stretch/plots/`.
+
+### Example skill modification
+
+### Example specification repair
+
+### Example integrated specificataion/skill repair
