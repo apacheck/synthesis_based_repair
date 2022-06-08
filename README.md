@@ -230,6 +230,7 @@ This [fork](https://github.com/apacheck/slugs) allows Slugs to handle it the spe
 ### Workspace
 
 [VARIABLES, NAMES, LIMITS]
+x, y, theta_base, wrist_extension, z_arm, theta_wrist
 
 ### Symbols for the Stretch
 
