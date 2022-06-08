@@ -109,7 +109,7 @@ Symbols can also be visualized under the trajectory without generating new data 
 To see an example, from `[PARENT DIRECTORY TO SYNTHESIS_BASED_REPAIR]/synthesis_based_repair/scripts` run:
 
 ```shell
-python plot_skills.py --file_names "../data/nine_squares/nine_squares_files.json" --sym_opts "../data/nine_squares/nine_squares_sym_opts.json" --dmp_opts "../data/nine_squares/nine_squares_dmp_opts.json"
+python run_plot_skills.py --file_names "../data/nine_squares/nine_squares_files.json" --sym_opts "../data/nine_squares/nine_squares_sym_opts.json" --dmp_opts "../data/nine_squares/nine_squares_dmp_opts.json"
 ```
 
 A plot of a sample of the trajectories associated with the skills will be generated in `[PARENT DIRECTORY TO SYNTHESIS_BASED_REPAIR]/synthesis_based_repair/data/nine_squares/plots/[SKILL_NAME].png`.
