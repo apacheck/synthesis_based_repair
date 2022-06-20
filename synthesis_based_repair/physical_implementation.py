@@ -18,6 +18,8 @@ import time
 import copy
 from synthesis_based_repair.visualization import plot_one_skill_trajectories_and_symbols_numpy
 import shutil
+from synthesis_based_repair.skills import find_traj_in_syms
+from synthesis_based_repair.tools import dict_to_formula
 
 DEVICE = "cpu"
 
@@ -63,6 +65,19 @@ def training_loop(train_set, val_set, constraint_list, enforce_constraint, adver
                 c_loss, c_sat = oracle.evaluate_constraint(
                     starts, rollouts, arg_constraint, model, dmp.rollout_torch, adv)
 
+            # Find the propositions that are visited during skill execution
+            if do_plot and arg_constraint is not None:
+                print("Trajectories that violate the specification")
+                for rr, rollout in enumerate(learned_rollouts.cpu().detach().numpy()):
+                    if not c_sat.cpu().detach().numpy().astype(bool)[rr]:
+                        traj_syms = find_traj_in_syms(rollout, opts['symbols'])
+                        print("Trajectory {}: {}".format(rr, dict_to_formula(traj_syms[0], include_false=False)), end=" ")
+
+                        for ss in range(0, len(traj_syms) - 1):
+                            if traj_syms[ss] != traj_syms[ss + 1]:
+                                print(" -> {}".format(dict_to_formula(traj_syms[ss+1], include_false=False)), end=" ")
+                        print("")
+
             if do_plot:
                 # TODO: Put into a function
                 if rollouts.shape[2] == 2:
@@ -79,8 +94,8 @@ def training_loop(train_set, val_set, constraint_list, enforce_constraint, adver
                 if arg_constraint is not None:
                     plot_one_skill_trajectories_and_symbols_numpy(None, None, learned_rollouts.cpu().detach().numpy()[c_sat.cpu().detach().numpy().astype(bool)], opts['symbols'], opts['plot_limits'], ax=ax[1], color='g')
                     plot_one_skill_trajectories_and_symbols_numpy(None, None, learned_rollouts.cpu().detach().numpy()[np.logical_not(c_sat.cpu().detach().numpy().astype(bool))], opts['symbols'], opts['plot_limits'], ax=ax[-1], color='r')
-                    ax[1].set_title("Satisfy Constraint")
-                    ax[2].set_title("Violate Constraint")
+                    ax[1].set_title("Satisfy Constraint: {:.2f}%".format(100 * np.mean(c_sat.cpu().detach().numpy())))
+                    ax[2].set_title("Violate Constraint: {:.2f}%".format(100 * (1 - np.mean(c_sat.cpu().detach().numpy()))))
                 else:
                     plot_one_skill_trajectories_and_symbols_numpy(None, None, learned_rollouts.cpu().detach().numpy(), opts['symbols'], opts['plot_limits'], ax=ax[1], color='g')
                     ax[1].set_title("Trajectories from new DMP")
@@ -156,11 +171,11 @@ def training_loop(train_set, val_set, constraint_list, enforce_constraint, adver
         else:
             print("e{}\t t: {}".format(epoch, avg_train_loss[0, :]))
 
-        # Determine which part of the internal constraints are satisfied
-        print("Intermediate satisfaction: ")
-        for int_constraint in intermediate_constraints:
-            epoch_int_sat = batch_learn(int_constraint, val_loader, True, False, False, do_plot=False, only_sat=True)
-            print("{} : {}% satisfy".format(int_constraint.string(), 100 * epoch_int_sat))
+        # # Determine which part of the internal constraints are satisfied
+        # print("Intermediate satisfaction: ")
+        # for int_constraint in intermediate_constraints:
+        #     epoch_int_sat = batch_learn(int_constraint, val_loader, True, False, False, do_plot=False, only_sat=True)
+        #     print("{} : {}% satisfy".format(int_constraint.string(), 100 * epoch_int_sat[0][3]))
 
         # if epoch % 10 == 0:
         #     torch.save(model.state_dict(), join(results_folder, "learned_model_epoch_{}.pt".format(epoch)))
