@@ -1,4 +1,4 @@
-{"a": {"dims": [0, 1],
+{"base_table_1": {"dims": [0, 1],
       "name": "a",
       "bounds": [[0, 1], [0, 2]],
       "index": 0,
