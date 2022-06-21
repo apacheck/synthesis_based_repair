@@ -6,3 +6,4 @@ data/dmps/
 dist/
 build/
 synthesis_based_repair.egg-info
+venv/
