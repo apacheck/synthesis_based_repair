@@ -1,7 +1,75 @@
 {
- "skillStretch4": {
-  "name": "skillStretch4",
+ "skillStretch1to2": {
+  "name": "skillStretch1to2",
   "intermediate_states": [
+   [
+    {
+     "a": true,
+     "b": false,
+     "c": false,
+     "d": false,
+     "aee": true,
+     "bee": false,
+     "cee": false,
+     "dee": false
+    },
+    [
+     {
+      "a": false,
+      "b": false,
+      "c": false,
+      "d": false,
+      "aee": false,
+      "bee": false,
+      "cee": false,
+      "dee": false
+     },
+     {
+      "a": false,
+      "b": false,
+      "c": false,
+      "d": false,
+      "aee": true,
+      "bee": false,
+      "cee": false,
+      "dee": false
+     },
+     {
+      "a": true,
+      "b": false,
+      "c": false,
+      "d": false,
+      "aee": false,
+      "bee": false,
+      "cee": false,
+      "dee": false
+     }
+    ]
+   ],
+   [
+    {
+     "a": false,
+     "b": false,
+     "c": false,
+     "d": false,
+     "aee": true,
+     "bee": false,
+     "cee": false,
+     "dee": false
+    },
+    [
+     {
+      "a": false,
+      "b": false,
+      "c": false,
+      "d": false,
+      "aee": false,
+      "bee": false,
+      "cee": false,
+      "dee": false
+     }
+    ]
+   ],
    [
     {
      "a": true,
@@ -33,7 +101,7 @@
     "b": false,
     "c": false,
     "d": false,
-    "aee": false,
+    "aee": true,
     "bee": false,
     "cee": false,
     "dee": false
@@ -51,11 +119,11 @@
     "dee": false
    }
   ],
-  "folder_train": "../data/stretch/trajectories//skillStretch4/train/",
-  "folder_val": "../data/stretch/trajectories//skillStretch4/train/"
+  "folder_train": "../data/stretch/trajectories//skillStretch1to2/train/",
+  "folder_val": "../data/stretch/trajectories//skillStretch1to2/train/"
  },
- "skillStretch5": {
-  "name": "skillStretch5",
+ "skillStretch2to3": {
+  "name": "skillStretch2to3",
   "intermediate_states": [],
   "initial_preconditions": [
    {
@@ -81,11 +149,11 @@
     "dee": false
    }
   ],
-  "folder_train": "../data/stretch/trajectories//skillStretch5/train/",
-  "folder_val": "../data/stretch/trajectories//skillStretch5/train/"
+  "folder_train": "../data/stretch/trajectories//skillStretch2to3/train/",
+  "folder_val": "../data/stretch/trajectories//skillStretch2to3/train/"
  },
- "skillStretch6": {
-  "name": "skillStretch6",
+ "skillStretch3to1": {
+  "name": "skillStretch3to1",
   "intermediate_states": [
    [
     {
@@ -100,12 +168,32 @@
     },
     [
      {
+      "a": false,
+      "b": false,
+      "c": false,
+      "d": false,
+      "aee": false,
+      "bee": true,
+      "cee": false,
+      "dee": false
+     },
+     {
+      "a": false,
+      "b": true,
+      "c": false,
+      "d": false,
+      "aee": false,
+      "bee": true,
+      "cee": false,
+      "dee": false
+     },
+     {
       "a": true,
       "b": false,
       "c": false,
       "d": false,
       "aee": false,
-      "bee": false,
+      "bee": true,
       "cee": false,
       "dee": false
      },
@@ -116,6 +204,98 @@
       "d": false,
       "aee": false,
       "bee": false,
+      "cee": false,
+      "dee": false
+     },
+     {
+      "a": true,
+      "b": false,
+      "c": false,
+      "d": false,
+      "aee": false,
+      "bee": false,
+      "cee": false,
+      "dee": false
+     }
+    ]
+   ],
+   [
+    {
+     "a": false,
+     "b": false,
+     "c": false,
+     "d": false,
+     "aee": false,
+     "bee": true,
+     "cee": false,
+     "dee": false
+    },
+    [
+     {
+      "a": true,
+      "b": false,
+      "c": false,
+      "d": false,
+      "aee": false,
+      "bee": true,
+      "cee": false,
+      "dee": false
+     },
+     {
+      "a": false,
+      "b": true,
+      "c": false,
+      "d": false,
+      "aee": false,
+      "bee": true,
+      "cee": false,
+      "dee": false
+     }
+    ]
+   ],
+   [
+    {
+     "a": true,
+     "b": false,
+     "c": false,
+     "d": false,
+     "aee": false,
+     "bee": true,
+     "cee": false,
+     "dee": false
+    },
+    [
+     {
+      "a": true,
+      "b": false,
+      "c": false,
+      "d": false,
+      "aee": true,
+      "bee": false,
+      "cee": false,
+      "dee": false
+     }
+    ]
+   ],
+   [
+    {
+     "a": false,
+     "b": true,
+     "c": false,
+     "d": false,
+     "aee": false,
+     "bee": true,
+     "cee": false,
+     "dee": false
+    },
+    [
+     {
+      "a": true,
+      "b": false,
+      "c": false,
+      "d": false,
+      "aee": false,
+      "bee": true,
       "cee": false,
       "dee": false
      }
@@ -134,12 +314,46 @@
     },
     [
      {
+      "a": false,
+      "b": true,
+      "c": false,
+      "d": false,
+      "aee": false,
+      "bee": true,
+      "cee": false,
+      "dee": false
+     },
+     {
       "a": true,
       "b": false,
       "c": false,
       "d": false,
       "aee": false,
-      "bee": false,
+      "bee": true,
+      "cee": false,
+      "dee": false
+     }
+    ]
+   ],
+   [
+    {
+     "a": true,
+     "b": false,
+     "c": false,
+     "d": false,
+     "aee": false,
+     "bee": false,
+     "cee": false,
+     "dee": false
+    },
+    [
+     {
+      "a": true,
+      "b": false,
+      "c": false,
+      "d": false,
+      "aee": false,
+      "bee": true,
       "cee": false,
       "dee": false
      }
@@ -164,43 +378,13 @@
     "b": false,
     "c": false,
     "d": false,
-    "aee": false,
+    "aee": true,
     "bee": false,
     "cee": false,
     "dee": false
    }
   ],
-  "folder_train": "../data/stretch/trajectories//skillStretch6/train/",
-  "folder_val": "../data/stretch/trajectories//skillStretch6/train/"
- },
- "skillStretch7": {
-  "name": "skillStretch7",
-  "intermediate_states": [],
-  "initial_preconditions": [
-   {
-    "a": false,
-    "b": false,
-    "c": false,
-    "d": false,
-    "aee": false,
-    "bee": false,
-    "cee": false,
-    "dee": false
-   }
-  ],
-  "final_postconditions": [
-   {
-    "a": false,
-    "b": false,
-    "c": false,
-    "d": false,
-    "aee": false,
-    "bee": false,
-    "cee": false,
-    "dee": false
-   }
-  ],
-  "folder_train": "../data/stretch/trajectories//skillStretch7/train/",
-  "folder_val": "../data/stretch/trajectories//skillStretch7/train/"
+  "folder_train": "../data/stretch/trajectories//skillStretch3to1/train/",
+  "folder_val": "../data/stretch/trajectories//skillStretch3to1/train/"
  }
 }
