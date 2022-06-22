@@ -41,6 +41,10 @@ python setup.py install --fetch --cudd
 - pydot
 - astutils
 
+```shell
+pip3 install numpy torch scipy matplotlib pydo astutils
+```
+
 #### Install
 
 Clone and build the repository:
