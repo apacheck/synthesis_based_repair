@@ -97,6 +97,12 @@ To generate trajectory data for the Nine Squares example, from `[PARENT DIRECTOR
 python run_generate_trajectories.py --file_names "../data/nine_squares/nine_squares_files.json" --sym_opts "../data/nine_squares/nine_squares_sym_opts.json" --dmp_opts "../data/nine_squares/nine_squares_dmp_opts.json" --do_plot
 ```
 
+For the stretch example:
+
+```shell
+python run_generate_trajectories.py --file_names "../data/stretch/stretch_files.json" --sym_opts "../data/stretch/stretch_sym_opts.json" --dmp_opts "../data/stretch/stretch_dmp_opts.json" --do_plot
+```
+
 By default the data for the trajectories will be saved in `[PARENT DIRECTORY TO SYNTHESIS_BASED_REPAIR]/synthesis_based_repair/data/nine_squares/trajectories/`.
 The dynamic motion primitive associated with the skills will be save in `[PARENT DIRECTORY TO SYNTHESIS_BASED_REPAIR]/synthesis_based_repair/data/dmps/`.
 The .json file associate with the skills that is used when creating the specification will be saved in `[PARENT DIRECTORY TO SYNTHESIS_BASED_REPAIR]/synthesis_based_repair/data/nine_squares/nine_squares_skills.json`.

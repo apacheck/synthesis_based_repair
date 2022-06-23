@@ -140,8 +140,8 @@ def training_loop(train_set, val_set, constraint_list, enforce_constraint, adver
         ax[1] = fig.add_subplot(1, 3, 2, projection='3d')
         ax[2] = fig.add_subplot(1, 3, 3, projection='3d')
         ax = np.array(ax)
-    plot_one_skill_trajectories_and_symbols_numpy(None, None, train_loader.dataset.tensors[1].cpu().detach().numpy(), opts['symbols'],
-                                                  opts['plot_limits'], ax=ax[0], color='b', linestyle='--')
+    # plot_one_skill_trajectories_and_symbols_numpy(None, None, train_loader.dataset.tensors[1].cpu().detach().numpy(), opts['symbols'],
+    #                                               opts['plot_limits'], ax=ax[0], color='b', linestyle='--')
     for epoch in range(sum(opts['n_epochs'])):
         epoch_start = time.time()
         do_plot = False
