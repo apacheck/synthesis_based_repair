@@ -12,7 +12,7 @@
   "plt_background": "none",
   "plot_limits": [[-2, 1.5], [-2, 1.5], [0, 1]],
   "workspace_bnds": [[-2, 1.5], [-2, 1.5], [0, 6.28], [0, 1], [0, 1], [0, 6.28]],
-  "n_epochs": [40],
+  "n_epochs": [50],
   "start_dimension": 12,
   "dimension": 6,
   "n_states": 2,
