@@ -7,6 +7,8 @@ import argparse
 from synthesis_based_repair.tools import json_load_wrapper
 from synthesis_based_repair.skills import load_skills_from_trajectories, write_skills_json
 import matplotlib.pyplot as plt
+from dl2_lfd.dmps.dmp import load_dmp_demos, DMP
+
 
 
 def generate_trajectories_nine_squares(folder_demo_trajectories, n_train_trajs, n_val_trajs, n_start_rows, skill_names):
@@ -387,6 +389,162 @@ def generate_trajectories_stretch(folder_demo_trajectories, n_train_trajs, n_val
         save_data(folder_demo_skill, data, start_state, end_state, ii, n_start_rows, n_train_trajs, dim=6)
 
 
+def transformStretchSkillsToEntireSpace(folder_trajectories, skill_names, symbols):
+    """Finds the trajectory achieved by the stretch in the state space the symbols care about
+
+    Takes in the folder containing the joint states of the robot, then finds the trajectory of the robot in the state
+    space the symbols need. Finds the end effector position. Creates duplicate skills where the stretch moves the duck
+    and does not move the duck for each skill/duck combo.
+
+    Args:
+        folder_trajectories: path to where the joint space trajectories are (str)
+        skill_names:
+        symbols:
+
+    Returns:
+        skill_names: new skill names
+    """
+
+    new_skills = set()
+    for skill_name in skill_names:
+        new_skills_tmp = transformStretchSkillToEntireSpace(folder_trajectories, skill_name, symbols)
+        new_skills = new_skills.union(new_skills_tmp)
+
+    return new_skills
+
+
+def transformStretchSkillToEntireSpace(folder_trajectories, skill_name, symbols):
+    folder_demo_skill = folder_trajectories + "/" + skill_name + "/train/"
+    start_states, pose_hists = load_dmp_demos(folder_demo_skill)
+
+    # Loop through each joint space trajectory
+    # Find fk for the trajectory
+    # Both train and val
+    state_space_trajs = np.zeros([pose_hists.shape[0], pose_hists.shape[1], 6])
+    state_space_trajs[:, :, 0:3] = pose_hists[:, :, 0:3]
+    state_space_trajs[:, :, 3:6] = stretch_fk(pose_hists)
+
+    n_start_rows = 2
+    n_train_trajs = 32
+
+    new_skills = set()
+
+    for ii, state_space_traj in enumerate(state_space_trajs):
+        # Find the position of the ducks
+        # Each duck needs to be moved and the other duck needs to stay in all regions
+        # All combinations of ducks need to be on the table
+        duck_a_locs = ['1', '2', '3']
+        duck_b_locs = ['1', '2', '3']
+        ducks_in_ee = [None, 'a', 'b']
+        table_ducks = dict()
+        for duck_in_ee in ducks_in_ee:
+            if duck_in_ee is None:
+                for duck_a_loc in duck_a_locs:
+                    table_ducks["a"] = duck_a_loc
+                    for duck_b_loc in duck_b_locs:
+                        if duck_a_loc != duck_b_loc:
+                            table_ducks["b"] = duck_b_loc
+                            duck_traj = addDuck(duck_in_ee, table_ducks, state_space_traj, symbols)
+                            data = np.hstack([state_space_traj, duck_traj])
+                            new_skill_name = skill_name + "_a_" + duck_a_loc + "_b_" + duck_b_loc
+                            new_skills.add(new_skill_name)
+                            folder_demo_skill_new = folder_trajectories + "/" + new_skill_name + "/"
+                            make_folders(folder_trajectories, [new_skill_name])
+                            save_data(folder_demo_skill_new, data, data[0, :], data[-1, :], ii, n_start_rows, n_train_trajs,
+                                      dim=12)
+            if duck_in_ee is 'a':
+                table_ducks = dict()
+                for duck_b_loc in duck_b_locs:
+                    table_ducks["b"] = duck_b_loc
+                    duck_traj = addDuck(duck_in_ee, table_ducks, state_space_traj, symbols)
+                    new_skill_name = skill_name + "_a_" + "hand" + "_b_" + duck_b_loc
+                    new_skills.add(new_skill_name)
+                    folder_demo_skill_new = folder_trajectories + "/" + new_skill_name + "/"
+                    make_folders(folder_trajectories, [new_skill_name])
+                    save_data(folder_demo_skill_new, data, data[0, :], data[-1, :], ii, n_start_rows, n_train_trajs,
+                              dim=12)
+            if duck_in_ee is 'b':
+                table_ducks = dict()
+                for duck_a_loc in duck_a_locs:
+                    table_ducks["a"] = duck_a_loc
+                    duck_traj = addDuck(duck_in_ee, table_ducks, state_space_traj, symbols)
+                    new_skill_name = skill_name + "_a_" + duck_a_loc + "_b_" + "hand"
+                    new_skills.add(new_skill_name)
+                    folder_demo_skill_new = folder_trajectories + "/" + new_skill_name + "/"
+                    make_folders(folder_trajectories, [new_skill_name])
+                    save_data(folder_demo_skill_new, data, data[0, :], data[-1, :], ii, n_start_rows, n_train_trajs,
+                              dim=12)
+
+    return new_skills
+
+def addDuck(duck_in_ee, table_duck_locs, stretch_traj, symbols):
+    """ Adds ducks to the state space
+
+    Given a duck that is being carried, and where the ducks are on the table, returns the position of the ducks through
+    the trajectory. Assumes symbols are labeled: duck_LETTER_LOC
+
+    Args:
+        duck_in_ee
+        table_duck_locs
+        stretch_traj
+        symbols
+
+    Returns:
+         duck_trajs: np.array
+
+    """
+
+    duck_trajs = np.zeros([stretch_traj.shape[0], 6])
+    if duck_in_ee is not None:
+        if duck_in_ee == "a":
+            duck_trajs[:, 0:3] = stretch_traj[:, 3:]
+        elif duck_in_ee == "b":
+            duck_trajs[:, 3:6] = stretch_traj[:, 3:]
+    for table_duck, loc in table_duck_locs.items():
+        loc_traj = symbols['duck_' + table_duck + "_" + loc].sample_from()
+        table = symbols['duck_' + table_duck + "_table"].sample_from()
+        if table_duck == "a":
+            duck_trajs[:, 0:2] = loc_traj
+            duck_trajs[:, 2] = table
+        elif table_duck == "b":
+            duck_trajs[:, 3:5] = loc_traj
+            duck_trajs[:, 5] = table
+
+    return duck_trajs
+
+
+def stretch_fk(stretch_pose):
+    """ Finds the forward kinematics of the stretch
+
+    Given the joint angles of the stretch (x_r, y_r, theta_r, extension, lift, theta_wrist), finds the forward
+    kinematics of the end effector
+
+    Args:
+        stretch_pose
+
+    Returns:
+        forward_kinematics
+
+    """
+    ee = np.zeros([stretch_pose.shape[0], stretch_pose.shape[1], 3])
+    l_ee = 0.23
+    # dim == 0 -> x
+    t_robot = stretch_pose[:, :, 2]
+    t_wrist = stretch_pose[:, :, 5]
+    x_robot = stretch_pose[:, :, 0]
+    y_robot = stretch_pose[:, :, 1]
+    l_arm = stretch_pose[:, :, 3]
+    lift = stretch_pose[:, :, 4]
+    x_ee = l_ee * np.cos(t_robot + t_wrist) + l_arm * np.cos(t_robot) + x_robot
+    y_ee = l_ee * np.sin(t_robot + t_wrist) - l_arm * np.sin(t_robot) + y_robot
+    z_ee = lift
+    ee[:, :, 0] = x_ee
+    ee[:, :, 1] = y_ee
+    ee[:, :, 2] = z_ee
+
+    return ee
+
+
 def make_folders(folder_demo_trajectories, skill_names):
     for skill_name in skill_names:
         os.makedirs(folder_demo_trajectories + "/" + skill_name + "/train", exist_ok=True)
@@ -435,19 +593,21 @@ if __name__ == "__main__":
     for skill in skill_names:
         dmp_opts['skill_name'] = skill
         dmp_opts['demo_folder'] = folder_trajectories + '/' + skill + '/'
-        _, _, _ = run_elaborateDMP(None, skill, None, None, symbols, workspace_bnds, dmp_opts)
+        # _, _, _ = run_elaborateDMP(None, skill, None, None, symbols, workspace_bnds, dmp_opts)
 
     ################################################################
     # Generate the symbolic/abstract representation of the skills  #
     # for use when writing the specification and save it in a json #
     # file                                                         #
     ################################################################
-
-    skills = load_skills_from_trajectories(folder_trajectories, skill_names, symbols)
+    if file_names['file_symbols'].split('/')[2] == 'stretch':
+        new_skill_names = transformStretchSkillsToEntireSpace(folder_trajectories, skill_names, symbols)
+        print(new_skill_names)
+    skills = load_skills_from_trajectories(folder_trajectories, new_skill_names, symbols)
     write_skills_json(skills, file_names['file_skills'])
 
     ##############################
-    # Plot if skills if desired  #
+    # Plot skills if desired  ####
     ##############################
 
     if args.do_plot:

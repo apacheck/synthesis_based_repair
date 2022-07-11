@@ -29,8 +29,8 @@ class Symbol:
     def in_symbol(self, points):
         if points.ndim == 1:
             if self.type == 'rectangle' or (self.type == 'rectangle-ee' and points.shape[0] == 2):
-                bnd_low = self.bounds[self.dims, 0]
-                bnd_high = self.bounds[self.dims, 1]
+                bnd_low = self.bounds[:, 0]
+                bnd_high = self.bounds[:, 1]
                 if np.all(bnd_low < points[self.dims]) and np.all(points[self.dims] < bnd_high):
                     return True
                 else:
@@ -85,6 +85,16 @@ class Symbol:
                                     np.linspace(0, 2 * np.pi, 100))]).transpose()
 
         return edges
+
+    def sample_from(self):
+        if self.type == 'rectangle' or self.type == 'rectangle-ee':
+            sample = self.bounds[:, 0] + np.random.random(self.bounds.shape[0]) * (self.bounds[:, 1] - self.bounds[:, 0])
+            sample = sample.transpose()
+        elif self.type == 'circle' or self.type == 'circle-ee':
+            theta = 2 * np.pi * np.random.random(1)
+            sample = np.array([self.center[0] + self.radius * np.cos(theta), self.center[1] + self.radius * np.sin(theta)])
+
+        return sample
 
     def plot(self, ax, dim=2, **kwargs):
         if 'alpha' not in kwargs.keys():

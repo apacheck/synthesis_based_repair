@@ -276,7 +276,7 @@ def load_skills_from_trajectories(folder_trajectory_base, skill_names, sym_defs)
     for skill_name in skill_names:
         skill = dict()
         skill['folder_train'] = folder_trajectory_base + '/' + skill_name + "/train/"
-        skill['folder_val'] = folder_trajectory_base + '/' + skill_name + "/train/"
+        skill['folder_val'] = folder_trajectory_base + '/' + skill_name + "/val/"
         folder_trajectories = skill['folder_train']
         skill['name'] = skill_name
         skill['intermediate_states'] = find_one_skill_intermediate_states(folder_trajectories, sym_defs)

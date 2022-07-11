@@ -1,6 +1,6 @@
 {
- "skillStretch1to2": {
-  "name": "skillStretch1to2",
+ "skillStretch2to3_a_2_b_hand": {
+  "name": "skillStretch2to3_a_2_b_hand",
   "intermediate_states": [
    [
     {
@@ -45,8 +45,8 @@
     "base_3": false
    }
   ],
-  "folder_train": "../data/stretch/trajectories//skillStretch1to2/train/",
-  "folder_val": "../data/stretch/trajectories//skillStretch1to2/train/"
+  "folder_train": "../data/stretch/trajectories//skillStretch2to3_a_3_b_hand/train/",
+  "folder_val": "../data/stretch/trajectories//skillStretch2to3_a_3_b_hand/val/"
  },
  "skillStretch2to3": {
   "name": "skillStretch2to3",
@@ -143,7 +143,7 @@
     "base_3": false
    }
   ],
-  "folder_train": "../data/stretch/trajectories//skillStretch3to1/train/",
-  "folder_val": "../data/stretch/trajectories//skillStretch3to1/train/"
+  "folder_train": "../data/stretch/trajectories//skillStretch3to1_a_1_b_2/train/",
+  "folder_val": "../data/stretch/trajectories//skillStretch3to1_a_1_b_2/val/"
  }
 }
