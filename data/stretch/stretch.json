@@ -1,13 +1,13 @@
 {
-  "env_init_true": ["a", "aee"],
-  "env_init_false": ["b", "c", "d", "bee", "cee", "dee"],
+  "env_init_true": ["base_1", "base_theta_180", "ee_table_1", "duck_a_1", "duck_b_2", "duck_a_table", "duck_b_table"],
+  "env_init_false": ["base_2", "base_3", "base_theta_0", "base_theta_90", "base_theta_270", "ee_table_2", "ee_table_3", "duck_a_held", "duck_b_held", "duck_a_2", "duck_a_3", "duck_b_1", "duck_b_3"],
   "sys_init_true": [],
-  "sys_init_false": ["skillStretch0", "skillStretch1", "skillStretch0b", "skillStretch1b"],
-  "sys_live": "a & aee\n d & dee\n",
+  "sys_init_false": ["skillStretchDownUp2_a_1_b_pickup", "skillStretch1to2_a_2_b_hand", "skillStretch3to1_a_3_b_2", "skillStretchDownUp2_a_place_b_3", "skillStretch2to3_a_2_b_3", "skillStretch1to2_a_hand_b_1", "skillStretch2to3_a_hand_b_3", "skillStretchDownUp2_a_place_b_1", "skillStretch1to2_a_hand_b_3", "skillStretchDownUp1_a_place_b_3", "skillStretchDownUp1_a_place_b_2", "skillStretchDownUp1_a_3_b_pickup", "skillStretch2to3_a_hand_b_2", "skillStretch1to2_a_1_b_2", "skillStretch1to2_a_2_b_1", "skillStretch2to3_a_2_b_hand", "skillStretch2to3_a_3_b_hand", "skillStretch3to1_a_2_b_3", "skillStretch1to2_a_2_b_3", "skillStretch1to2_a_1_b_hand", "skillStretch2to3_a_1_b_2", "skillStretch3to1_a_2_b_hand", "skillStretch1to2_a_3_b_2", "skillStretchDownUp1_a_2_b_pickup", "skillStretchDownUp2_a_pickup_b_1", "skillStretchDownUp3_a_place_b_2", "skillStretch3to1_a_1_b_3", "skillStretch1to2_a_3_b_1", "skillStretch2to3_a_3_b_2", "skillStretchDownUp2_a_1_b_place", "skillStretch3to1_a_hand_b_1", "skillStretchDownUp3_a_2_b_place", "skillStretchDownUp3_a_1_b_place", "skillStretch3to1_a_hand_b_3", "skillStretchDownUp3_a_1_b_pickup", "skillStretchDownUp1_a_pickup_b_2", "skillStretch3to1_a_2_b_1", "skillStretch3to1_a_3_b_1", "skillStretchDownUp3_a_pickup_b_2", "skillStretch2to3_a_hand_b_1", "skillStretch2to3_a_1_b_hand", "skillStretch3to1_a_1_b_2", "skillStretchDownUp1_a_pickup_b_3", "skillStretchDownUp3_a_place_b_1", "skillStretchDownUp3_a_pickup_b_1", "skillStretchDownUp1_a_3_b_place", "skillStretchDownUp2_a_pickup_b_3", "skillStretch3to1_a_1_b_hand", "skillStretch1to2_a_1_b_3", "skillStretchDownUp1_a_2_b_place", "skillStretchDownUp3_a_2_b_pickup", "skillStretch2to3_a_3_b_1", "skillStretchDownUp2_a_3_b_pickup", "skillStretchDownUp2_a_3_b_place", "skillStretch1to2_a_hand_b_2", "skillStretch3to1_a_3_b_hand", "skillStretch2to3_a_2_b_1", "skillStretch3to1_a_hand_b_2", "skillStretch1to2_a_3_b_hand", "skillStretch2to3_a_1_b_3"],
+  "sys_live": "duck_a_1 & duck_b_2\n duck_a_2 & duck_b_3",
   "env_live": "",
-  "sys_trans_hard": "!(!aee & !bee & cee & !dee)\n!(!aee' & !bee' & cee' & !dee')",
+  "sys_trans_hard": "!(duck_a_1' & duck_b_1' & duck_a_table' & duck_b_table')\n!(duck_a_2' & duck_b_2' & duck_a_table' & duck_b_table')\n!(duck_a_3' & duck_b_3' & duck_a_table' & duck_b_table')\n!(duck_a_1 & duck_b_1 & duck_a_table & duck_b_table)\n!(duck_a_2 & duck_b_2 & duck_a_table & duck_b_table)\n!(duck_a_3 & duck_b_3 & duck_a_table & duck_b_table)",
   "reactive_variables": [],
-  "change_cons": "!(a' & b')\n!(a' & d')\n!(b' & c')\n!(a' & c')\n!(b' & d')\n!(c' & d')\n(a' | b' | c' | d')\n!(aee' & bee')\n!(aee' & cee')\n!(aee' & dee')\n!(bee' & cee')\n!(bee' & dee')\n!(cee' & dee')\n(aee' | bee' | cee' | dee')\n!(a & b)\n!(a & c)\n!(a & d)\n!(b & c)\n!(b & d)\n!(c & d)\n(a | b | c | d)\n!(aee & bee)\n!(aee & cee)\n!(aee & dee)\n!(bee & cee)\n!(bee & dee)\n!(cee & dee)\n(aee | bee | cee | dee)\n!((a <-> a') & (b <-> b') & (c <-> c') & (d <-> d') & (aee <-> aee') & (bee <-> bee') & (cee <-> cee'))\n!(a & d')\n!(d & a')\n!(c & d')\n!(b & d')\n!(b & a')\n!(c & a')\n!(a & b')\n!(a & c')\n!(d & c')\n!(d & b')",
-  "not_allowed_repair": "!skillStretch0b\n!skillStretch1b\n",
+  "change_cons": "",
+  "not_allowed_repair": "",
   "hard_constraints": []
 }

@@ -31,12 +31,14 @@ class Symbol:
             if self.type == 'rectangle' or (self.type == 'rectangle-ee' and points.shape[0] == 2):
                 bnd_low = self.bounds[:, 0]
                 bnd_high = self.bounds[:, 1]
-                if np.all(bnd_low < points[self.dims]) and np.all(points[self.dims] < bnd_high):
+                if points.shape[0] == bnd_low.shape[0] and np.all(bnd_low < points[:]) and np.all(points[:] < bnd_high):
+                    return True
+                elif points.shape[0] != bnd_low.shape[0] and np.all(bnd_low < points[self.dims]) and np.all(points[self.dims] < bnd_high):
                     return True
                 else:
                     return False
             elif self.type == 'circle' or (self.type == 'circle-ee' and points.shape[0] == 2):
-                if np.sqrt(np.sum(np.square(self.center - points[self.dims]))) < self.radius:
+                if np.sqrt(np.sum(np.square(self.center - points[:]))) < self.radius:
                     return True
                 else:
                     return False
@@ -71,14 +73,17 @@ class Symbol:
 
     def get_edges(self):
         if self.type == 'rectangle' or self.type == 'rectangle-ee':
-            edges = np.hstack([np.vstack(
-                [np.linspace(self.bounds[0, 0], self.bounds[0, 1], 25), np.repeat(self.bounds[1, 0], 25)]),
-                                np.vstack([np.linspace(self.bounds[0, 0], self.bounds[0, 1], 25),
-                                           np.repeat(self.bounds[1, 1], 25)]),
-                                np.vstack([np.repeat(self.bounds[0, 0], 25),
-                                           np.linspace(self.bounds[1, 0], self.bounds[1, 1], 25)]),
-                                np.vstack([np.repeat(self.bounds[0, 1], 25),
-                                           np.linspace(self.bounds[1, 0], self.bounds[1, 1], 25)])]).transpose()
+            if self.bounds.shape[0] == 2:
+                edges = np.hstack([np.vstack(
+                    [np.linspace(self.bounds[0, 0], self.bounds[0, 1], 25), np.repeat(self.bounds[1, 0], 25)]),
+                                    np.vstack([np.linspace(self.bounds[0, 0], self.bounds[0, 1], 25),
+                                               np.repeat(self.bounds[1, 1], 25)]),
+                                    np.vstack([np.repeat(self.bounds[0, 0], 25),
+                                               np.linspace(self.bounds[1, 0], self.bounds[1, 1], 25)]),
+                                    np.vstack([np.repeat(self.bounds[0, 1], 25),
+                                               np.linspace(self.bounds[1, 0], self.bounds[1, 1], 25)])]).transpose()
+            elif self.bounds.shape[0] == 1:
+                edges = np.array([[self.bounds[0, 0]], [self.bounds[0, 1]]])
         elif self.type == 'circle' or self.type == 'circle-ee':
             edges = np.vstack([self.center[0] + self.radius * np.cos(np.linspace(0, 2 * np.pi, 100)),
                                 self.center[1] + self.radius * np.sin(
