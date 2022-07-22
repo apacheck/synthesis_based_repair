@@ -22,7 +22,7 @@ if __name__ == "__main__":
     parser.add_argument("--sym_opts", help="Opts involving spec writing and repair", required=True)
     parser.add_argument("--dmp_opts", help="Opts dmps", required=True)
     parser.add_argument("--n_seeds", help="Number of seeds to run", required=False, default=1, type=int)
-    parser.add_argument("--loss_threshold", help="Loss threshold to accept change", required=False, default=0.9, type=float)
+    parser.add_argument("--loss_threshold", help="Loss threshold to accept change", required=False, default=0.8, type=float)
     args = parser.parse_args()
 
     file_names = json_load_wrapper(args.file_names)

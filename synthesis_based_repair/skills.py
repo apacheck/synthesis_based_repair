@@ -10,7 +10,7 @@ import json
 
 class Skill:
 
-    def __init__(self, info, suggestion=False, stretch_eff=0.1):
+    def __init__(self, info, suggestion=False, stretch_eff=0.23):
         self.name = info['name']
         self.suggestion = suggestion
         self.stretch_eff = stretch_eff
@@ -59,8 +59,8 @@ class Skill:
         z = data[:, 4]
         theta_wrist = data[:, 5]
 
-        x_ee = self.stretch_eff * np.cos(theta + theta_wrist) + arm * np.sin(theta) + x
-        y_ee = self.stretch_eff * np.sin(theta + theta_wrist) - arm * np.cos(theta) + y
+        x_ee = self.stretch_eff * np.cos(theta + theta_wrist - np.pi/2) + arm * np.cos(theta - np.pi/2) + x
+        y_ee = self.stretch_eff * np.sin(theta + theta_wrist - np.pi/2) + arm * np.sin(theta - np.pi/2) + y
         z_ee = z
 
         out = np.hstack((x_ee[:, np.newaxis], y_ee[:, np.newaxis], z_ee[:, np.newaxis]))
@@ -189,6 +189,49 @@ class Skill:
                 ax[ii, jj+1].set_xticks([])
                 ax[ii, jj+1].set_yticks([])
         return fig, ax
+
+    def get_ee_final_symbol(self):
+        for ee in ['ee_table_1', 'ee_table_2', 'ee_table_3']:
+            if self.final_posts[0][ee]:
+                return ee
+
+    def get_ee_final_region(self):
+        ee = self.get_ee_final_symbol()
+        return ee.split("_")[-1]
+
+    def get_final_robot_pose(self, joint_state, world_state, symbols):
+        world_state = np.squeeze(world_state)
+        if self.name.split("_")[0] in ['skillStretch3to1', 'skillStretch1to2', 'skillStretch2to3']:
+            ee_final_region = self.get_ee_final_region()
+            ee_final_symbol = self.get_ee_final_symbol()
+            if self.final_posts[0]['duck_a_' + ee_final_region] and self.final_posts[0]['duck_a_table']:
+                final_ee_xyz = np.copy(world_state[6:9])
+                final_ee_xyz[2] += 0.2
+            elif self.final_posts[0]['duck_b_' + ee_final_region] and self.final_posts[0]['duck_b_table']:
+                final_ee_xyz = np.copy(world_state[9:12])
+                final_ee_xyz[2] += 0.2
+            else:
+                final_ee_xyz = symbols[ee_final_symbol].sample_from()
+            final_robot = np.zeros([6])
+            if ee_final_region == "1":
+                final_robot[0] = final_ee_xyz[0] - 0.04
+                final_robot[1] = final_ee_xyz[1] - 0.75
+                final_robot[2] = np.pi
+            elif ee_final_region == "2":
+                final_robot[0] = final_ee_xyz[0] + 0.75
+                final_robot[1] = final_ee_xyz[1] - 0.04
+                final_robot[2] = 3 * np.pi / 2
+            elif ee_final_region == "3":
+                final_robot[0] = final_ee_xyz[0] + 0.04
+                final_robot[1] = final_ee_xyz[1] + 0.75
+                final_robot[2] = 0
+            final_robot[3] = 0.75 - self.stretch_eff
+            final_robot[4] = 0.9
+            final_robot[5] = 0
+        else:
+            final_robot = np.copy(joint_state)
+
+        return final_robot
 
 
 def write_skills_str(skills, file_str, only_suggestions=False, include_false=False):

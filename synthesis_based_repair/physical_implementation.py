@@ -89,15 +89,15 @@ def training_loop(train_set, val_set, constraint_list, enforce_constraint, adver
                     ax[1] = fig.add_subplot(1, 3, 2, projection='3d')
                     ax[2] = fig.add_subplot(1, 3, 3, projection='3d')
                     ax = np.array(ax)
-                plot_one_skill_trajectories_and_symbols_numpy(None, None, rollouts.cpu().detach().numpy(), opts['symbols'], opts['plot_limits'], ax=ax[0], color='b', linestyle='--')
+                plot_one_skill_trajectories_and_symbols_numpy(None, None, rollouts.cpu().detach().numpy(), None, opts['plot_limits'], ax=ax[0], color='b', linestyle='--')
                 ax[0].set_title("Initial Trajectories")
                 if arg_constraint is not None:
-                    plot_one_skill_trajectories_and_symbols_numpy(None, None, learned_rollouts.cpu().detach().numpy()[c_sat.cpu().detach().numpy().astype(bool)], opts['symbols'], opts['plot_limits'], ax=ax[1], color='g')
-                    plot_one_skill_trajectories_and_symbols_numpy(None, None, learned_rollouts.cpu().detach().numpy()[np.logical_not(c_sat.cpu().detach().numpy().astype(bool))], opts['symbols'], opts['plot_limits'], ax=ax[-1], color='r')
+                    plot_one_skill_trajectories_and_symbols_numpy(None, None, learned_rollouts.cpu().detach().numpy()[c_sat.cpu().detach().numpy().astype(bool)], None, opts['plot_limits'], ax=ax[1], color='g')
+                    plot_one_skill_trajectories_and_symbols_numpy(None, None, learned_rollouts.cpu().detach().numpy()[np.logical_not(c_sat.cpu().detach().numpy().astype(bool))], None, opts['plot_limits'], ax=ax[-1], color='r')
                     ax[1].set_title("Satisfy Constraint: {:.2f}%".format(100 * np.mean(c_sat.cpu().detach().numpy())))
                     ax[2].set_title("Violate Constraint: {:.2f}%".format(100 * (1 - np.mean(c_sat.cpu().detach().numpy()))))
                 else:
-                    plot_one_skill_trajectories_and_symbols_numpy(None, None, learned_rollouts.cpu().detach().numpy(), opts['symbols'], opts['plot_limits'], ax=ax[1], color='g')
+                    plot_one_skill_trajectories_and_symbols_numpy(None, None, learned_rollouts.cpu().detach().numpy(), None, opts['plot_limits'], ax=ax[1], color='g')
                     ax[1].set_title("Trajectories from new DMP")
                 # plot_one_skill_trajectories_and_symbols_numpy(None, None, rollouts.cpu().detach().numpy(),
                 #                                               opts['symbols'], opts['plot_limits'], ax=ax, color='b',

@@ -310,12 +310,22 @@ def generate_trajectories_stretch(folder_demo_trajectories, n_train_trajs, n_val
         x_end = -1.45 - 0.1 * np.random.random(1)
         y_end = 0.05 - 0.1 * np.random.random(1)
 
-        data[:15, 0] = np.linspace(x_start[0], x_end[0], 15)
-        data[:15, 1] = y_start
-        data[15:, 0] = x_end
-        data[15:, 1] = np.linspace(y_start[0], y_end[0], 5)
-        data[:15, 2] = np.pi
-        data[15:, 2] = 3*np.pi/2
+        # data[:15, 0] = np.linspace(x_start[0], x_end[0], 15)
+        # data[:15, 1] = y_start
+        # data[15:, 0] = x_end
+        # data[15:, 1] = np.linspace(y_start[0], y_end[0], 5)
+        # data[:15, 2] = np.pi
+        # data[15:, 2] = 3*np.pi/2
+        # data[:, 3] = l_start
+        # data[:, 4] = z_start
+        # data[:, 5] = t_wrist_start
+
+        data[:10, 0] = np.linspace(x_start[0], x_end[0] + 0.5, 10)
+        data[:10, 1] = y_start
+        data[10:, 0] = (x_end + 0.5) + 0.5 * np.cos(np.linspace(-np.pi/2, -np.pi, 10))
+        data[10:, 1] = y_end - 0.5 * np.sin(np.linspace(-np.pi/2, -np.pi, 10))
+        data[:10, 2] = np.pi
+        data[10:, 2] = np.linspace(np.pi, 3*np.pi/2, 10)
         data[:, 3] = l_start
         data[:, 4] = z_start
         data[:, 5] = t_wrist_start
@@ -341,12 +351,23 @@ def generate_trajectories_stretch(folder_demo_trajectories, n_train_trajs, n_val
         x_start = -1.45 - 0.1 * np.random.random(1)
         y_start = 0.05 - 0.1 * np.random.random(1)
 
-        data[:5, 0] = x_start
-        data[:5, 1] = np.linspace(y_start[0], y_end[0], 5)
-        data[5:, 0] = np.linspace(x_start[0], x_end[0], 15)
-        data[5:, 1] = y_end
-        data[:5, 2] = 3 * np.pi / 2
-        data[5:, 2] = 0
+        # data[:5, 0] = x_start
+        # data[:5, 1] = np.linspace(y_start[0], y_end[0], 5)
+        # data[5:, 0] = np.linspace(x_start[0], x_end[0], 15)
+        # data[5:, 1] = y_end
+        # data[:5, 2] = 3 * np.pi / 2
+        # data[5:, 2] = 0
+        # data[:, 3] = l_start
+        # data[:, 4] = z_start
+        # data[:, 5] = t_wrist_start
+
+        data[:10, 0] = (x_start + 0.5) + 0.5 * np.cos(np.linspace(np.pi, 3 * np.pi/2, 10))
+        data[:10, 1] = y_start + 0.5 * np.sin(np.linspace(np.pi, 3 * np.pi/2, 10))
+        data[10:, 0] = np.linspace(data[19, 0], x_end[0], 10)
+        data[10:, 1] = data[9, 1]
+
+        data[:10, 2] = np.linspace(3 * np.pi/2, 2 * np.pi, 10)
+        data[10:, 2] = 2 * np.pi
         data[:, 3] = l_start
         data[:, 4] = z_start
         data[:, 5] = t_wrist_start
@@ -370,15 +391,23 @@ def generate_trajectories_stretch(folder_demo_trajectories, n_train_trajs, n_val
         y_start = -0.45 - 0.1 * np.random.random(1)
         y_end = 0.45 + 0.1 * np.random.random(1)
 
-        data[:7, 0] = np.linspace(x_start[0], x_mid[0], 7)
-        data[:7, 1] = y_start
-        data[7:13, 0] = x_mid
-        data[7:13, 1] = np.linspace(y_start[0], y_end[0], 6)
-        data[13:, 0] = np.linspace(x_mid[0], x_end[0], 7)
-        data[13:, 1] = y_end
-        data[:7, 2] = 0
-        data[7:13, 2] = np.pi / 2
-        data[13:, 2] = np.pi
+        # data[:7, 0] = np.linspace(x_start[0], x_mid[0], 7)
+        # data[:7, 1] = y_start
+        # data[7:13, 0] = x_mid
+        # data[7:13, 1] = np.linspace(y_start[0], y_end[0], 6)
+        # data[13:, 0] = np.linspace(x_mid[0], x_end[0], 7)
+        # data[13:, 1] = y_end
+        # data[:7, 2] = 0
+        # data[7:13, 2] = np.pi / 2
+        # data[13:, 2] = np.pi
+        # data[:, 3] = l_start
+        # data[:, 4] = z_start
+        # data[:, 5] = t_wrist_start
+
+        data[:, 0] = x_start + np.abs(y_start) * np.cos(np.linspace(- np.pi/2, np.pi/2, 20))
+        data[:, 1] = 0 + np.abs(y_start) * np.sin(np.linspace(-np.pi/2, np.pi/2, 20))
+
+        data[:, 2] = np.linspace(0, np.pi, 20)
         data[:, 3] = l_start
         data[:, 4] = z_start
         data[:, 5] = t_wrist_start
@@ -554,7 +583,7 @@ def transformStretchSkillToEntireSpaceBaseMoves(folder_trajectories, skill_name,
                             make_folders(folder_trajectories, [new_skill_name])
                             save_data(folder_demo_skill_new, data, data[0, :], data[-1, :], ii, n_start_rows, n_train_trajs,
                                       dim=12)
-            if duck_in_ee is 'a':
+            if duck_in_ee == 'a':
                 table_ducks = dict()
                 for duck_b_loc in duck_b_locs:
                     table_ducks["b"] = duck_b_loc
@@ -566,7 +595,7 @@ def transformStretchSkillToEntireSpaceBaseMoves(folder_trajectories, skill_name,
                     make_folders(folder_trajectories, [new_skill_name])
                     save_data(folder_demo_skill_new, data, data[0, :], data[-1, :], ii, n_start_rows, n_train_trajs,
                               dim=12)
-            if duck_in_ee is 'b':
+            if duck_in_ee == 'b':
                 table_ducks = dict()
                 for duck_a_loc in duck_a_locs:
                     table_ducks["a"] = duck_a_loc
@@ -767,7 +796,7 @@ if __name__ == "__main__":
     for skill in skill_names:
         dmp_opts['skill_name'] = skill
         dmp_opts['demo_folder'] = folder_trajectories + '/' + skill + '/'
-        # _, _, _ = run_elaborateDMP(None, skill, None, None, symbols, workspace_bnds, dmp_opts)
+        _, _, _ = run_elaborateDMP(None, skill, None, None, symbols, workspace_bnds, dmp_opts)
 
     ################################################################
     # Generate the symbolic/abstract representation of the skills  #

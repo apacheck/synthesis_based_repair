@@ -339,7 +339,7 @@ if __name__ == "__main__":
                 'demo_folder': folder_demo_trajectories,
                 'basis_fs': 30,
                 'dmp_folder': '../data/dmps/',
-                'dt': 0.01,
+                'dt': 0.05,
                 'c_weight': 50,
                 'm_weight': 1,
                 'epsilon': 1E-6,
