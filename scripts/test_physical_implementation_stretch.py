@@ -70,7 +70,7 @@ if __name__ == "__main__":
     dmp_opts['previous_skill_name'] = dict_to_formula(suggestion['original_skill'], include_false=False)
     dmp_opts['skill_name'] = dict_to_formula(suggestion['new_skill'], include_false=False) + "_" + str(
         iteration_count) + "_new"
-    _, val_losses, int_sat = run_elaborateDMP(dmp_opts['previous_skill_name'],
+    _, val_losses, int_sat = run_elaborateDMP(dmp_opts['previous_skill_name'].split('_')[0],
                                                         dmp_opts['skill_name'],
                                                         suggestion, user_spec['hard_constraints'],
                                                         symbols, workspace_bnds, dmp_opts)

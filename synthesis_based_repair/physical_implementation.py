@@ -28,11 +28,29 @@ def rollout_error(output_roll, target_roll):
     return torch.norm(output_roll - target_roll, dim=2).mean()
 
 
-def training_loop(train_set, val_set, constraint_list, enforce_constraint, adversarial, t_pose_hists, results_folder, intermediate_constraints, opts):
+def training_loop(train_set, val_set, arg_constraint, enforce_constraint, adversarial, results_folder, opts, do_plot=True):
+    """ Trains the weights of the dmp to satisfy the constraint while remaining close to the original trajectory.
+
+
+
+    :param train_set:
+    :param val_set:
+    :param constraint_list:
+    :param enforce_constraint:
+    :param adversarial:
+    :param t_pose_hists:
+    :param results_folder:
+    :param intermediate_constraints:
+    :param opts:
+    :return:
+    """
+
+    # Creates the model to learn the dmp. If there is a previous skill being modified we can use for a basis, starts
+    # with that
     model = DMPNN(opts['start_dimension'], 1024, opts['dimension'], opts['basis_fs']).to(DEVICE)
     if opts['use_previous']:
         model.load_state_dict(torch.load(opts['dmp_folder'] + opts['previous_skill_name'] + ".pt"))
-    # model = DMPNN(in_dim, 1024, t_pose_hists.shape[2], basis_fs).to(DEVICE)
+
     optimizer = optim.Adam(model.parameters())
     loss_fn = rollout_error
     train_loader = DataLoader(train_set, shuffle=True, batch_size=32)
@@ -40,80 +58,54 @@ def training_loop(train_set, val_set, constraint_list, enforce_constraint, adver
         val_loader = DataLoader(val_set, shuffle=False, batch_size=32)
     else:
         val_loader = None
-
     train_losses, val_losses = [], []
 
-    def batch_learn(arg_constraint, data_loader, enf_c, adv, optimize=False, do_plot=False, only_sat=False):
-        # Losses are:
-        # [0] main_loss = how close it is to the old trajectories
-        # [1] constraint_loss = how it satisfies the ltl constraint
-        # [2] full_loss = combination of main_loss and constraint_loss
-        # [3] What percent of trajectories satisfy the ltl constraint
+    def batch_learn(arg_constraint, data_loader, enf_c, adv, optimize=False):
+        """ Performs the learning for the weights of the dmp
+
+        Takes in the constraints and data and performs learning. Accesses the opt and model loaded in the outside
+        function. Returns the loss, learned rollouts, and a mask of the rollouts that satisfy the constraint
+
+        Args:
+            arg_constraint:
+            data_loader:
+            enf_c:
+            adv:
+            optimize:
+
+        Return:
+            Losses are:
+                [0] main_loss = how close it is to the old trajectories
+                [1] constraint_loss = how it satisfies the ltl constraint
+                [2] full_loss = combination of main_loss and constraint_loss
+                [3] What percent of trajectories satisfy the ltl constraint
+            learned_rollouts
+            constraint_satisfaction
+        """
+
         losses = []
+        learned_rollouts_out = None
+        c_sat_out = None
         for batch_idx, (starts, rollouts) in enumerate(data_loader):
             batch_size, T, dims = rollouts.shape
 
+            # Rollout the dmp with the learned weights and find the difference between the original and the learned
+            # trajectories
             learned_weights = model(starts)
             dmp = DMP(opts['basis_fs'], opts['dt'], dims)
             learned_rollouts = dmp.rollout_torch(starts[:, 0], starts[:, -1], learned_weights)[0]
-
             main_loss = loss_fn(learned_rollouts, rollouts)
 
+            # Evaluate how well the learned rollouts satisfy the constraint. All of them satisfy the constraint if
+            # there is no constraint
             if arg_constraint is None:
-                c_loss, c_sat = torch.tensor(0), torch.tensor(0)
+                c_loss, c_sat = torch.zeros([starts.shape[0]]), torch.ones([starts.shape[0]])
             else:
                 c_loss, c_sat = oracle.evaluate_constraint(
                     starts, rollouts, arg_constraint, model, dmp.rollout_torch, adv)
 
-            # Find the propositions that are visited during skill execution
-            if do_plot and arg_constraint is not None:
-                print("Trajectories that violate the specification")
-                for rr, rollout in enumerate(learned_rollouts.cpu().detach().numpy()):
-                    if not c_sat.cpu().detach().numpy().astype(bool)[rr]:
-                        traj_syms = find_traj_in_syms(rollout, opts['symbols'])
-                        print("Trajectory {}: {}".format(rr, dict_to_formula(traj_syms[0], include_false=False)), end=" ")
-
-                        for ss in range(0, len(traj_syms) - 1):
-                            if traj_syms[ss] != traj_syms[ss + 1]:
-                                print(" -> {}".format(dict_to_formula(traj_syms[ss+1], include_false=False)), end=" ")
-                        print("")
-
-            if do_plot:
-                # TODO: Put into a function
-                if rollouts.shape[2] == 2:
-                    _, ax = plt.subplots(ncols=3, figsize=(12,4))
-                else:
-                    fig = plt.figure(figsize=(15, 5))
-                    ax = [None, None, None]
-                    ax[0] = fig.add_subplot(1, 3, 1, projection='3d')
-                    ax[1] = fig.add_subplot(1, 3, 2, projection='3d')
-                    ax[2] = fig.add_subplot(1, 3, 3, projection='3d')
-                    ax = np.array(ax)
-                plot_one_skill_trajectories_and_symbols_numpy(None, None, rollouts.cpu().detach().numpy(), None, opts['plot_limits'], ax=ax[0], color='b', linestyle='--')
-                ax[0].set_title("Initial Trajectories")
-                if arg_constraint is not None:
-                    plot_one_skill_trajectories_and_symbols_numpy(None, None, learned_rollouts.cpu().detach().numpy()[c_sat.cpu().detach().numpy().astype(bool)], None, opts['plot_limits'], ax=ax[1], color='g')
-                    plot_one_skill_trajectories_and_symbols_numpy(None, None, learned_rollouts.cpu().detach().numpy()[np.logical_not(c_sat.cpu().detach().numpy().astype(bool))], None, opts['plot_limits'], ax=ax[-1], color='r')
-                    ax[1].set_title("Satisfy Constraint: {:.2f}%".format(100 * np.mean(c_sat.cpu().detach().numpy())))
-                    ax[2].set_title("Violate Constraint: {:.2f}%".format(100 * (1 - np.mean(c_sat.cpu().detach().numpy()))))
-                else:
-                    plot_one_skill_trajectories_and_symbols_numpy(None, None, learned_rollouts.cpu().detach().numpy(), None, opts['plot_limits'], ax=ax[1], color='g')
-                    ax[1].set_title("Trajectories from new DMP")
-                # plot_one_skill_trajectories_and_symbols_numpy(None, None, rollouts.cpu().detach().numpy(),
-                #                                               opts['symbols'], opts['plot_limits'], ax=ax, color='b',
-                #                                               linestyle='--')
-                # if arg_constraint is not None:
-                #     plot_one_skill_trajectories_and_symbols_numpy(None, None, learned_rollouts.cpu().detach().numpy()[
-                #         c_sat.cpu().detach().numpy().astype(bool)], opts['symbols'], opts['plot_limits'], ax=ax,
-                #                                                   color='g')
-                #     plot_one_skill_trajectories_and_symbols_numpy(None, None, learned_rollouts.cpu().detach().numpy()[
-                #         np.logical_not(c_sat.cpu().detach().numpy().astype(bool))], opts['symbols'],
-                #                                                   opts['plot_limits'], ax=ax, color='r')
-                # else:
-                #     plot_one_skill_trajectories_and_symbols_numpy(None, None, learned_rollouts.cpu().detach().numpy(),
-                #                                                   opts['symbols'], opts['plot_limits'], ax=ax,
-                #                                                   color='g')
-
+            # The loss includes how close the trajectories are to the original trajectory and how well they satisfy the
+            # constraint
             if enf_c:
                 full_loss = opts['m_weight'] * main_loss + opts['c_weight'] * c_loss
             else:
@@ -121,66 +113,69 @@ def training_loop(train_set, val_set, constraint_list, enforce_constraint, adver
 
             losses.append([main_loss.item(), c_loss.item(), full_loss.item(), np.mean(c_sat.cpu().detach().numpy())])
 
+            if learned_rollouts_out is None:
+                learned_rollouts_out = learned_rollouts.cpu().detach().numpy()
+                c_sat_out = c_sat.cpu().detach().numpy().astype(bool)
+            else:
+                learned_rollouts_out = np.stack([learned_rollouts_out, learned_rollouts.cpu().detach().numpy()])
+                c_sat_out = np.stack([c_sat_out, c_sat.cpu().detach().numpy().astype(bool)])
+
             if optimize:
                 optimizer.zero_grad()
                 full_loss.backward()
                 optimizer.step()
 
-        return np.mean(losses, 0, keepdims=True)
+        return np.mean(losses, 0, keepdims=True), learned_rollouts_out, c_sat_out
 
-    # int_sat = []
-    constraint_idx = 0
-    # TODO: Put into function
-    if train_loader.dataset.tensors[0].shape[2] == 2:
-        _, ax = plt.subplots(ncols=3, figsize=(12, 4))
-    else:
-        fig = plt.figure(figsize=(15, 5))
-        ax = [None, None, None]
-        ax[0] = fig.add_subplot(1, 3, 1, projection='3d')
-        ax[1] = fig.add_subplot(1, 3, 2, projection='3d')
-        ax[2] = fig.add_subplot(1, 3, 3, projection='3d')
-        ax = np.array(ax)
-    # plot_one_skill_trajectories_and_symbols_numpy(None, None, train_loader.dataset.tensors[1].cpu().detach().numpy(), opts['symbols'],
-    #                                               opts['plot_limits'], ax=ax[0], color='b', linestyle='--')
-    for epoch in range(sum(opts['n_epochs'])):
+    # We want to only find all the initial rollouts once, because we will use that multiple times
+    all_rollouts = None
+    for _, rollouts in train_loader:
+        if all_rollouts is None:
+            all_rollouts = np.copy(rollouts.cpu().detach().numpy())
+        else:
+            all_rollouts = np.stack([all_rollouts, rollouts.cpu().detach().numpy()])
+
+    for epoch in range(opts["n_epochs"][0]):
         epoch_start = time.time()
-        do_plot = False
-        if (epoch + 1) % 1 == 0 or epoch == 0:
-            do_plot = True
-        # if (epoch) == opts['n_epochs'] / 2:
-        #     opts['c_weight'] = opts['c_weight'] * 10
 
         # Train loop
         model.train()
-        if epoch > sum(opts['n_epochs'][:constraint_idx]) + opts['n_epochs'][constraint_idx]:
-            constraint_idx += 1
-        avg_train_loss = batch_learn(constraint_list[constraint_idx], train_loader, enforce_constraint, adversarial, True, do_plot=do_plot)
-        if do_plot:
-            plt.savefig(results_folder + "/train_epoch_" + str(epoch) + ".png")
+
+        avg_train_loss, learned_rollouts, c_sat = batch_learn(arg_constraint, train_loader, enforce_constraint, adversarial, optimize=True)
         train_losses.append(avg_train_loss[0])
 
-        # Validation Loop
-        if val_loader is not None and (epoch == sum(opts['n_epochs'])-1):
-            model.eval()
-            avg_val_loss = batch_learn(constraint_list[constraint_idx], val_loader, True, False, False, do_plot=do_plot)
-            if do_plot:
-                plt.savefig(results_folder + "/val_epoch_" + str(epoch) + ".png")
-            val_losses.append(avg_val_loss[0])
+        if do_plot:
+            # plot_evaluated_trajectories(ax, all_rollouts, learned_rollouts, c_sat, plot_limits)
+            # TODO: Put into function
+            if train_loader.dataset.tensors[0].shape[2] == 2:
+                _, ax = plt.subplots(ncols=3, figsize=(12, 4))
+            else:
+                fig = plt.figure(figsize=(15, 5))
+                ax = [None, None, None]
+                ax[0] = fig.add_subplot(1, 3, 1, projection='3d')
+                ax[1] = fig.add_subplot(1, 3, 2, projection='3d')
+                ax[2] = fig.add_subplot(1, 3, 3, projection='3d')
+                ax = np.array(ax)
+            if rollouts.shape[2] == 2:
+                _, ax = plt.subplots(ncols=3, figsize=(12,4))
+            else:
+                fig = plt.figure(figsize=(15, 5))
+                ax = [None, None, None]
+                ax[0] = fig.add_subplot(1, 3, 1, projection='3d')
+                ax[1] = fig.add_subplot(1, 3, 2, projection='3d')
+                ax[2] = fig.add_subplot(1, 3, 3, projection='3d')
+                ax = np.array(ax)
+            plot_one_skill_trajectories_and_symbols_numpy(None, None, all_rollouts, None, opts['plot_limits'], ax=ax[0], color='b', linestyle='--')
+            ax[0].set_title("Initial Trajectories")
+            plot_one_skill_trajectories_and_symbols_numpy(None, None, learned_rollouts[c_sat], None, opts['plot_limits'], ax=ax[1], color='g')
+            plot_one_skill_trajectories_and_symbols_numpy(None, None, learned_rollouts[np.logical_not(c_sat)], None, opts['plot_limits'], ax=ax[-1], color='r')
+            ax[1].set_title("Satisfy Constraint: {:.2f}%".format(100 * np.mean(c_sat)))
+            ax[2].set_title("Violate Constraint: {:.2f}%".format(100 * (1 - np.mean(c_sat))))
+            plt.savefig(results_folder + "/train_epoch_" + str(epoch) + ".png")
 
-            print("e{}\t t: {} v: {}".format(epoch, avg_train_loss[0, :], avg_val_loss[0, :]))
-        else:
-            print("e{}\t t: {}".format(epoch, avg_train_loss[0, :]))
+        print("epoch #{:3.0f}\t train loss: {} \tepoch time: {:1.2f}".format(epoch, avg_train_loss[0, :], time.time() - epoch_start))
 
-        # # Determine which part of the internal constraints are satisfied
-        # print("Intermediate satisfaction: ")
-        # for int_constraint in intermediate_constraints:
-        #     epoch_int_sat = batch_learn(int_constraint, val_loader, True, False, False, do_plot=False, only_sat=True)
-        #     print("{} : {}% satisfy".format(int_constraint.string(), 100 * epoch_int_sat[0][3]))
-
-        # if epoch % 10 == 0:
-        #     torch.save(model.state_dict(), join(results_folder, "learned_model_epoch_{}.pt".format(epoch)))
         plt.close('all')
-        print("epoch time: {}".format(time.time() - epoch_start))
 
     os.makedirs(opts['dmp_folder'], exist_ok=True)
     torch.save(model.state_dict(), join(opts['dmp_folder'], opts['skill_name'] + ".pt"))
@@ -188,20 +183,19 @@ def training_loop(train_set, val_set, constraint_list, enforce_constraint, adver
     np.savetxt(join(opts['dmp_folder'] + "/" + opts['skill_name'], "train_losses.txt"), train_losses)
     np.savetxt(join(opts['dmp_folder'] + "/" + opts['skill_name'], "val_losses.txt"), val_losses)
 
-    # Check time
-    for batch_idx, (starts, rollouts) in enumerate(train_loader):
-        _, _, dims = rollouts.shape
-        learned_weights = model(starts)
-        dmp = DMP(opts['basis_fs'], opts['dt'], dims)
-        learned_rollouts = dmp.rollout_torch(starts[:, 0], starts[:, -1], learned_weights)[0]
-        # for kk, learned_rollout in enumerate(learned_rollouts):
-        #     plot_one_traj_vs_time(opts['skill_name'], learned_rollout.cpu().detach().numpy(), None, None, None, None, None)
-        #     plt.savefig(results_folder + "/time_" + str(kk) + ".png")
-        #     plt.close()
+    # Validation Loop
+    if val_loader is not None:
+        model.eval()
+        avg_val_loss, learned_rollouts, c_sat = batch_learn(arg_constraint, val_loader, enf_c, adversarial, optimize=False)
+        # if do_plot:
+        #     plt.savefig(results_folder + "/val_epoch_" + str(epoch) + ".png")
+        val_losses.append(avg_val_loss[0])
 
+    # Determine how well the intermediate constraints are satisfied
     int_sat = []
-    for int_constraint in intermediate_constraints:
-        int_sat.append(batch_learn(int_constraint, val_loader, True, False, False, do_plot=False, only_sat=True))
+    # for int_constraint in intermediate_constraints:
+    #     int_sat.append(batch_learn(int_constraint, val_loader, True, False, False, do_plot=False, only_sat=True))
+    #     print("{} : {}% satisfy".format(int_constraint.string(), 100 * epoch_int_sat[0][3]))
 
     return model, val_losses, int_sat
 
@@ -416,12 +410,12 @@ def run_elaborateDMP(old_skill, new_skill, suggestion, hard_constraints, symbols
         shutil.copytree(src, dst)
 
     # t_start_states, t_pose_hists = load_dmp_demos(opts['demo_folder'] + "/train", n_interp_pts=int(1/opts['dt']), opts=opts)
-    t_start_states, t_pose_hists = load_dmp_demos(opts['demo_folder'] + "/train")
+    t_start_states, t_pose_hists = load_dmp_demos(opts['demo_folder'] + "/train", n_points=int(1/opts['dt']))
     t_start_states, t_pose_hists = np_to_pgpu(t_start_states), np_to_pgpu(t_pose_hists)
     train_set = TensorDataset(t_start_states, t_pose_hists)
 
     # v_start_states, v_pose_hists = load_dmp_demos(opts['demo_folder'] + "/val", n_interp_pts=int(1/opts['dt']), opts=opts)
-    v_start_states, v_pose_hists = load_dmp_demos(opts['demo_folder'] + "/val")
+    v_start_states, v_pose_hists = load_dmp_demos(opts['demo_folder'] + "/val", n_points=int(1/opts['dt']))
     v_start_states, v_pose_hists = np_to_pgpu(v_start_states), np_to_pgpu(v_pose_hists)
     val_set = TensorDataset(v_start_states, v_pose_hists)
 
@@ -460,7 +454,7 @@ def run_elaborateDMP(old_skill, new_skill, suggestion, hard_constraints, symbols
                                                                                    workspace_bnds_device,
                                                                                    opts['epsilon']))
 
-    learned_model, val_losses, intermediate_sat = training_loop(train_set, val_set, constraint_list, enforce, adversarial, t_pose_hists, results_folder, intermediate_constraints, opts)
+    learned_model, val_losses, intermediate_sat = training_loop(train_set, val_set, constraint_list[0], enforce, adversarial, results_folder, opts)
 
     return learned_model, val_losses, intermediate_sat
 

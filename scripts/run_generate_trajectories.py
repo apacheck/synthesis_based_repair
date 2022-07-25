@@ -298,7 +298,7 @@ def generate_trajectories_stretch(folder_demo_trajectories, n_train_trajs, n_val
     skill_name = "skillStretch1to2"
     folder_demo_skill = folder_demo_trajectories + "/" + skill_name
     for ii in range(n_train_trajs + n_val_trajs):
-        data = np.zeros([20, 6])
+        data = np.zeros([100, 6])
 
         l_start = np.array([0.57])
         z_start = 0.8 + 0.2 * np.random.random(1)
@@ -320,12 +320,12 @@ def generate_trajectories_stretch(folder_demo_trajectories, n_train_trajs, n_val
         # data[:, 4] = z_start
         # data[:, 5] = t_wrist_start
 
-        data[:10, 0] = np.linspace(x_start[0], x_end[0] + 0.5, 10)
-        data[:10, 1] = y_start
-        data[10:, 0] = (x_end + 0.5) + 0.5 * np.cos(np.linspace(-np.pi/2, -np.pi, 10))
-        data[10:, 1] = y_end - 0.5 * np.sin(np.linspace(-np.pi/2, -np.pi, 10))
-        data[:10, 2] = np.pi
-        data[10:, 2] = np.linspace(np.pi, 3*np.pi/2, 10)
+        data[:50, 0] = np.linspace(x_start[0], x_end[0] + 0.5, 50)
+        data[:50, 1] = y_start
+        data[50:, 0] = (x_end + 0.5) + 0.5 * np.cos(np.linspace(-np.pi/2, -np.pi, 50))
+        data[50:, 1] = y_end - 0.5 * np.sin(np.linspace(-np.pi/2, -np.pi, 50))
+        data[:50, 2] = np.pi
+        data[50:, 2] = np.linspace(np.pi, 3*np.pi/2, 50)
         data[:, 3] = l_start
         data[:, 4] = z_start
         data[:, 5] = t_wrist_start

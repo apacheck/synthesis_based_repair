@@ -27,7 +27,7 @@ if __name__ == "__main__":
     for skill_name in file_names["skill_names"]:
         original_skills[skill_name] = skills_all[skill_name]
 
-    # for skill_name in file_names["skill_names"]:
-    #     original_skills[skill_name + "b"] = copy.deepcopy(original_skills[skill_name])
+    for skill_name in file_names["skill_names"]:
+        original_skills[skill_name + "b"] = copy.deepcopy(original_skills[skill_name])
 
     write_spec(file_names["file_structured_slugs"], symbols, original_skills, user_spec, user_spec['change_cons'], user_spec['not_allowed_repair'], sym_opts)
