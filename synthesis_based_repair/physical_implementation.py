@@ -14,206 +14,14 @@ from torch.utils.data import TensorDataset, DataLoader
 import numpy as np
 import matplotlib.pyplot as plt
 import dl2_lfd.ltl_diff.ltldiff as ltd
+from dl2_lfd.elaborateDMP import training_loop
 import time
 import copy
-from synthesis_based_repair.visualization import plot_one_skill_trajectories_and_symbols_numpy
 import shutil
 from synthesis_based_repair.skills import find_traj_in_syms
 from synthesis_based_repair.tools import dict_to_formula
 
 DEVICE = "cpu"
-
-
-def rollout_error(output_roll, target_roll):
-    return torch.norm(output_roll - target_roll, dim=2).mean()
-
-
-def training_loop(train_set, val_set, arg_constraint, enforce_constraint, adversarial, results_folder, opts, do_plot=True):
-    """ Trains the weights of the dmp to satisfy the constraint while remaining close to the original trajectory.
-
-
-
-    :param train_set:
-    :param val_set:
-    :param constraint_list:
-    :param enforce_constraint:
-    :param adversarial:
-    :param t_pose_hists:
-    :param results_folder:
-    :param intermediate_constraints:
-    :param opts:
-    :return:
-    """
-
-    # Creates the model to learn the dmp. If there is a previous skill being modified we can use for a basis, starts
-    # with that
-    model = DMPNN(opts['start_dimension'], 1024, opts['dimension'], opts['basis_fs']).to(DEVICE)
-    if opts['use_previous']:
-        model.load_state_dict(torch.load(opts['dmp_folder'] + opts['previous_skill_name'] + ".pt"))
-
-    optimizer = optim.Adam(model.parameters())
-    loss_fn = rollout_error
-    train_loader = DataLoader(train_set, shuffle=True, batch_size=32)
-    if val_set is not None:
-        val_loader = DataLoader(val_set, shuffle=False, batch_size=32)
-    else:
-        val_loader = None
-    train_losses, val_losses = [], []
-
-    def batch_learn(arg_constraint, data_loader, enf_c, adv, optimize=False):
-        """ Performs the learning for the weights of the dmp
-
-        Takes in the constraints and data and performs learning. Accesses the opt and model loaded in the outside
-        function. Returns the loss, learned rollouts, and a mask of the rollouts that satisfy the constraint
-
-        Args:
-            arg_constraint:
-            data_loader:
-            enf_c:
-            adv:
-            optimize:
-
-        Return:
-            Losses are:
-                [0] main_loss = how close it is to the old trajectories
-                [1] constraint_loss = how it satisfies the ltl constraint
-                [2] full_loss = combination of main_loss and constraint_loss
-                [3] What percent of trajectories satisfy the ltl constraint
-            learned_rollouts
-            constraint_satisfaction
-        """
-
-        losses = []
-        learned_rollouts_out = None
-        c_sat_out = None
-        for batch_idx, (starts, rollouts) in enumerate(data_loader):
-            batch_size, T, dims = rollouts.shape
-
-            # Rollout the dmp with the learned weights and find the difference between the original and the learned
-            # trajectories
-            learned_weights = model(starts)
-            dmp = DMP(opts['basis_fs'], opts['dt'], dims)
-            learned_rollouts = dmp.rollout_torch(starts[:, 0], starts[:, -1], learned_weights)[0]
-            main_loss = loss_fn(learned_rollouts, rollouts)
-
-            # Evaluate how well the learned rollouts satisfy the constraint. All of them satisfy the constraint if
-            # there is no constraint
-            if arg_constraint is None:
-                c_loss, c_sat = torch.zeros([starts.shape[0]]), torch.ones([starts.shape[0]])
-            else:
-                c_loss, c_sat = oracle.evaluate_constraint(
-                    starts, rollouts, arg_constraint, model, dmp.rollout_torch, adv)
-
-            # The loss includes how close the trajectories are to the original trajectory and how well they satisfy the
-            # constraint
-            if enf_c:
-                full_loss = opts['m_weight'] * main_loss + opts['c_weight'] * c_loss
-            else:
-                full_loss = main_loss
-
-            losses.append([main_loss.item(), c_loss.item(), full_loss.item(), np.mean(c_sat.cpu().detach().numpy())])
-
-            if learned_rollouts_out is None:
-                learned_rollouts_out = learned_rollouts.cpu().detach().numpy()
-                c_sat_out = c_sat.cpu().detach().numpy().astype(bool)
-            else:
-                learned_rollouts_out = np.stack([learned_rollouts_out, learned_rollouts.cpu().detach().numpy()])
-                c_sat_out = np.stack([c_sat_out, c_sat.cpu().detach().numpy().astype(bool)])
-
-            if optimize:
-                optimizer.zero_grad()
-                full_loss.backward()
-                optimizer.step()
-
-        return np.mean(losses, 0, keepdims=True), learned_rollouts_out, c_sat_out
-
-    # We want to only find all the initial rollouts once, because we will use that multiple times
-    all_rollouts = None
-    for _, rollouts in train_loader:
-        if all_rollouts is None:
-            all_rollouts = np.copy(rollouts.cpu().detach().numpy())
-        else:
-            all_rollouts = np.stack([all_rollouts, rollouts.cpu().detach().numpy()])
-
-    for epoch in range(opts["n_epochs"][0]):
-        epoch_start = time.time()
-
-        # Train loop
-        model.train()
-
-        avg_train_loss, learned_rollouts, c_sat = batch_learn(arg_constraint, train_loader, enforce_constraint, adversarial, optimize=True)
-        train_losses.append(avg_train_loss[0])
-
-        if do_plot:
-            # plot_evaluated_trajectories(ax, all_rollouts, learned_rollouts, c_sat, plot_limits)
-            # TODO: Put into function
-            if train_loader.dataset.tensors[0].shape[2] == 2:
-                _, ax = plt.subplots(ncols=3, figsize=(12, 4))
-            else:
-                fig = plt.figure(figsize=(15, 5))
-                ax = [None, None, None]
-                ax[0] = fig.add_subplot(1, 3, 1, projection='3d')
-                ax[1] = fig.add_subplot(1, 3, 2, projection='3d')
-                ax[2] = fig.add_subplot(1, 3, 3, projection='3d')
-                ax = np.array(ax)
-            if rollouts.shape[2] == 2:
-                _, ax = plt.subplots(ncols=3, figsize=(12,4))
-            else:
-                fig = plt.figure(figsize=(15, 5))
-                ax = [None, None, None]
-                ax[0] = fig.add_subplot(1, 3, 1, projection='3d')
-                ax[1] = fig.add_subplot(1, 3, 2, projection='3d')
-                ax[2] = fig.add_subplot(1, 3, 3, projection='3d')
-                ax = np.array(ax)
-            plot_one_skill_trajectories_and_symbols_numpy(None, None, all_rollouts, None, opts['plot_limits'], ax=ax[0], color='b', linestyle='--')
-            ax[0].set_title("Initial Trajectories")
-            plot_one_skill_trajectories_and_symbols_numpy(None, None, learned_rollouts[c_sat], None, opts['plot_limits'], ax=ax[1], color='g')
-            plot_one_skill_trajectories_and_symbols_numpy(None, None, learned_rollouts[np.logical_not(c_sat)], None, opts['plot_limits'], ax=ax[-1], color='r')
-            ax[1].set_title("Satisfy Constraint: {:.2f}%".format(100 * np.mean(c_sat)))
-            ax[2].set_title("Violate Constraint: {:.2f}%".format(100 * (1 - np.mean(c_sat))))
-            plt.savefig(results_folder + "/train_epoch_" + str(epoch) + ".png")
-
-        print("epoch #{:3.0f}\t train loss: {} \tepoch time: {:1.2f}".format(epoch, avg_train_loss[0, :], time.time() - epoch_start))
-
-        plt.close('all')
-
-    os.makedirs(opts['dmp_folder'], exist_ok=True)
-    torch.save(model.state_dict(), join(opts['dmp_folder'], opts['skill_name'] + ".pt"))
-    os.makedirs(opts['dmp_folder'] + "/" + opts['skill_name'], exist_ok=True)
-    np.savetxt(join(opts['dmp_folder'] + "/" + opts['skill_name'], "train_losses.txt"), train_losses)
-    np.savetxt(join(opts['dmp_folder'] + "/" + opts['skill_name'], "val_losses.txt"), val_losses)
-
-    # Validation Loop
-    if val_loader is not None:
-        model.eval()
-        avg_val_loss, learned_rollouts, c_sat = batch_learn(arg_constraint, val_loader, enf_c, adversarial, optimize=False)
-        # if do_plot:
-        #     plt.savefig(results_folder + "/val_epoch_" + str(epoch) + ".png")
-        val_losses.append(avg_val_loss[0])
-
-    # Determine how well the intermediate constraints are satisfied
-    int_sat = []
-    # for int_constraint in intermediate_constraints:
-    #     int_sat.append(batch_learn(int_constraint, val_loader, True, False, False, do_plot=False, only_sat=True))
-    #     print("{} : {}% satisfy".format(int_constraint.string(), 100 * epoch_int_sat[0][3]))
-
-    return model, val_losses, int_sat
-
-
-def parse_user_symbols(arg_user_symbols):
-    syms_out = []
-    syms_split = arg_user_symbols.split(", ")
-    if len(syms_split) == 0:
-        return []
-    for one_sym in syms_split:
-        sym_split = one_sym.split(" ")
-        name = sym_split[0]
-        m = float(sym_split[1])
-        sd = float(sym_split[2])
-        var = int(sym_split[3])
-        syms_out.append([[m, sd], var, name])
-
-    return syms_out
 
 
 def generate_trajectory(skill_name, dmp_folder, symbols, workspace_bnds, suggestions_pre, suggestions_post, folder_save, opts):
@@ -265,96 +73,9 @@ def generate_trajectory(skill_name, dmp_folder, symbols, workspace_bnds, suggest
                start_pose[0, :, :], delimiter=" ")
 
 
-def generate_trajectory_baxter(skill_name, dmp_folder, symbols, workspace_bnds, suggestions_pre, suggestions_post, folder_save, opts):
-    os.makedirs(folder_save, exist_ok=True)
-    model = DMPNN(opts['start_dimension'], 1024, opts['dimension'], opts['basis_fs']).to(DEVICE)
-    model.load_state_dict(torch.load(dmp_folder + skill_name + ".pt"))
-    pre_cons = constraints.States(symbols, suggestions_pre, epsilon=opts['epsilon'], buffer=0.2)
-    post_cons = constraints.States(symbols, suggestions_post, epsilon=opts['epsilon'], buffer=0.2)
-    true_sym_start_bnds = np.zeros([opts['dimension'], 2])
-    for sym, val in suggestions_pre[np.random.randint(len(suggestions_pre))].items():
-        if val:
-            true_sym_start_bnds[symbols[sym].dims, :] = symbols[sym].bounds[symbols[sym].dims, :]
-            # true_sym_start_bnds = symbols[sym].bounds
-    true_sym_end_bnds = np.zeros([opts['dimension'], 2])
-    for sym, val in suggestions_post[np.random.randint(len(suggestions_post))].items():
-        if val:
-            true_sym_end_bnds[symbols[sym].dims, :] = symbols[sym].bounds[symbols[sym].dims, :]
-            # true_sym_end_bnds = symbols[sym].bounds
-    start_pose_in = true_sym_start_bnds[:, 0] + 0.2 * (true_sym_start_bnds[:, 1] - true_sym_start_bnds[:, 0]) + 0.6 * np.random.random(opts['dimension']) * (true_sym_start_bnds[:, 1] - true_sym_start_bnds[:, 0])
-    prec = pre_cons.condition(ltd.TermStatic(torch.from_numpy(start_pose_in[np.newaxis, :])))
-    while not prec.satisfy(0):
-        start_pose_in = true_sym_start_bnds[:, 0] + 0.2 * (
-                    true_sym_start_bnds[:, 1] - true_sym_start_bnds[:, 0]) + 0.6 * np.random.random(
-            opts['dimension']) * (true_sym_start_bnds[:, 1] - true_sym_start_bnds[:, 0])
-        prec = pre_cons.condition(ltd.TermStatic(torch.from_numpy(start_pose_in[np.newaxis, :])))
-
-    end_pose_in = true_sym_end_bnds[:, 0] + np.random.random(opts['dimension']) * (true_sym_end_bnds[:, 1] - true_sym_end_bnds[:, 0])
-    postc = post_cons.condition(ltd.TermStatic(torch.from_numpy(end_pose_in[np.newaxis, :])))
-    while not postc.satisfy(0):
-        end_pose_in = true_sym_end_bnds[:, 0] + np.random.random(opts['dimension']) * (
-                true_sym_end_bnds[:, 1] - true_sym_end_bnds[:, 0])
-        postc = post_cons.condition(ltd.TermStatic(torch.from_numpy(end_pose_in[np.newaxis, :])))
-
-    start_pose = np.zeros([1, int(opts['start_dimension']/opts['dimension']), opts['dimension']], dtype=float)
-    start_pose[0, 0, :start_pose_in.shape[0]] = start_pose_in
-    start_pose[0, -1, :end_pose_in.shape[0]] = end_pose_in
-    learned_weights = model(np_to_pgpu(start_pose))
-    # print("Learned weights: {}".format(learned_weights))
-    dmp = DMP(opts['basis_fs'], opts['dt'], opts['dimension'])
-    # print("Calculating rollout")
-    learned_rollouts, _, _ = \
-        dmp.rollout_torch(torch.tensor(start_pose[:, 0, :]).to(DEVICE), torch.tensor(start_pose[:, -1, :]).to(DEVICE), learned_weights)
-
-    np.savetxt(folder_save + "/rollout-" + opts['f_name_add'] + ".txt",
-               learned_rollouts[0][:, :].cpu().detach().numpy(), delimiter=" ")
-    np.savetxt(folder_save + "/start-state-" + opts['f_name_add'] + ".txt",
-               start_pose[0, :, :], delimiter=" ")
-
-
-def generate_trajectory_find(skill_name, dmp_folder, symbols, workspace_bnds, suggestions_pre, suggestions_post, folder_save, opts):
-    # For the stretch. Temporarily making the robot only move straight
-    os.makedirs(folder_save, exist_ok=True)
-    model = DMPNN(opts['start_dimension'], 1024, opts['dimension'], opts['basis_fs']).to(DEVICE)
-    model.load_state_dict(torch.load(dmp_folder + skill_name + ".pt"))
-    pre_cons = constraints.States(symbols, suggestions_pre, epsilon=opts['epsilon'], buffer=0.05)
-    post_cons = constraints.States(symbols, suggestions_post, epsilon=opts['epsilon'], buffer=0.05)
-    start_pose_in = workspace_bnds[:, 0] + (np.random.random(opts['dimension'])) * (workspace_bnds[:, 1] - workspace_bnds[:, 0])
-    prec = pre_cons.condition(ltd.TermStatic(torch.from_numpy(start_pose_in[np.newaxis, :])))
-    while not prec.satisfy(0):
-        start_pose_in = workspace_bnds[:, 0] + np.random.random(opts['dimension']) * (
-                    workspace_bnds[:, 1] - workspace_bnds[:, 0])
-        prec = pre_cons.condition(ltd.TermStatic(torch.from_numpy(start_pose_in[np.newaxis, :])))
-
-    end_pose_in = workspace_bnds[:, 0] + (0.1 + 0.8 * np.random.random(opts['dimension'])) * (workspace_bnds[:, 1] - workspace_bnds[:, 0])
-    end_pose_in[[1, 2, 3, 4, 5]] = start_pose_in[[1, 2, 3, 4, 5]]
-
-    # end_pose_in = np.copy(start_pose_in)
-    # end_pose_in[0, 0] += 1.5
-    postc = post_cons.condition(ltd.TermStatic(torch.from_numpy(end_pose_in[np.newaxis, :])))
-    while not postc.satisfy(0):
-        end_pose_in = workspace_bnds[:, 0] + np.random.random(opts['dimension']) * (
-                    workspace_bnds[:, 1] - workspace_bnds[:, 0])
-        end_pose_in[[1, 2, 3, 4, 5]] = start_pose_in[[1, 2, 3, 4, 5]]
-        postc = post_cons.condition(ltd.TermStatic(torch.from_numpy(end_pose_in[np.newaxis, :])))
-
-    start_pose = np.zeros([1, int(opts['start_dimension']/opts['dimension']), opts['dimension']], dtype=float)
-    start_pose[0, 0, :start_pose_in.shape[0]] = start_pose_in
-    start_pose[0, -1, :end_pose_in.shape[0]] = end_pose_in
-    learned_weights = model(np_to_pgpu(start_pose))
-    # print("Learned weights: {}".format(learned_weights))
-    dmp = DMP(opts['basis_fs'], opts['dt'], opts['dimension'])
-    # print("Calculating rollout")
-    learned_rollouts, _, _ = \
-        dmp.rollout_torch(torch.tensor(start_pose[:, 0, :]).to(DEVICE), torch.tensor(start_pose[:, -1, :]).to(DEVICE), learned_weights)
-
-    np.savetxt(folder_save + "/rollout-" + opts['f_name_add'] + ".txt",
-               learned_rollouts[0][:, :].cpu().detach().numpy(), delimiter=" ")
-    np.savetxt(folder_save + "/start-state-" + opts['f_name_add'] + ".txt",
-               start_pose[0, :, :], delimiter=" ")
-
-
-def run_elaborateDMP(old_skill, new_skill, suggestion, hard_constraints, symbols, workspace_bnds, opts):
+def learn_skill_with_constraints(skill_name, constraint, base_folder, demo_folder, old_demo_folder=None, previous_model_path=None,
+                                enforce_type="train", main_loss_weight=1.0, constraint_loss_weight=5.0, basis_fs=30,
+                                dt=0.01, n_epochs=200, output_dimension=6, epsilon=0.01, output_model_path=None):
     """
     Create a dynamic motion primite that will generate trajectories that mimic the initial trajectories while also
     obeying the hard constraints if desired
@@ -369,224 +90,164 @@ def run_elaborateDMP(old_skill, new_skill, suggestion, hard_constraints, symbols
     :return:
     """
 
-    if opts['enforce_type'] == "unconstrained":
+    if enforce_type == "unconstrained":
         enforce, adversarial = False, False
-    if opts['enforce_type'] == "train":
+    elif enforce_type == "train":
         enforce, adversarial = True, False
-    if opts['enforce_type'] == "adversarial":
+    elif enforce_type == "adversarial":
         enforce, adversarial = True, True
+    else:
+        raise Exception("enforce_type " + enforce_type + "invalid, must be unconstrained. train, or adversarial")
 
-    # Sometimes the necessary folders don't already exist. The demo folder is where the raw trajectories for the
-    # skills exist. They may not exist if we are modifying a skill and need to generate new trajectories
-    results_root = opts['base_folder'] + "/logs/generalized-exps-{}".format(t_stamp())
-    results_folder = join(results_root, "{}-{}-{}".format(new_skill, opts['enforce_type'], opts['c_weight']))
-    os.makedirs(results_folder, exist_ok=True)
+    if not ((old_demo_folder is None) == (previous_model_path is None)):
+        raise Exception("If using old data, must supply the old model as well")
 
-    # The directory can't exist when duplicating the raw trajectories
-    # os.makedirs(opts['demo_folder'], exist_ok=True)
-    # os.makedirs(opts['demo_folder'] + "/train", exist_ok=True)
-    # os.makedirs(opts['demo_folder'] + "/val", exist_ok=True)
+    # Create folder for the outputs and duplicate the data
+    results_folder = join(base_folder, "logs/learn_skill-{}-at-{}".format(skill_name, t_stamp()))
+    os.makedirs(results_folder, exist_ok=False)
+    # TODO: dump options to text file in folder
 
-    # # When enforcing adversarial constraints, generate new trajectories by sampling from the preconditions/
-    # # postconditions and running the DMP
-    # if opts['enforce_type'] == 'adversarial':
-    #     # Find the trajectory from when the block is grasped
-    #     for ii in range(opts['n_train_trajs'] + opts['n_val_trajs']):
-    #         if ii < opts['n_train_trajs']:
-    #             folder_train_val = 'train'
-    #         else:
-    #             folder_train_val = 'val'
-    #         opts['f_name_add'] = str(ii)
-    #         generate_trajectory(old_skill, opts['dmp_folder'], symbols, workspace_bnds,
-    #                             suggestion['initial_preconditions'], suggestion['final_postconditions'],
-    #                             opts['demo_folder'] + "/" + folder_train_val, opts)
-
-    # When enforcing adversarial constraints, copy the original skill trajectories
-    # TODO: Pass original skill folder in opts
-    if opts['enforce_type'] == 'adversarial' and not os.path.isdir(opts['demo_folder']):
-        dst = opts['demo_folder']
-        src = '/'.join(opts['demo_folder'].split('/')[:-2]) + "/" + old_skill
-        print("Creating {} and copying data from {}".format(dst, src))
+    # When learning a new skill based on an old skill, copy the original skill trajectories
+    if old_demo_folder is not None and not os.path.isdir(demo_folder):
+        print("Creating {} and copying data from {}".format(demo_folder, old_demo_folder))
         shutil.copytree(src, dst)
 
-    # t_start_states, t_pose_hists = load_dmp_demos(opts['demo_folder'] + "/train", n_interp_pts=int(1/opts['dt']), opts=opts)
-    t_start_states, t_pose_hists = load_dmp_demos(opts['demo_folder'] + "/train", n_points=int(1/opts['dt']))
+    t_start_states, t_pose_hists = load_dmp_demos(demo_folder + "/train", n_points=int(1/dt))
     t_start_states, t_pose_hists = np_to_pgpu(t_start_states), np_to_pgpu(t_pose_hists)
     train_set = TensorDataset(t_start_states, t_pose_hists)
 
-    # v_start_states, v_pose_hists = load_dmp_demos(opts['demo_folder'] + "/val", n_interp_pts=int(1/opts['dt']), opts=opts)
-    v_start_states, v_pose_hists = load_dmp_demos(opts['demo_folder'] + "/val", n_points=int(1/opts['dt']))
+    v_start_states, v_pose_hists = load_dmp_demos(demo_folder + "/val", n_points=int(1/dt))
     v_start_states, v_pose_hists = np_to_pgpu(v_start_states), np_to_pgpu(v_pose_hists)
     val_set = TensorDataset(v_start_states, v_pose_hists)
 
-    # Create the constraints based on the suggestion
-    # Or set it to just duplicate the trajectories
-    if opts['enforce_type'] == 'unconstrained':
-        constraint_list = [None]
-        intermediate_constraints = [None]
+    learned_model = training_loop(train_set, val_set, constraint, enforce, adversarial, results_folder, main_loss_weight=main_loss_weight,
+                  constraint_loss_weight=constraint_loss_weight, basis_fs=basis_fs, dt=dt, n_epochs=n_epochs, output_dimension=output_dimension, previous_model_path=previous_model_path, output_model_path=output_model_path)
+
+    return learned_model, results_folder
+
+
+def symbols_and_workspace_to_device(symbols, workspace_bnds, device=DEVICE):
+    """
+    Puts the symbols on the device that is being used (cpu or cuda)
+    :param symbols:
+    :return:
+    """
+    symbols_device = dict()
+    for sym, data in symbols.items():
+        symbols_device[sym] = copy.deepcopy(symbols[sym])
+        if symbols[sym].get_type() == 'rectangle':
+            symbols_device[sym].bounds = torch.from_numpy(symbols[sym].bounds).to(DEVICE)
+        elif symbols[sym].get_type() == 'circle':
+            symbols_device[sym].center = torch.from_numpy(symbols[sym].center).to(DEVICE)
+            symbols_device[sym].radius = torch.from_numpy(symbols[sym].radius).to(DEVICE)
+    if workspace_bnds is None:
+        workspace_bnds_device = None
     else:
-        # Create the symbols as constraints
-        symbols_device = dict()
-        for sym, data in symbols.items():
-            symbols_device[sym] = copy.deepcopy(symbols[sym])
-            if symbols[sym].get_type() == 'rectangle' or symbols[sym].get_type() == 'rectangle-ee':
-                symbols_device[sym].bounds = torch.from_numpy(symbols[sym].bounds).to(DEVICE)
-            elif symbols[sym].get_type() == 'circle' or symbols[sym].get_type() == 'circle-ee':
-                symbols_device[sym].center = torch.from_numpy(symbols[sym].center).to(DEVICE)
-                symbols_device[sym].radius = torch.from_numpy(symbols[sym].radius).to(DEVICE)
         workspace_bnds_device = torch.from_numpy(workspace_bnds).to(DEVICE)
-        constraint_list = []
 
-        # Constraints on transitioning between the correct states
-        for constraint_type in opts['constraints']:
-            constraint_list.append(constraints.AutomaticSkill(symbols_device, suggestion['intermediate_states_all_pres'],
-                                                    suggestion['intermediate_states'],
-                                                    suggestion['final_postconditions'], suggestion['unique_states'],
-                                                    suggestion['avoid_states'], workspace_bnds_device, opts['epsilon'], constraint_type))
-
-        # Constraints on always being in one of the intermediate states
-        intermediate_constraints = []
-        for suggestion_intermediate_all_posts in suggestion['intermediate_states']:
-            intermediate_constraints.append(constraints.AutomaticIntermediateSteps(symbols_device,
-                                                                                   suggestion_intermediate_all_posts,
-                                                                                   suggestion['unique_states'],
-                                                                                   suggestion['avoid_states'],
-                                                                                   workspace_bnds_device,
-                                                                                   opts['epsilon']))
-
-    learned_model, val_losses, intermediate_sat = training_loop(train_set, val_set, constraint_list[0], enforce, adversarial, results_folder, opts)
-
-    return learned_model, val_losses, intermediate_sat
+    return symbols_device, workspace_bnds_device
 
 
-def ik(limb, pose, seed_angles=None, b=0.001, br=0.01, qinit_in=None, solve_type="Speed"):
+def generate_constraints_from_suggestion(suggestion, symbols, workspace_bnds):
     """
-    limb: which limb
-    pose: Pose msg
-    returns: joints and joint angles
+    Generates constraints from the suggestion given by the symbolic repair
+
+    :param suggestion:
+    :param symbols:
+    :param workspace_bnds:
+    :return:
     """
+    # Create the symbols as constraints
+    symbols_device, workspace_bnds_device = symbols_and_workspace_to_device(symbols, workspace_bnds)
 
-    urdf = rospy.get_param('/robot_description')
-    ik_solver = IK("base", limb + "_gripper", urdf_string=urdf, timeout=0.1, epsilon=1e-5, solve_type=solve_type)
-    bx = by = bz = b
-    brx = bry = brz = br
-    if limb == 'left':
-        joint_names = ['left_s0', 'left_s1', 'left_e0', 'left_e1', 'left_w0', 'left_w1', 'left_w2']
-    else:
-        joint_names = ['right_s0', 'right_s1', 'right_e0', 'right_e1', 'right_w0', 'right_w1', 'right_w2']
+    # Constraints on transitioning between the correct states
+    constraint = constraints.AutomaticSkill(symbols_device, suggestion['intermediate_states_all_pres'],
+                                                suggestion['intermediate_states'],
+                                                suggestion['final_postconditions'], suggestion['unique_states'],
+                                                suggestion['avoid_states'], workspace_bnds_device, epsilon, constraint_type)
 
-    if type(pose) == torch.Tensor or type(pose) == np.ndarray:
-        x = float(pose[0])
-        y = float(pose[1])
-        z = float(pose[2])
-        # rx = ry = rz = 0.
-        # rw = -1.
-        rx = -0.039
-        ry = 0.998
-        rz = 0.049
-        rw = -0.030
-    else:
-        x = pose.position.x
-        y = pose.position.y
-        z = pose.position.z
-        rx = pose.orientation.x
-        ry = pose.orientation.y
-        rz = pose.orientation.z
-        rw = pose.orientation.w
+    # Constraints on always being in one of the intermediate states
+    intermediate_constraints = []
+    for suggestion_intermediate_all_posts in suggestion['intermediate_states']:
+        intermediate_constraints.append(constraints.AutomaticIntermediateSteps(symbols_device,
+                                                                               suggestion_intermediate_all_posts,
+                                                                               suggestion['unique_states'],
+                                                                               suggestion['avoid_states'],
+                                                                               workspace_bnds_device,
+                                                                               opts['epsilon']))
 
-    if qinit_in is None:
-        qinit = [0.] * 7
-    else:
-        qinit = qinit_in
-
-    # print("Solving for one pose")
-    # print(f"qinit {qinit}")
-    # print(f"x: {x}, y: {y}, z: {z}, rx: {rx}, ry: {ry}, rz: {rz}, rw: {rw}")
-    # print(f"bx: {bx}, by: {by}, bz: {bz}, brx: {brx}, bry: {bry}, brz: {brz}")
-    # print("Internal joint names: {}".format(ik_solver.joint_names))
-    sol = ik_solver.get_ik(qinit,
-                           x, y, z,
-                           rx, ry, rz, rw,
-                           bx, by, bz,
-                           brx, bry, brz)
-
-    if sol is not None and len(sol) > 0:
-        limb_joints = dict(zip(joint_names, sol))
-    else:
-        print("No valid joint solution found")
-        limb_joints = dict(zip(joint_names, [np.NaN] * len(joint_names)))
-        # raise Exception("No valid joint solution found")
-
-    return limb_joints
+    return constraint, intermediate_constraints
 
 
-def ik_trajs(limb, poses, b=0.001, br=0.01, qinit_in=None, solve_type="Speed"):
-    n_trajs, n_points, _ = poses.shape
-    # print("Setting n_traj to 1 for debugging")
-    # n_trajs = 1
-    # n_points = 2
-    out_joints = np.zeros([n_trajs, n_points, 7])
-    joint_names = []
-    print("Beginning solve for ik")
-    for e in ['s0', 's1', 'e0', 'e1', 'w0', 'w1', 'w2']:
-        joint_names.append(limb + "_" + e)
-    for ii in range(n_trajs):
-        print("Trajectory {}".format(ii))
-        qinit = qinit_in
-        if qinit_in is None:
-            qinit = [0.] * 7
-        # qinit = [0.] * 7
-        for jj in range(n_points):
-            print("Time point: {}".format(jj))
-            pose = poses[ii, jj, :]
-            print("Poses going in: {}".format(pose))
-            joints = ik(limb, pose, b=b, br=br, qinit_in=qinit, solve_type=solve_type)
-            # print("Found joints: {}".format(joints))
-            for kk, joint_name in enumerate(joint_names):
-                out_joints[ii, jj, kk] = joints[joint_name]
-                qinit[kk] = joints[joint_name]
+def create_stretch_base_traj(rollouts):
+    """
+    Selects only the xy out of the rollout for the stretch base and adds a z of 0.1
 
-    return out_joints
+    :param rollouts:
+    :return:
+    """
+    out = 0.1 * np.ones([rollouts.shape[0], rollouts.shape[1], 3])
+    out[:, :, :2] = rollouts[:, :, :2]
+
+    return out
 
 
-class StateValidity():
-    # Adapted from https://answers.ros.org/question/203633/collision-detection-in-python/
-    def __init__(self):
-        # subscribe to joint joint states
-        rospy.Subscriber("joint_states", JointState, self.jointStatesCB, queue_size=1)
-        # prepare service for collision check
-        self.sv_srv = rospy.ServiceProxy('/check_state_validity', GetStateValidity)
-        # wait for service to become available
-        self.sv_srv.wait_for_service()
-        rospy.loginfo('service is avaiable')
-        # prepare msg to interface with moveit
-        self.rs = RobotState()
-        joint_state_names = []
-        # Need to include left and right arm to find when they intersect
-        for a in ['left', 'right']:
-            for e in ['s0', 's1', 'e0', 'e1', 'w0', 'w1', 'w2']:
-                joint_state_names.append(a + "_" + e)
-        self.rs.joint_state.name = joint_state_names
-        self.rs.joint_state.position = [0.] * len(self.rs.joint_state.name)
-        self.joint_states_received = False
+def fk_stretch(rollouts):
+    """
+    Calculates the forward kinematics for a set of rollouts. Each rollout has [n different trajectories, m points in
+    a trajectory, and 6 dimensions (for x_robot, y_robot, theta_robot, arm_extension, lift, theta_wrist]
+    :param rollouts:
+    :return:
+    """
+    wrist_x_in_base_frame = 0.14
+    wrist_y_in_base_frame = -0.16
+    gripper_length_xy = 0.23
+    gripper_offset_z = -0.1
+    base_height_z = 0.05
 
-    def jointStatesCB(self, msg):
-        '''
-        update robot state
-        '''
-        self.rs.joint_state.position = [msg.position[0], msg.position[1]]
-        self.joint_states_received = True
+    xyz_ee_in_global_frame = np.zeros([rollouts.shape[0], rollouts.shape[1], 3]
+                                      )
+    for rr, rollout in enumerate(rollouts):
+        for pp, point in enumerate(rollout):
+            x_robot = point[0]
+            y_robot = point[1]
+            t_robot = point[2]
+            arm_extension = point[3]
+            lift = point[4]
+            t_wrist = point[5]
 
-    def getStateValidity(self, joint_positions, constraints=None):
-        '''
-        Given a RobotState and a group name and an optional Constraints
-        return the validity of the State
-        '''
-        gsvr = GetStateValidityRequest()
-        gsvr.robot_state = self.rs
-        gsvr.robot_state.joint_state.position = joint_positions
-        gsvr.group_name = 'baxter'
-        if constraints != None:
-            gsvr.constraints = constraints
-        result = self.sv_srv.call(gsvr)
-        return result
+            # Transform to robot frame by taking into account offsets and extension
+            xy_ee_in_robot_frame = np.zeros([2])
+            xy_ee_in_robot_frame[0] = wrist_x_in_base_frame + gripper_length_xy * np.sin(t_wrist)
+            xy_ee_in_robot_frame[1] = wrist_y_in_base_frame - arm_extension - gripper_length_xy * np.cos(t_wrist)
+
+            xy_ee_in_global_frame = robot_to_global(point[:3], xy_ee_in_robot_frame)
+            xyz_ee_in_global_frame[rr, pp, :2] = xy_ee_in_global_frame
+            xyz_ee_in_global_frame[rr, pp, 2] = lift + gripper_offset_z + base_height_z
+
+    return xyz_ee_in_global_frame
+
+
+def robot_to_global(robot_xytheta, point_in_robot_frame):
+    """
+    Transforms a point in the robot's frame to be in the global frame
+    :param robot_xytheta:
+    :param point_in_robot_frame:
+    :return:
+    """
+    R = np.zeros([3, 3])
+    R[0, 0] = np.cos(robot_xytheta[2])
+    R[0, 1] = -np.sin(robot_xytheta[2])
+    R[0, 2] = robot_xytheta[0]
+    R[1, 0] = np.sin(robot_xytheta[2])
+    R[1, 1] = np.cos(robot_xytheta[2])
+    R[1, 2] = robot_xytheta[1]
+    R[2, 2] = 1
+
+    point_in_robot_frame_with_one = np.ones([3, 1])
+    point_in_robot_frame_with_one[:2, 0] = point_in_robot_frame
+    xy_out = np.matmul(R, point_in_robot_frame_with_one)
+
+    return xy_out[:2].squeeze()
+
+

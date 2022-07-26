@@ -17,6 +17,11 @@ class Symbol:
         self.color = info['color']
         self.index = info['index']
         self.dims = np.array(info['dims'])
+        if 'plot_dims' in info.keys():
+            self.plot_dims = info['plot_dims']
+        self.transform = None
+        if "transform" in info.keys():
+            self.transform = info["transform"]
         if self.type == 'rectangle' or self.type == 'rectangle-ee':
             self.bounds = np.array(info['bounds'])
             self.center = np.zeros([2])
@@ -102,8 +107,17 @@ class Symbol:
         return sample
 
     def plot(self, ax, dim=2, **kwargs):
+        """
+        Plots the symbol on the provided axis. The user supplies the dimensionality of how the symbol should be plotted.
+        If a 2 d symbol is plotted in 3d, the symbol will cover the entire z axis.
+
+        :param ax:
+        :param dim:
+        :param kwargs:
+        :return:
+        """
         if 'alpha' not in kwargs.keys():
-            kwargs["alpha"] = 0.5
+            kwargs["alpha"] = 0.2
         if dim == 2:
             if self.type == 'rectangle':
                 x_low = self.bounds[0, 0]
@@ -120,21 +134,31 @@ class Symbol:
                                     facecolor=self.color
                                     **kwargs))
         elif dim == 3:
-            x_low = self.bounds[0, 0]
-            x_high = self.bounds[0, 1]
-            y_low = self.bounds[1, 0]
-            y_high = self.bounds[1, 1]
-            if len(self.bounds) == 3:
-                z_low = self.bounds[2, 0]
-                z_high = self.bounds[2, 1]
+            if 0 in self.plot_dims:
+                idx = self.plot_dims.index(0)
+                x_low = self.bounds[idx, 0]
+                x_high = self.bounds[idx, 1]
+            else:
+                x_lim = ax.get_xlim()
+                x_low = x_lim[0]
+                x_high = x_lim[1]
+
+            if 1 in self.plot_dims:
+                idx = self.plot_dims.index(1)
+                y_low = self.bounds[idx, 0]
+                y_high = self.bounds[idx, 1]
+            else:
+                y_lim = ax.get_ylim()
+                y_low = y_lim[0]
+                y_high = y_lim[1]
+            if 2 in self.plot_dims:
+                idx = self.plot_dims.index(2)
+                z_low = self.bounds[idx, 0]
+                z_high = self.bounds[idx, 1]
             else:
                 z_lim = ax.get_zlim()
-                if z_lim[0] < 0:
-                    z_low = z_lim[0]
-                    z_high = z_lim[0]
-                else:
-                    z_low = 0
-                    z_high = 0
+                z_low = z_lim[0]
+                z_high = z_lim[1]
 
             x = np.array(
                 [
@@ -179,6 +203,9 @@ class Symbol:
 
     def get_dims(self):
         return self.dims
+
+    def get_plot_dims(self):
+        return self.plot_dims
 
     def get_bnds(self):
         return self.bounds

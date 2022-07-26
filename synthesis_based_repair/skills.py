@@ -89,6 +89,18 @@ class Skill:
 
         self.plot(ax, data, **kwargs)
 
+    def get_original_trajectories(self, train=True, **kwargs):
+        if train:
+            folder_trajectories = self.folder_train
+        else:
+            folder_trajectories = self.folder_val
+        files_folder = [f for f in os.listdir(folder_trajectories) if
+                        os.path.isfile(os.path.join(folder_trajectories, f))]
+        files_traj = [f for f in files_folder if 'rollout' in f]
+        data = np.stack([np.loadtxt(os.path.join(folder_trajectories, rp), ndmin=2) for rp in files_traj])
+
+        return data
+
     def plot_nice(self, ax, plot_limits, symbols, train=True, idx=0, **kwargs):
         if train:
             folder_trajectories = self.folder_train
@@ -291,6 +303,10 @@ def find_traj_in_syms(arg_data, arg_symbols):
         syms_out.append(find_symbols_true_and_false(d, arg_symbols))
 
     return syms_out
+
+
+def reduce_sym_traj(sym_traj):
+    pass
 
 
 def find_one_skill_pre_or_post(arg_folder_traj, arg_symbols, find_pre):

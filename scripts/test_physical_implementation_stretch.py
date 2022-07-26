@@ -6,10 +6,16 @@ import matplotlib.pyplot as plt
 import copy
 import numpy as np
 from synthesis_based_repair.symbols import load_symbols
-from synthesis_based_repair.skills import load_skills_from_json, Skill, write_skills_str
+from synthesis_based_repair.skills import load_skills_from_json, Skill, write_skills_str, find_traj_in_syms
 import json
-from synthesis_based_repair.physical_implementation import run_elaborateDMP #, spoof_elaborateDMP
+from synthesis_based_repair.physical_implementation import learn_skill_with_constraints, fk_stretch, create_stretch_base_traj, symbols_and_workspace_to_device
 import argparse
+from synthesis_based_repair.visualization import plot_sat_unsat_trajectories, create_ax_array
+from dl2_lfd.elaborateDMP import evaluate_constraint
+from dl2_lfd.dmps.dmp import load_dmp_demos, DMP
+from dl2_lfd.helper_funcs.conversions import np_to_pgpu
+from torch.utils.data import TensorDataset, DataLoader
+from dl2_lfd.ltl_diff.constraints import AlwaysFormula, EventuallyOrFormulas, AndEventuallyFormulas, SequenceFormulas
 
 
 if __name__ == "__main__":
@@ -50,12 +56,6 @@ if __name__ == "__main__":
     symbols = load_symbols(file_names["file_symbols"])
     dmp_opts['symbols'] = symbols
     skills_all = load_skills_from_json(file_names["file_skills"])
-    original_skills = dict()
-    for skill_name in file_names["skill_names"]:
-        original_skills[skill_name] = skills_all[skill_name]
-
-    for skill_name in file_names["skill_names"]:
-        original_skills[skill_name + "b"] = copy.deepcopy(original_skills[skill_name])
 
     fid = open(file_names["file_suggestions"], 'r')
     suggestions = json.load(fid)
@@ -64,19 +64,89 @@ if __name__ == "__main__":
 
     iteration_count = 0
 
-    dmp_opts['demo_folder'] = folder_trajectories + dict_to_formula(suggestion['original_skill'],
-                                                                           include_false=False) + "_" + str(
-        iteration_count) + "_new" + "/"
-    dmp_opts['previous_skill_name'] = dict_to_formula(suggestion['original_skill'], include_false=False)
-    dmp_opts['skill_name'] = dict_to_formula(suggestion['new_skill'], include_false=False) + "_" + str(
-        iteration_count) + "_new"
-    _, val_losses, int_sat = run_elaborateDMP(dmp_opts['previous_skill_name'].split('_')[0],
-                                                        dmp_opts['skill_name'],
-                                                        suggestion, user_spec['hard_constraints'],
-                                                        symbols, workspace_bnds, dmp_opts)
+    prev_skill_name = dict_to_formula(suggestion['original_skill'], include_false=False)
+    old_demo_folder = folder_trajectories + prev_skill_name + "/"
+    dmp_opts['skill_name'] = dict_to_formula(suggestion['new_skill'], include_false=False) + "_" + str(iteration_count) + "_new"
+    demo_folder = folder_trajectories + dmp_opts['skill_name']
 
-    print("Val_losses: {}\nInt_sat: {}".format(val_losses, int_sat))
+    path_to_original_model = "/home/adam/repos/synthesis_based_repair/data/dmps/" + prev_skill_name + ".pt"
 
+    ####################################################################################################################
+    # Here we make sure that a sample skill plots the trajectory properly and goes through the symbols we expect       #
+    # visually
+    ####################################################################################################################
+    v_start_states, v_pose_hists = load_dmp_demos(old_demo_folder + "/val", n_points=int(1/dmp_opts['dt']))
+    v_start_states, v_pose_hists = np_to_pgpu(v_start_states), np_to_pgpu(v_pose_hists)
+    val_set = TensorDataset(v_start_states, v_pose_hists)
+    # losses, learned_rollouts, c_sat = evaluate_constraint(val_set, None, path_to_original_model,
+    #                                                       basis_fs=dmp_opts['basis_fs'], dt=dmp_opts['dt'],
+    #                                                       n_epochs=dmp_opts['n_epochs'], output_dimension=dmp_opts['dimension'])
+    # symbols_to_plot = ['ee_table_1', 'ee_table_1a', 'ee_table_1b', 'ee_table_2', 'ee_table_3', 'base_1', 'base_2', 'base_3'] #, 'duck_a_held', 'duck_a_table']
+    # trajectories_ee = fk_stretch(learned_rollouts)
+    # trajectories_base = create_stretch_base_traj(learned_rollouts)
+    # fig, ax = create_ax_array(3)
+    # plot_sat_unsat_trajectories(trajectories_ee, c_sat, ax[1], ax[2])
+    # plot_sat_unsat_trajectories(trajectories_base, c_sat, ax[1], ax[2])
+    # for sym in symbols_to_plot:
+    #     symbols[sym].plot(ax[0], dim=3)
+
+    ####################################################################################################################
+    # Here we make sure that a sample skill satisfies a constraint that it should
+    ####################################################################################################################
+    formula = [{'ee_table_1': True, 'ee_table_1a': False, 'ee_table_1b': False, 'ee_table_2': False, 'base_1': True},
+               {'ee_table_1': False, 'ee_table_1a': True, 'ee_table_1b': False, 'ee_table_2': False},
+               {'ee_table_1': False, 'ee_table_1a': False, 'ee_table_1b': True, 'ee_table_2': False},
+               {'ee_table_1': False, 'ee_table_1a': False, 'ee_table_1b': False, 'ee_table_2': False},
+               {'ee_table_1': False, 'ee_table_1a': False, 'ee_table_1b': False, 'ee_table_2': True}
+               ]
+    symbols_device, _ = symbols_and_workspace_to_device(symbols, None)
+    # constraint = AlwaysFormula(symbols_device, formula, epsilon=dmp_opts['epsilon'])
+    # constraint = EventuallyOrFormulas(symbols_device, formula, epsilon=dmp_opts['epsilon'])
+    # constraint = AndEventuallyFormulas(symbols_device, formula, epsilon=dmp_opts['epsilon'])
+    constraint = SequenceFormulas(symbols_device, formula, epsilon=dmp_opts['epsilon'])
+    losses, learned_rollouts, c_sat = evaluate_constraint(val_set, constraint, path_to_original_model, basis_fs=dmp_opts['basis_fs'],
+                        dt=dmp_opts['dt'], n_epochs=dmp_opts['n_epochs'], output_dimension=dmp_opts['dimension'])
+    symbols_to_plot = ['ee_table_1', 'ee_table_1a', 'ee_table_1b', 'ee_table_2', 'ee_table_3', 'base_1', 'base_2', 'base_3'] #, 'duck_a_held', 'duck_a_table']
+    trajectories_ee = fk_stretch(learned_rollouts)
+    trajectories_base = create_stretch_base_traj(learned_rollouts)
+    fig, ax = create_ax_array(3, ncols=2)
+    plot_sat_unsat_trajectories(trajectories_ee, c_sat, ax[0], ax[1])
+    plot_sat_unsat_trajectories(trajectories_base, c_sat, ax[0], ax[1])
+    for sym in symbols_to_plot:
+        symbols[sym].plot(ax[0], dim=3)
+        symbols[sym].plot(ax[1], dim=3)
+
+    ####################################################
+    # Calculates which propositions the robot passes through
+    #####################
+    trajectories_base_and_ee = np.stack([trajectories_base, trajectories_ee])
+    for trajectory in trajectories_base_and_ee:
+        traj_in_syms = find_traj_in_syms(trajectory, symbols)
+        reduced_traj = reduce_sym_traj(traj_in_syms)
+        print(traj_in_syms)
+
+    ###################
+    # Attempt to make the model obey a new constraint
+    ############
+    base_folder = '../data'
+    output_model_path = '../data/dmps' + dmp_opts['skill_name']
+    learned_model, results_folder = learn_skill_with_constraints(dmp_opts['skill_name'], constraint,
+                              base_folder, demo_folder, old_demo_folder=old_demo_folder, previous_model_path=path_to_original_model,
+                                enforce_type="train", main_loss_weight=dmp_opts['m_weight'], constraint_loss_weight=dmp_opts['c_weight'], basis_fs=dmp_opts['basis_fs'],
+                                dt=dmp_opts['dt'], n_epochs=dmp_opts['n_epochs'], output_dimension=dmp_opts['dimension'], epsilon=dmp_opts['epsilon'], output_model_path=output_model_path)
+
+    losses, learned_rollouts, c_sat = evaluate_constraint(val_set, constraint, output_model_path, basis_fs=dmp_opts['basis_fs'],
+                        dt=dmp_opts['dt'], n_epochs=dmp_opts['n_epochs'], output_dimension=dmp_opts['dimension'])
+    symbols_to_plot = ['ee_table_1', 'ee_table_1a', 'ee_table_1b', 'ee_table_2', 'ee_table_3', 'base_1', 'base_2', 'base_3'] #, 'duck_a_held', 'duck_a_table']
+    trajectories_ee = fk_stretch(learned_rollouts)
+    trajectories_base = create_stretch_base_traj(learned_rollouts)
+    fig, ax = create_ax_array(3, ncols=2)
+    plot_sat_unsat_trajectories(trajectories_ee, c_sat, ax[0], ax[1])
+    plot_sat_unsat_trajectories(trajectories_base, c_sat, ax[0], ax[1])
+    for sym in symbols_to_plot:
+        symbols[sym].plot(ax[0], dim=3)
+        symbols[sym].plot(ax[1], dim=3)
+    plt.show()
 
 
 
