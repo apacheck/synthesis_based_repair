@@ -298,6 +298,13 @@ def find_one_skill_intermediate_states(arg_folder_traj, arg_symbols):
 
 
 def find_traj_in_syms(arg_data, arg_symbols):
+    """
+    Finds what symbols are true and false at each state in a trajectory
+
+    :param arg_data:
+    :param arg_symbols:
+    :return:
+    """
     syms_out = []
     for ii, d in enumerate(arg_data):
         syms_out.append(find_symbols_true_and_false(d, arg_symbols))
@@ -306,7 +313,21 @@ def find_traj_in_syms(arg_data, arg_symbols):
 
 
 def reduce_sym_traj(sym_traj):
-    pass
+    """
+    Reduces a list of symbolic states to just the ones that change
+
+    Example: reduce_sym_traj([{'a': True, 'b':False}, {'a':True, 'b':False}, {'a':True, 'b':True}])
+    returns [{'a':True, 'b':False}, {'a':True, 'b':True}]
+
+    :param sym_traj:
+    :return:
+    """
+    sym_sequence = [sym_traj[0]]
+    for sym_state in sym_traj:
+        if sym_state != sym_sequence[-1]:
+            sym_sequence.append(sym_state)
+
+    return sym_sequence
 
 
 def find_one_skill_pre_or_post(arg_folder_traj, arg_symbols, find_pre):

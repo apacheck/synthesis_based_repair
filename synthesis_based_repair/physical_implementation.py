@@ -110,7 +110,7 @@ def learn_skill_with_constraints(skill_name, constraint, base_folder, demo_folde
     # When learning a new skill based on an old skill, copy the original skill trajectories
     if old_demo_folder is not None and not os.path.isdir(demo_folder):
         print("Creating {} and copying data from {}".format(demo_folder, old_demo_folder))
-        shutil.copytree(src, dst)
+        shutil.copytree(old_demo_folder, demo_folder)
 
     t_start_states, t_pose_hists = load_dmp_demos(demo_folder + "/train", n_points=int(1/dt))
     t_start_states, t_pose_hists = np_to_pgpu(t_start_states), np_to_pgpu(t_pose_hists)

@@ -8,6 +8,7 @@ import os
 from matplotlib.patches import Rectangle, Circle
 from mpl_toolkits.mplot3d import Axes3D
 import copy
+from os.path import join
 
 
 
@@ -93,3 +94,19 @@ def create_ax_array(dim, ncols=3):
         ax = np.array(ax)
 
     return fig, ax
+
+
+def load_intermediate_data(results_folder):
+    """
+    Loads the numpy files containing the learned rollouts and constraint satisfaction data
+
+    :param results_folder:
+    :return:
+    """
+    learned_rollout_paths = sorted([d for d in os.listdir(results_folder) if "learned_rollouts" in d])
+    c_sat_paths = sorted([d for d in os.listdir(results_folder) if "c_sat" in d])
+
+    learned_rollouts = np.stack([np.load(join(results_folder, lp)) for lp in learned_rollout_paths])
+    c_sats = np.stack([np.load(join(results_folder, cp)) for cp in c_sat_paths])
+
+    return learned_rollouts, c_sats

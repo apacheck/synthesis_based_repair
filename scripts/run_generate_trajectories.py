@@ -296,10 +296,50 @@ def generate_trajectories_stretch(folder_demo_trajectories, n_train_trajs, n_val
     #
     #     save_data(folder_demo_skill, data, start_state, end_state, ii, n_start_rows, n_train_trajs, dim=6)
 
+    # skill_name = "skillStretch1to2"
+    # folder_demo_skill = folder_demo_trajectories + "/" + skill_name
+    # for ii in range(n_train_trajs + n_val_trajs):
+    #     data = np.zeros([100, 6])
+    #
+    #     l_start = np.array([0.35])
+    #     z_start = 0.8 + 0.2 * np.random.random(1)
+    #     t_wrist_start = 0 #2 * np.pi * np.random.random(1)
+    #
+    #     x_start = 0.45 + 0.1 * np.random.random(1)
+    #     y_start = 0.45 + 0.1 * np.random.random(1)
+    #
+    #     x_end = -1.45 - 0.1 * np.random.random(1)
+    #     y_end = 0.05 - 0.1 * np.random.random(1)
+    #
+    #     # data[:15, 0] = np.linspace(x_start[0], x_end[0], 15)
+    #     # data[:15, 1] = y_start
+    #     # data[15:, 0] = x_end
+    #     # data[15:, 1] = np.linspace(y_start[0], y_end[0], 5)
+    #     # data[:15, 2] = np.pi
+    #     # data[15:, 2] = 3*np.pi/2
+    #     # data[:, 3] = l_start
+    #     # data[:, 4] = z_start
+    #     # data[:, 5] = t_wrist_start
+    #
+    #     data[:50, 0] = np.linspace(x_start[0], x_end[0] + 0.5, 50)
+    #     data[:50, 1] = y_start
+    #     data[50:, 0] = (x_end + 0.5) + 0.5 * np.cos(np.linspace(-np.pi/2, -np.pi, 50))
+    #     data[50:, 1] = y_end - 0.5 * np.sin(np.linspace(-np.pi/2, -np.pi, 50))
+    #     data[:50, 2] = np.pi
+    #     data[50:, 2] = np.linspace(np.pi, 3*np.pi/2, 50)
+    #     data[:, 3] = l_start
+    #     data[:, 4] = z_start
+    #     data[:, 5] = t_wrist_start
+    #
+    #     start_state = data[0, :]
+    #     end_state = data[-1, :]
+    #
+    #     save_data(folder_demo_skill, data, start_state, end_state, ii, n_start_rows, n_train_trajs, dim=6)
+
     skill_name = "skillStretch1to2"
     folder_demo_skill = folder_demo_trajectories + "/" + skill_name
     for ii in range(n_train_trajs + n_val_trajs):
-        data = np.zeros([100, 6])
+        data = np.zeros([50, 6])
 
         l_start = np.array([0.35])
         z_start = 0.8 + 0.2 * np.random.random(1)
@@ -309,7 +349,7 @@ def generate_trajectories_stretch(folder_demo_trajectories, n_train_trajs, n_val
         y_start = 0.45 + 0.1 * np.random.random(1)
 
         x_end = -1.45 - 0.1 * np.random.random(1)
-        y_end = 0.05 - 0.1 * np.random.random(1)
+        y_end = y_start
 
         # data[:15, 0] = np.linspace(x_start[0], x_end[0], 15)
         # data[:15, 1] = y_start
@@ -321,128 +361,11 @@ def generate_trajectories_stretch(folder_demo_trajectories, n_train_trajs, n_val
         # data[:, 4] = z_start
         # data[:, 5] = t_wrist_start
 
-        data[:50, 0] = np.linspace(x_start[0], x_end[0] + 0.5, 50)
-        data[:50, 1] = y_start
-        data[50:, 0] = (x_end + 0.5) + 0.5 * np.cos(np.linspace(-np.pi/2, -np.pi, 50))
-        data[50:, 1] = y_end - 0.5 * np.sin(np.linspace(-np.pi/2, -np.pi, 50))
-        data[:50, 2] = np.pi
-        data[50:, 2] = np.linspace(np.pi, 3*np.pi/2, 50)
-        data[:, 3] = l_start
-        data[:, 4] = z_start
-        data[:, 5] = t_wrist_start
-
-        start_state = data[0, :]
-        end_state = data[-1, :]
-
-        save_data(folder_demo_skill, data, start_state, end_state, ii, n_start_rows, n_train_trajs, dim=6)
-
-    # bottom left to top right via bottom right
-    skill_name = "skillStretch2to3"
-    folder_demo_skill = folder_demo_trajectories + "/" + skill_name
-    for ii in range(n_train_trajs + n_val_trajs):
-        data = np.zeros([20, 6])
-
-        l_start = np.array([0.45])
-        z_start = 0.8 + 0.2 * np.random.random(1)
-        t_wrist_start = 0#2 * np.pi * np.random.random(1)
-
-        x_end = 0.45 + 0.1 * np.random.random(1)
-        y_end = -0.45 - 0.1 * np.random.random(1)
-
-        x_start = -1.45 - 0.1 * np.random.random(1)
-        y_start = 0.05 - 0.1 * np.random.random(1)
-
-        # data[:5, 0] = x_start
-        # data[:5, 1] = np.linspace(y_start[0], y_end[0], 5)
-        # data[5:, 0] = np.linspace(x_start[0], x_end[0], 15)
-        # data[5:, 1] = y_end
-        # data[:5, 2] = 3 * np.pi / 2
-        # data[5:, 2] = 0
-        # data[:, 3] = l_start
-        # data[:, 4] = z_start
-        # data[:, 5] = t_wrist_start
-
-        data[:10, 0] = (x_start + 0.5) + 0.5 * np.cos(np.linspace(np.pi, 3 * np.pi/2, 10))
-        data[:10, 1] = y_start + 0.5 * np.sin(np.linspace(np.pi, 3 * np.pi/2, 10))
-        data[10:, 0] = np.linspace(data[19, 0], x_end[0], 10)
-        data[10:, 1] = data[9, 1]
-
-        data[:10, 2] = np.linspace(3 * np.pi/2, 2 * np.pi, 10)
-        data[10:, 2] = 2 * np.pi
-        data[:, 3] = l_start
-        data[:, 4] = z_start
-        data[:, 5] = t_wrist_start
-
-        start_state = data[0, :]
-        end_state = data[-1, :]
-
-        save_data(folder_demo_skill, data, start_state, end_state, ii, n_start_rows, n_train_trajs, dim=6)
-
-    skill_name = "skillStretch3to1"
-    folder_demo_skill = folder_demo_trajectories + "/" + skill_name
-    for ii in range(n_train_trajs + n_val_trajs):
-        data = np.zeros([20, 6])
-
-        l_start = np.array([0.45])
-        z_start = 0.8 + 0.2 * np.random.random(1)
-        t_wrist_start = 0#2 * np.pi * np.random.random(1)
-
-        x_start = 0.45 + 0.1 * np.random.random(1)
-        x_mid = x_start + 0.5
-        y_start = -0.45 - 0.1 * np.random.random(1)
-        y_end = 0.45 + 0.1 * np.random.random(1)
-
-        # data[:7, 0] = np.linspace(x_start[0], x_mid[0], 7)
-        # data[:7, 1] = y_start
-        # data[7:13, 0] = x_mid
-        # data[7:13, 1] = np.linspace(y_start[0], y_end[0], 6)
-        # data[13:, 0] = np.linspace(x_mid[0], x_end[0], 7)
-        # data[13:, 1] = y_end
-        # data[:7, 2] = 0
-        # data[7:13, 2] = np.pi / 2
-        # data[13:, 2] = np.pi
-        # data[:, 3] = l_start
-        # data[:, 4] = z_start
-        # data[:, 5] = t_wrist_start
-
-        data[:, 0] = x_start + np.abs(y_start) * np.cos(np.linspace(- np.pi/2, np.pi/2, 20))
-        data[:, 1] = 0 + np.abs(y_start) * np.sin(np.linspace(-np.pi/2, np.pi/2, 20))
-
-        data[:, 2] = np.linspace(0, np.pi, 20)
-        data[:, 3] = l_start
-        data[:, 4] = z_start
-        data[:, 5] = t_wrist_start
-
-        start_state = data[0, :]
-        end_state = data[-1, :]
-
-        save_data(folder_demo_skill, data, start_state, end_state, ii, n_start_rows, n_train_trajs, dim=6)
-
-    skill_name = "skillStretchDownUp1"
-    folder_demo_skill = folder_demo_trajectories + "/" + skill_name
-    for ii in range(n_train_trajs + n_val_trajs):
-        data = np.zeros([20, 6])
-
-        l_start = np.array([0.57])
-        z_start = 0.8 + 0.2 * np.random.random(1)
-        z_mid = [0.67]
-        z_end = z_start
-        t_wrist_start = 0  # 2 * np.pi * np.random.random(1)
-
-        x_start = 0.45 + 0.1 * np.random.random(1)
-        y_start = 0.45 + 0.1 * np.random.random(1)
-
-        x_end = x_start
-        y_end = y_start
-
-        data[:15, 0] = np.linspace(x_start[0], x_end[0], 15)
-        data[:15, 1] = y_start
-        data[15:, 0] = x_end
-        data[15:, 1] = np.linspace(y_start[0], y_end[0], 5)
+        data[:, 0] = np.linspace(x_start[0], x_end[0], 50)
+        data[:, 1] = y_start
         data[:, 2] = np.pi
         data[:, 3] = l_start
-        data[:10, 4] = np.linspace(z_start[0], z_mid[0], 10)
-        data[10:, 4] = np.linspace(z_mid[0], z_end[0], 10)
+        data[:, 4] = z_start
         data[:, 5] = t_wrist_start
 
         start_state = data[0, :]
@@ -450,72 +373,186 @@ def generate_trajectories_stretch(folder_demo_trajectories, n_train_trajs, n_val
 
         save_data(folder_demo_skill, data, start_state, end_state, ii, n_start_rows, n_train_trajs, dim=6)
 
-    # bottom left to top right via bottom right
-    skill_name = "skillStretchDownUp2"
-    folder_demo_skill = folder_demo_trajectories + "/" + skill_name
-    for ii in range(n_train_trajs + n_val_trajs):
-        data = np.zeros([20, 6])
-
-        l_start = np.array([0.57])
-        z_start = 0.8 + 0.2 * np.random.random(1)
-        z_mid = [0.67]
-        z_end = z_start
-        t_wrist_start = 0#2 * np.pi * np.random.random(1)
-
-        x_start = -1.45 - 0.1 * np.random.random(1)
-        y_start = 0.05 - 0.1 * np.random.random(1)
-
-        x_end = x_start
-        y_end = y_start
-
-        data[:5, 0] = x_start
-        data[:5, 1] = np.linspace(y_start[0], y_end[0], 5)
-        data[5:, 0] = np.linspace(x_start[0], x_end[0], 15)
-        data[5:, 1] = y_end
-        data[:, 2] = 3 * np.pi / 2
-        data[:, 3] = l_start
-        data[:10, 4] = np.linspace(z_start[0], z_mid[0], 10)
-        data[10:, 4] = np.linspace(z_mid[0], z_end[0], 10)
-        data[:, 5] = t_wrist_start
-
-        start_state = data[0, :]
-        end_state = data[-1, :]
-
-        save_data(folder_demo_skill, data, start_state, end_state, ii, n_start_rows, n_train_trajs, dim=6)
-
-    skill_name = "skillStretchDownUp3"
-    folder_demo_skill = folder_demo_trajectories + "/" + skill_name
-    for ii in range(n_train_trajs + n_val_trajs):
-        data = np.zeros([20, 6])
-
-        l_start = np.array([0.57])
-        z_start = 0.8 + 0.2 * np.random.random(1)
-        z_mid = [0.67]
-        z_end = z_start
-        t_wrist_start = 0#2 * np.pi * np.random.random(1)
-
-        x_start = 0.45 + 0.1 * np.random.random(1)
-        x_mid = x_start
-        x_end = x_start
-        y_start = -0.45 - 0.1 * np.random.random(1)
-        y_end = y_start
-
-        data[:7, 0] = np.linspace(x_start[0], x_mid[0], 7)
-        data[:7, 1] = y_start
-        data[7:13, 0] = x_mid
-        data[7:13, 1] = np.linspace(y_start[0], y_end[0], 6)
-        data[13:, 0] = np.linspace(x_mid[0], x_end[0], 7)
-        data[13:, 1] = y_end
-        data[:, 2] = 0
-        data[:, 3] = l_start
-        data[:10, 4] = np.linspace(z_start[0], z_mid[0], 10)
-        data[10:, 4] = np.linspace(z_mid[0], z_end[0], 10)
-        data[:, 5] = t_wrist_start
-
-        start_state = data[0, :]
-        end_state = data[-1, :]
-
-        save_data(folder_demo_skill, data, start_state, end_state, ii, n_start_rows, n_train_trajs, dim=6)
+    # # bottom left to top right via bottom right
+    # skill_name = "skillStretch2to3"
+    # folder_demo_skill = folder_demo_trajectories + "/" + skill_name
+    # for ii in range(n_train_trajs + n_val_trajs):
+    #     data = np.zeros([20, 6])
+    #
+    #     l_start = np.array([0.45])
+    #     z_start = 0.8 + 0.2 * np.random.random(1)
+    #     t_wrist_start = 0#2 * np.pi * np.random.random(1)
+    #
+    #     x_end = 0.45 + 0.1 * np.random.random(1)
+    #     y_end = -0.45 - 0.1 * np.random.random(1)
+    #
+    #     x_start = -1.45 - 0.1 * np.random.random(1)
+    #     y_start = 0.05 - 0.1 * np.random.random(1)
+    #
+    #     # data[:5, 0] = x_start
+    #     # data[:5, 1] = np.linspace(y_start[0], y_end[0], 5)
+    #     # data[5:, 0] = np.linspace(x_start[0], x_end[0], 15)
+    #     # data[5:, 1] = y_end
+    #     # data[:5, 2] = 3 * np.pi / 2
+    #     # data[5:, 2] = 0
+    #     # data[:, 3] = l_start
+    #     # data[:, 4] = z_start
+    #     # data[:, 5] = t_wrist_start
+    #
+    #     data[:10, 0] = (x_start + 0.5) + 0.5 * np.cos(np.linspace(np.pi, 3 * np.pi/2, 10))
+    #     data[:10, 1] = y_start + 0.5 * np.sin(np.linspace(np.pi, 3 * np.pi/2, 10))
+    #     data[10:, 0] = np.linspace(data[19, 0], x_end[0], 10)
+    #     data[10:, 1] = data[9, 1]
+    #
+    #     data[:10, 2] = np.linspace(3 * np.pi/2, 2 * np.pi, 10)
+    #     data[10:, 2] = 2 * np.pi
+    #     data[:, 3] = l_start
+    #     data[:, 4] = z_start
+    #     data[:, 5] = t_wrist_start
+    #
+    #     start_state = data[0, :]
+    #     end_state = data[-1, :]
+    #
+    #     save_data(folder_demo_skill, data, start_state, end_state, ii, n_start_rows, n_train_trajs, dim=6)
+    #
+    # skill_name = "skillStretch3to1"
+    # folder_demo_skill = folder_demo_trajectories + "/" + skill_name
+    # for ii in range(n_train_trajs + n_val_trajs):
+    #     data = np.zeros([20, 6])
+    #
+    #     l_start = np.array([0.45])
+    #     z_start = 0.8 + 0.2 * np.random.random(1)
+    #     t_wrist_start = 0#2 * np.pi * np.random.random(1)
+    #
+    #     x_start = 0.45 + 0.1 * np.random.random(1)
+    #     x_mid = x_start + 0.5
+    #     y_start = -0.45 - 0.1 * np.random.random(1)
+    #     y_end = 0.45 + 0.1 * np.random.random(1)
+    #
+    #     # data[:7, 0] = np.linspace(x_start[0], x_mid[0], 7)
+    #     # data[:7, 1] = y_start
+    #     # data[7:13, 0] = x_mid
+    #     # data[7:13, 1] = np.linspace(y_start[0], y_end[0], 6)
+    #     # data[13:, 0] = np.linspace(x_mid[0], x_end[0], 7)
+    #     # data[13:, 1] = y_end
+    #     # data[:7, 2] = 0
+    #     # data[7:13, 2] = np.pi / 2
+    #     # data[13:, 2] = np.pi
+    #     # data[:, 3] = l_start
+    #     # data[:, 4] = z_start
+    #     # data[:, 5] = t_wrist_start
+    #
+    #     data[:, 0] = x_start + np.abs(y_start) * np.cos(np.linspace(- np.pi/2, np.pi/2, 20))
+    #     data[:, 1] = 0 + np.abs(y_start) * np.sin(np.linspace(-np.pi/2, np.pi/2, 20))
+    #
+    #     data[:, 2] = np.linspace(0, np.pi, 20)
+    #     data[:, 3] = l_start
+    #     data[:, 4] = z_start
+    #     data[:, 5] = t_wrist_start
+    #
+    #     start_state = data[0, :]
+    #     end_state = data[-1, :]
+    #
+    #     save_data(folder_demo_skill, data, start_state, end_state, ii, n_start_rows, n_train_trajs, dim=6)
+    #
+    # skill_name = "skillStretchDownUp1"
+    # folder_demo_skill = folder_demo_trajectories + "/" + skill_name
+    # for ii in range(n_train_trajs + n_val_trajs):
+    #     data = np.zeros([20, 6])
+    #
+    #     l_start = np.array([0.57])
+    #     z_start = 0.8 + 0.2 * np.random.random(1)
+    #     z_mid = [0.67]
+    #     z_end = z_start
+    #     t_wrist_start = 0  # 2 * np.pi * np.random.random(1)
+    #
+    #     x_start = 0.45 + 0.1 * np.random.random(1)
+    #     y_start = 0.45 + 0.1 * np.random.random(1)
+    #
+    #     x_end = x_start
+    #     y_end = y_start
+    #
+    #     data[:15, 0] = np.linspace(x_start[0], x_end[0], 15)
+    #     data[:15, 1] = y_start
+    #     data[15:, 0] = x_end
+    #     data[15:, 1] = np.linspace(y_start[0], y_end[0], 5)
+    #     data[:, 2] = np.pi
+    #     data[:, 3] = l_start
+    #     data[:10, 4] = np.linspace(z_start[0], z_mid[0], 10)
+    #     data[10:, 4] = np.linspace(z_mid[0], z_end[0], 10)
+    #     data[:, 5] = t_wrist_start
+    #
+    #     start_state = data[0, :]
+    #     end_state = data[-1, :]
+    #
+    #     save_data(folder_demo_skill, data, start_state, end_state, ii, n_start_rows, n_train_trajs, dim=6)
+    #
+    # # bottom left to top right via bottom right
+    # skill_name = "skillStretchDownUp2"
+    # folder_demo_skill = folder_demo_trajectories + "/" + skill_name
+    # for ii in range(n_train_trajs + n_val_trajs):
+    #     data = np.zeros([20, 6])
+    #
+    #     l_start = np.array([0.57])
+    #     z_start = 0.8 + 0.2 * np.random.random(1)
+    #     z_mid = [0.67]
+    #     z_end = z_start
+    #     t_wrist_start = 0#2 * np.pi * np.random.random(1)
+    #
+    #     x_start = -1.45 - 0.1 * np.random.random(1)
+    #     y_start = 0.05 - 0.1 * np.random.random(1)
+    #
+    #     x_end = x_start
+    #     y_end = y_start
+    #
+    #     data[:5, 0] = x_start
+    #     data[:5, 1] = np.linspace(y_start[0], y_end[0], 5)
+    #     data[5:, 0] = np.linspace(x_start[0], x_end[0], 15)
+    #     data[5:, 1] = y_end
+    #     data[:, 2] = 3 * np.pi / 2
+    #     data[:, 3] = l_start
+    #     data[:10, 4] = np.linspace(z_start[0], z_mid[0], 10)
+    #     data[10:, 4] = np.linspace(z_mid[0], z_end[0], 10)
+    #     data[:, 5] = t_wrist_start
+    #
+    #     start_state = data[0, :]
+    #     end_state = data[-1, :]
+    #
+    #     save_data(folder_demo_skill, data, start_state, end_state, ii, n_start_rows, n_train_trajs, dim=6)
+    #
+    # skill_name = "skillStretchDownUp3"
+    # folder_demo_skill = folder_demo_trajectories + "/" + skill_name
+    # for ii in range(n_train_trajs + n_val_trajs):
+    #     data = np.zeros([20, 6])
+    #
+    #     l_start = np.array([0.57])
+    #     z_start = 0.8 + 0.2 * np.random.random(1)
+    #     z_mid = [0.67]
+    #     z_end = z_start
+    #     t_wrist_start = 0#2 * np.pi * np.random.random(1)
+    #
+    #     x_start = 0.45 + 0.1 * np.random.random(1)
+    #     x_mid = x_start
+    #     x_end = x_start
+    #     y_start = -0.45 - 0.1 * np.random.random(1)
+    #     y_end = y_start
+    #
+    #     data[:7, 0] = np.linspace(x_start[0], x_mid[0], 7)
+    #     data[:7, 1] = y_start
+    #     data[7:13, 0] = x_mid
+    #     data[7:13, 1] = np.linspace(y_start[0], y_end[0], 6)
+    #     data[13:, 0] = np.linspace(x_mid[0], x_end[0], 7)
+    #     data[13:, 1] = y_end
+    #     data[:, 2] = 0
+    #     data[:, 3] = l_start
+    #     data[:10, 4] = np.linspace(z_start[0], z_mid[0], 10)
+    #     data[10:, 4] = np.linspace(z_mid[0], z_end[0], 10)
+    #     data[:, 5] = t_wrist_start
+    #
+    #     start_state = data[0, :]
+    #     end_state = data[-1, :]
+    #
+    #     save_data(folder_demo_skill, data, start_state, end_state, ii, n_start_rows, n_train_trajs, dim=6)
 
 
 def transformStretchSkillsToEntireSpace(folder_trajectories, skill_names, symbols):
@@ -797,7 +834,7 @@ if __name__ == "__main__":
     # Plot skills if desired  ####
     ##############################
 
-    symbols_to_plot = ['ee_table_1', 'ee_table_1a', 'ee_table_1b', 'ee_table_2', 'ee_table_3', 'base_1', 'base_2', 'base_3'] #, 'duck_a_held', 'duck_a_table']
+    symbols_to_plot = ['ee_table_1', 'ee_table_1a', 'ee_table_1b', 'ee_table_1c', 'ee_table_1d', 'ee_table_2', 'ee_table_3', 'base_1', 'base_2', 'base_3'] #, 'duck_a_held', 'duck_a_table']
     if args.do_plot:
         os.makedirs(file_names["folder_plot"], exist_ok=True)
         dim = len(dmp_opts["plot_limits"])
