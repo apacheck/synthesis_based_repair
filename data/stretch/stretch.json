@@ -1,13 +1,13 @@
 {
-  "env_init_true": ["base_1", "ee_table_1"],
-  "env_init_false": ["base_2", "base_3", "ee_table_1a", "ee_table_1b","ee_table_2", "ee_table_3"],
+  "env_init_true": ["base_F", "ee_C"],
+  "env_init_false": ["base_A", "base_B", "base_C", "base_D", "base_E", "base_G", "base_H", "base_I", "base_J", "base_K", "base_L", "base_M", "base_N", "base_O", "base_P", "ee_A", "ee_B", "ee_D", "ee_E", "ee_F", "ee_G", "ee_H", "ee_I", "ee_J", "ee_K", "ee_L", "ee_M", "ee_N", "ee_O", "ee_P"],
   "sys_init_true": [],
-  "sys_init_false": ["skillStretch1to2_alt", "skillStretch2to3_alt", "skillStretch3to1_alt", "skillStretch1to2_altb", "skillStretch2to3_altb", "skillStretch3to1_altb"],
-  "sys_live": "ee_table_1\nee_table_2",
+  "sys_init_false": ["skillStretch1to2", "skillStretch2to3", "skillStretch3to1", "skillStretch1to2b", "skillStretch2to3b", "skillStretch3to1b"],
+  "sys_live": "ee_G\nee_C",
   "env_live": "",
-  "sys_trans_hard": "!ee_table_1b\n!ee_table_1b'",
+  "sys_trans_hard": "!ee_B\n!ee_B'",
   "reactive_variables": [],
-  "change_cons": "!(base_3 & ee_table_1)\n!(base_3 & ee_table_1a)\n!(base_3 & ee_table_1b)\n!(base_3 & ee_table_2)\n!(base_2 & ee_table_1)\n!(base_2 & ee_table_1a)\n!(base_2 & ee_table_1b)\n!(base_2 & ee_table_3)\n!(base_1 & ee_table_2)\n!(base_1 & ee_table_3)\n!(base_3' & ee_table_1')\n!(base_3' & ee_table_1a')\n!(base_3' & ee_table_1b')\n!(base_3' & ee_table_2')\n!(base_2' & ee_table_1')\n!(base_2' & ee_table_1a')\n!(base_2' & ee_table_1b')\n!(base_2' & ee_table_3')\n!(base_1' & ee_table_2')\n!(base_1' & ee_table_3')",
-  "not_allowed_repair": "!skillStretch1to2_altb\n!skillStretch2to3_altb\n!skillStretch3to1_altb",
+  "change_cons": "",
+  "not_allowed_repair": "!skillStretch1to2b\n!skillStretch2to3b\n!skillStretch3to1b",
   "hard_constraints": []
 }

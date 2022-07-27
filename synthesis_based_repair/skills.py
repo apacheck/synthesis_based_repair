@@ -281,11 +281,11 @@ def find_one_skill_intermediate_states(arg_folder_traj, arg_symbols):
         for ii in range(0, len(traj_syms) - 1):
             poss_changes.append([traj_syms[ii], [traj_syms[ii + 1]]])
 
-    print("unique trajs " + arg_folder_traj)
-    for u in unique_traj:
-        for s in u:
-            print(s)
-        print("*************")
+    # print("unique trajs " + arg_folder_traj)
+    # for u in unique_traj:
+    #     for s in u:
+    #         print(s)
+    #     print("*************")
 
     for poss_change in poss_changes:
         pre_already_entered = False
@@ -303,6 +303,25 @@ def find_one_skill_intermediate_states(arg_folder_traj, arg_symbols):
             intermediate_states.append(poss_change)
 
     return intermediate_states
+
+
+def find_unique_states(arg_folder_traj, arg_symbols):
+    files_folder = [f for f in os.listdir(arg_folder_traj) if os.path.isfile(os.path.join(arg_folder_traj, f))]
+    files_traj = [f for f in files_folder if 'rollout' in f]
+
+    intermediate_states = []
+    poss_changes = []
+
+    unique_states = []
+    for f in files_traj:
+        data = np.loadtxt(arg_folder_traj + "/" + f, delimiter=" ", dtype=float)
+        sym_traj = find_traj_in_syms(data, arg_symbols)
+        reduced_traj = reduce_sym_traj(sym_traj)
+        for r in reduced_traj:
+            if r not in unique_states:
+                unique_states.append(r)
+
+    return unique_states
 
 
 def find_traj_in_syms(arg_data, arg_symbols):
@@ -337,6 +356,36 @@ def reduce_sym_traj(sym_traj):
 
     return sym_sequence
 
+
+def remove_mutually_exclusive_symbols_one_state(sym_state, mx_symbols):
+    out = dict()
+    for sym, truth_value in sym_state.items():
+        if truth_value or sym not in mx_symbols:
+            out[sym] = truth_value
+
+    return out
+
+
+def remove_mutually_exclusive_symbols_list_of_states(sym_states, mx_symbols):
+    out = []
+    for sym_state in sym_states:
+        tmp = remove_mutually_exclusive_symbols_one_state(sym_state, mx_symbols)
+        out.append(tmp)
+
+    return out
+
+
+def remove_mutually_exclusive_symbols_intermediate_states(sym_states, mx_symbols):
+    out = []
+    for pre, posts in sym_states:
+        tmp_pre = remove_mutually_exclusive_symbols_one_state(pre, mx_symbols)
+        post_list = []
+        for post in posts:
+            tmp_post = remove_mutually_exclusive_symbols_one_state(post, mx_symbols)
+            post_list.append(tmp_post)
+        out.append([tmp_pre, post_list])
+
+    return out
 
 def find_one_skill_pre_or_post(arg_folder_traj, arg_symbols, find_pre):
 
