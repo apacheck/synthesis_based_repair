@@ -15,7 +15,7 @@ from dl2_lfd.elaborateDMP import evaluate_constraint, evaluate_model
 from dl2_lfd.dmps.dmp import load_dmp_demos, DMP
 from dl2_lfd.helper_funcs.conversions import np_to_pgpu
 from torch.utils.data import TensorDataset, DataLoader
-from dl2_lfd.ltl_diff.constraints import AlwaysFormula, EventuallyOrFormulas, AndEventuallyFormulas, SequenceFormulas
+from dl2_lfd.ltl_diff.constraints import AlwaysFormula, EventuallyOrFormulas, AndEventuallyFormulas, SequenceFormulas, SkillConstraint
 from os.path import join
 
 
@@ -115,8 +115,7 @@ if __name__ == "__main__":
     #     {'base_1d': True}
     # ]
     # formula = {'ee_table_1b': False}
-    # symbols_to_plot = ['base_1', 'base_1a', 'base_1b', 'base_1c', 'base_1d', 'base_1e'] #, 'base_2', 'base_3'] #, 'duck_a_held', 'duck_a_table']
-    symbols_to_plot = ['ee_table_1', 'ee_table_1a', 'ee_table_1b', 'ee_table_1c', 'ee_table_1d', 'ee_table_1e'] #, 'base_2', 'base_3'] #, 'duck_a_held', 'duck_a_table']
+    symbols_to_plot = ['base_1', 'base_2', 'base_3', 'ee_table_1', 'ee_table_1a', 'ee_table_1b', 'ee_table_2', 'ee_table_3']
     selected_symbols = {}
     for sym in symbols_to_plot:
         selected_symbols[sym] = symbols[sym]
@@ -124,7 +123,8 @@ if __name__ == "__main__":
     # constraint = AlwaysFormula(symbols_device, formula, epsilon=dmp_opts['epsilon'])
     # constraint = EventuallyOrFormulas(symbols_device, formula, epsilon=dmp_opts['epsilon'])
     # constraint = AndEventuallyFormulas(symbols_device, formula, epsilon=dmp_opts['epsilon'])
-    constraint = SequenceFormulas(symbols_device, formula, epsilon=dmp_opts['epsilon'])
+    # constraint = SequenceFormulas(symbols_device, formula, epsilon=dmp_opts['epsilon'])
+    constraint = SkillConstraint(symbols_device, None, suggestion['intermediate_states'], None, suggestion['unique_states'], None, workspace_bnds, dmp_opts['epsilon'], dmp_opts)
     losses, learned_rollouts, c_sat = evaluate_constraint(val_set, constraint, path_to_original_model, basis_fs=dmp_opts['basis_fs'],
                         dt=dmp_opts['dt'], output_dimension=dmp_opts['dimension'])
     # symbols_to_plot = ['ee_table_1', 'ee_table_1a', 'ee_table_1b', 'ee_table_1c', 'ee_table_1d', 'ee_table_1e', 'base_1'] #, 'base_2', 'base_3'] #, 'duck_a_held', 'duck_a_table']

@@ -271,13 +271,21 @@ def find_one_skill_intermediate_states(arg_folder_traj, arg_symbols):
     intermediate_states = []
     poss_changes = []
 
+    unique_traj = []
     for f in files_traj:
         data = np.loadtxt(arg_folder_traj + "/" + f, delimiter=" ", dtype=float)
         traj_syms = find_traj_in_syms(data, arg_symbols)
-
+        traj_syms = reduce_sym_traj(traj_syms)
+        if traj_syms not in unique_traj:
+            unique_traj.append(traj_syms)
         for ii in range(0, len(traj_syms) - 1):
-            if traj_syms[ii] != traj_syms[ii + 1]:
-                poss_changes.append([traj_syms[ii], [traj_syms[ii + 1]]])
+            poss_changes.append([traj_syms[ii], [traj_syms[ii + 1]]])
+
+    print("unique trajs " + arg_folder_traj)
+    for u in unique_traj:
+        for s in u:
+            print(s)
+        print("*************")
 
     for poss_change in poss_changes:
         pre_already_entered = False

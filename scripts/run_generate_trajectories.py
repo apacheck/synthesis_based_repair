@@ -296,46 +296,6 @@ def generate_trajectories_stretch(folder_demo_trajectories, n_train_trajs, n_val
     #
     #     save_data(folder_demo_skill, data, start_state, end_state, ii, n_start_rows, n_train_trajs, dim=6)
 
-    # skill_name = "skillStretch1to2"
-    # folder_demo_skill = folder_demo_trajectories + "/" + skill_name
-    # for ii in range(n_train_trajs + n_val_trajs):
-    #     data = np.zeros([100, 6])
-    #
-    #     l_start = np.array([0.35])
-    #     z_start = 0.8 + 0.2 * np.random.random(1)
-    #     t_wrist_start = 0 #2 * np.pi * np.random.random(1)
-    #
-    #     x_start = 0.45 + 0.1 * np.random.random(1)
-    #     y_start = 0.45 + 0.1 * np.random.random(1)
-    #
-    #     x_end = -1.45 - 0.1 * np.random.random(1)
-    #     y_end = 0.05 - 0.1 * np.random.random(1)
-    #
-    #     # data[:15, 0] = np.linspace(x_start[0], x_end[0], 15)
-    #     # data[:15, 1] = y_start
-    #     # data[15:, 0] = x_end
-    #     # data[15:, 1] = np.linspace(y_start[0], y_end[0], 5)
-    #     # data[:15, 2] = np.pi
-    #     # data[15:, 2] = 3*np.pi/2
-    #     # data[:, 3] = l_start
-    #     # data[:, 4] = z_start
-    #     # data[:, 5] = t_wrist_start
-    #
-    #     data[:50, 0] = np.linspace(x_start[0], x_end[0] + 0.5, 50)
-    #     data[:50, 1] = y_start
-    #     data[50:, 0] = (x_end + 0.5) + 0.5 * np.cos(np.linspace(-np.pi/2, -np.pi, 50))
-    #     data[50:, 1] = y_end - 0.5 * np.sin(np.linspace(-np.pi/2, -np.pi, 50))
-    #     data[:50, 2] = np.pi
-    #     data[50:, 2] = np.linspace(np.pi, 3*np.pi/2, 50)
-    #     data[:, 3] = l_start
-    #     data[:, 4] = z_start
-    #     data[:, 5] = t_wrist_start
-    #
-    #     start_state = data[0, :]
-    #     end_state = data[-1, :]
-    #
-    #     save_data(folder_demo_skill, data, start_state, end_state, ii, n_start_rows, n_train_trajs, dim=6)
-
     skill_name = "skillStretch1to2"
     folder_demo_skill = folder_demo_trajectories + "/" + skill_name
     for ii in range(n_train_trajs + n_val_trajs):
@@ -349,7 +309,7 @@ def generate_trajectories_stretch(folder_demo_trajectories, n_train_trajs, n_val
         y_start = 0.45 + 0.1 * np.random.random(1)
 
         x_end = -1.45 - 0.1 * np.random.random(1)
-        y_end = y_start
+        y_end = 0.05 - 0.1 * np.random.random(1)
 
         # data[:15, 0] = np.linspace(x_start[0], x_end[0], 15)
         # data[:15, 1] = y_start
@@ -361,9 +321,12 @@ def generate_trajectories_stretch(folder_demo_trajectories, n_train_trajs, n_val
         # data[:, 4] = z_start
         # data[:, 5] = t_wrist_start
 
-        data[:, 0] = np.linspace(x_start[0], x_end[0], 50)
-        data[:, 1] = y_start
-        data[:, 2] = np.pi
+        data[:25, 0] = np.linspace(x_start[0], x_end[0] + 0.5, 25)
+        data[:25, 1] = y_start
+        data[25:, 0] = (x_end + 0.5) + 0.5 * np.cos(np.linspace(-np.pi/2, -np.pi, 25))
+        data[25:, 1] = y_end - 0.5 * np.sin(np.linspace(-np.pi/2, -np.pi, 25))
+        data[:25, 2] = np.pi
+        data[25:, 2] = np.linspace(np.pi, 3*np.pi/2, 25)
         data[:, 3] = l_start
         data[:, 4] = z_start
         data[:, 5] = t_wrist_start
@@ -373,79 +336,34 @@ def generate_trajectories_stretch(folder_demo_trajectories, n_train_trajs, n_val
 
         save_data(folder_demo_skill, data, start_state, end_state, ii, n_start_rows, n_train_trajs, dim=6)
 
-    # # bottom left to top right via bottom right
-    # skill_name = "skillStretch2to3"
+    # skill_name = "skillStretch1to2"
     # folder_demo_skill = folder_demo_trajectories + "/" + skill_name
     # for ii in range(n_train_trajs + n_val_trajs):
-    #     data = np.zeros([20, 6])
+    #     data = np.zeros([50, 6])
     #
-    #     l_start = np.array([0.45])
+    #     l_start = np.array([0.35])
     #     z_start = 0.8 + 0.2 * np.random.random(1)
-    #     t_wrist_start = 0#2 * np.pi * np.random.random(1)
-    #
-    #     x_end = 0.45 + 0.1 * np.random.random(1)
-    #     y_end = -0.45 - 0.1 * np.random.random(1)
-    #
-    #     x_start = -1.45 - 0.1 * np.random.random(1)
-    #     y_start = 0.05 - 0.1 * np.random.random(1)
-    #
-    #     # data[:5, 0] = x_start
-    #     # data[:5, 1] = np.linspace(y_start[0], y_end[0], 5)
-    #     # data[5:, 0] = np.linspace(x_start[0], x_end[0], 15)
-    #     # data[5:, 1] = y_end
-    #     # data[:5, 2] = 3 * np.pi / 2
-    #     # data[5:, 2] = 0
-    #     # data[:, 3] = l_start
-    #     # data[:, 4] = z_start
-    #     # data[:, 5] = t_wrist_start
-    #
-    #     data[:10, 0] = (x_start + 0.5) + 0.5 * np.cos(np.linspace(np.pi, 3 * np.pi/2, 10))
-    #     data[:10, 1] = y_start + 0.5 * np.sin(np.linspace(np.pi, 3 * np.pi/2, 10))
-    #     data[10:, 0] = np.linspace(data[19, 0], x_end[0], 10)
-    #     data[10:, 1] = data[9, 1]
-    #
-    #     data[:10, 2] = np.linspace(3 * np.pi/2, 2 * np.pi, 10)
-    #     data[10:, 2] = 2 * np.pi
-    #     data[:, 3] = l_start
-    #     data[:, 4] = z_start
-    #     data[:, 5] = t_wrist_start
-    #
-    #     start_state = data[0, :]
-    #     end_state = data[-1, :]
-    #
-    #     save_data(folder_demo_skill, data, start_state, end_state, ii, n_start_rows, n_train_trajs, dim=6)
-    #
-    # skill_name = "skillStretch3to1"
-    # folder_demo_skill = folder_demo_trajectories + "/" + skill_name
-    # for ii in range(n_train_trajs + n_val_trajs):
-    #     data = np.zeros([20, 6])
-    #
-    #     l_start = np.array([0.45])
-    #     z_start = 0.8 + 0.2 * np.random.random(1)
-    #     t_wrist_start = 0#2 * np.pi * np.random.random(1)
+    #     t_wrist_start = 0 #2 * np.pi * np.random.random(1)
     #
     #     x_start = 0.45 + 0.1 * np.random.random(1)
-    #     x_mid = x_start + 0.5
-    #     y_start = -0.45 - 0.1 * np.random.random(1)
-    #     y_end = 0.45 + 0.1 * np.random.random(1)
+    #     y_start = 0.45 + 0.1 * np.random.random(1)
     #
-    #     # data[:7, 0] = np.linspace(x_start[0], x_mid[0], 7)
-    #     # data[:7, 1] = y_start
-    #     # data[7:13, 0] = x_mid
-    #     # data[7:13, 1] = np.linspace(y_start[0], y_end[0], 6)
-    #     # data[13:, 0] = np.linspace(x_mid[0], x_end[0], 7)
-    #     # data[13:, 1] = y_end
-    #     # data[:7, 2] = 0
-    #     # data[7:13, 2] = np.pi / 2
-    #     # data[13:, 2] = np.pi
+    #     x_end = -1.45 - 0.1 * np.random.random(1)
+    #     y_end = y_start
+    #
+    #     # data[:15, 0] = np.linspace(x_start[0], x_end[0], 15)
+    #     # data[:15, 1] = y_start
+    #     # data[15:, 0] = x_end
+    #     # data[15:, 1] = np.linspace(y_start[0], y_end[0], 5)
+    #     # data[:15, 2] = np.pi
+    #     # data[15:, 2] = 3*np.pi/2
     #     # data[:, 3] = l_start
     #     # data[:, 4] = z_start
     #     # data[:, 5] = t_wrist_start
     #
-    #     data[:, 0] = x_start + np.abs(y_start) * np.cos(np.linspace(- np.pi/2, np.pi/2, 20))
-    #     data[:, 1] = 0 + np.abs(y_start) * np.sin(np.linspace(-np.pi/2, np.pi/2, 20))
-    #
-    #     data[:, 2] = np.linspace(0, np.pi, 20)
+    #     data[:, 0] = np.linspace(x_start[0], x_end[0], 50)
+    #     data[:, 1] = y_start
+    #     data[:, 2] = np.pi
     #     data[:, 3] = l_start
     #     data[:, 4] = z_start
     #     data[:, 5] = t_wrist_start
@@ -454,6 +372,89 @@ def generate_trajectories_stretch(folder_demo_trajectories, n_train_trajs, n_val
     #     end_state = data[-1, :]
     #
     #     save_data(folder_demo_skill, data, start_state, end_state, ii, n_start_rows, n_train_trajs, dim=6)
+
+    # bottom left to top right via bottom right
+    skill_name = "skillStretch2to3"
+    folder_demo_skill = folder_demo_trajectories + "/" + skill_name
+    for ii in range(n_train_trajs + n_val_trajs):
+        data = np.zeros([50, 6])
+
+        l_start = np.array([0.35])
+        z_start = 0.8 + 0.2 * np.random.random(1)
+        t_wrist_start = 0#2 * np.pi * np.random.random(1)
+
+        x_end = 0.45 + 0.1 * np.random.random(1)
+
+        x_start = -1.45 - 0.1 * np.random.random(1)
+        y_start = 0.05 - 0.1 * np.random.random(1)
+
+        y_end = y_start - 0.5
+
+        # data[:5, 0] = x_start
+        # data[:5, 1] = np.linspace(y_start[0], y_end[0], 5)
+        # data[5:, 0] = np.linspace(x_start[0], x_end[0], 15)
+        # data[5:, 1] = y_end
+        # data[:5, 2] = 3 * np.pi / 2
+        # data[5:, 2] = 0
+        # data[:, 3] = l_start
+        # data[:, 4] = z_start
+        # data[:, 5] = t_wrist_start
+
+        data[:25, 0] = (x_start + 0.5) + 0.5 * np.cos(np.linspace(np.pi, 3 * np.pi/2, 25))
+        data[:25, 1] = y_start + 0.5 * np.sin(np.linspace(np.pi, 3 * np.pi/2, 25))
+        data[25:, 0] = np.linspace(data[19, 0], x_end[0], 25)
+        data[25:, 1] = y_end
+
+        data[:25, 2] = np.linspace(3 * np.pi/2, 2 * np.pi, 25)
+        data[25:, 2] = 2 * np.pi
+        data[:, 3] = l_start
+        data[:, 4] = z_start
+        data[:, 5] = t_wrist_start
+
+        start_state = data[0, :]
+        end_state = data[-1, :]
+
+        save_data(folder_demo_skill, data, start_state, end_state, ii, n_start_rows, n_train_trajs, dim=6)
+
+    skill_name = "skillStretch3to1"
+    folder_demo_skill = folder_demo_trajectories + "/" + skill_name
+    for ii in range(n_train_trajs + n_val_trajs):
+        data = np.zeros([50, 6])
+
+        l_start = np.array([0.35])
+        z_start = 0.8 + 0.2 * np.random.random(1)
+        t_wrist_start = 0#2 * np.pi * np.random.random(1)
+
+        x_start = 0.45 + 0.1 * np.random.random(1)
+        x_mid = x_start + 0.5
+        y_start = -0.45 - 0.1 * np.random.random(1)
+        y_end = 0.45 + 0.1 * np.random.random(1)
+
+        # data[:7, 0] = np.linspace(x_start[0], x_mid[0], 7)
+        # data[:7, 1] = y_start
+        # data[7:13, 0] = x_mid
+        # data[7:13, 1] = np.linspace(y_start[0], y_end[0], 6)
+        # data[13:, 0] = np.linspace(x_mid[0], x_end[0], 7)
+        # data[13:, 1] = y_end
+        # data[:7, 2] = 0
+        # data[7:13, 2] = np.pi / 2
+        # data[13:, 2] = np.pi
+        # data[:, 3] = l_start
+        # data[:, 4] = z_start
+        # data[:, 5] = t_wrist_start
+
+        data[:, 0] = x_start + np.abs(y_start) * np.cos(np.linspace(- np.pi/2, np.pi/2, 50))
+        data[:, 1] = 0 + np.abs(y_start) * np.sin(np.linspace(-np.pi/2, np.pi/2, 50))
+
+        data[:, 2] = np.linspace(0, np.pi, 50)
+        data[:, 3] = l_start
+        data[:, 4] = z_start
+        data[:, 5] = t_wrist_start
+
+        start_state = data[0, :]
+        end_state = data[-1, :]
+
+        save_data(folder_demo_skill, data, start_state, end_state, ii, n_start_rows, n_train_trajs, dim=6)
     #
     # skill_name = "skillStretchDownUp1"
     # folder_demo_skill = folder_demo_trajectories + "/" + skill_name
@@ -578,6 +579,58 @@ def transformStretchSkillsToEntireSpace(folder_trajectories, skill_names, symbol
         else:
             new_skills_tmp = transformStretchSkillToEntireSpaceBaseMoves(folder_trajectories, skill_name, symbols)
         new_skills = new_skills.union(new_skills_tmp)
+
+    return new_skills
+
+
+def transformStretchSkillsToEntireSpaceOnlyRobot(folder_trajectories, skill_names, symbols):
+    """Finds the trajectory achieved by the stretch in the state space the symbols care about
+
+    Takes in the folder containing the joint states of the robot, then finds the trajectory of the robot in the state
+    space the symbols need. Finds the end effector position
+
+    Args:
+        folder_trajectories: path to where the joint space trajectories are (str)
+        skill_names:
+        symbols:
+
+    Returns:
+        skill_names: new skill names
+    """
+
+    new_skills = set()
+    for skill_name in skill_names:
+        new_skills_tmp = transformStretchSkillOnlyRobot(folder_trajectories, skill_name, symbols)
+        new_skills = new_skills.union(new_skills_tmp)
+
+    return new_skills
+
+
+def transformStretchSkillOnlyRobot(folder_trajectories, skill_name, symbols):
+    folder_demo_skill = folder_trajectories + "/" + skill_name + "/train/"
+    start_states, pose_hists = load_dmp_demos(folder_demo_skill, n_points=50)
+
+    # Loop through each joint space trajectory
+    # Find fk for the trajectory
+    # Both train and val
+    state_space_trajs = np.zeros([pose_hists.shape[0], pose_hists.shape[1], 6])
+    state_space_trajs[:, :, 0:3] = pose_hists[:, :, 0:3]
+    state_space_trajs[:, :, 3:6] = fk_stretch(pose_hists)
+
+    n_start_rows = 2
+    n_train_trajs = 32
+
+
+    new_skill_name = skill_name + "_alt"
+    new_skills = set([new_skill_name])
+
+    for ii, state_space_traj in enumerate(state_space_trajs):
+
+        data = state_space_traj
+        folder_demo_skill_new = folder_trajectories + "/" + new_skill_name + "/"
+        make_folders(folder_trajectories, [new_skill_name])
+        save_data(folder_demo_skill_new, data, data[0, :], data[-1, :], ii, n_start_rows, n_train_trajs,
+                  dim=6)
 
     return new_skills
 
@@ -778,7 +831,7 @@ if __name__ == "__main__":
     folder_trajectories = file_names["folder_trajectories"]
 
     # skill_names = file_names["skill_names"]
-    skill_names = ["skillStretch1to2"] #, "skillStretch2to3", "skillStretch3to1"] #, "skillStretchDownUp1", "skillStretchDownUp2", "skillStretchDownUp3"]
+    skill_names = ["skillStretch1to2", "skillStretch2to3", "skillStretch3to1"] #, "skillStretchDownUp1", "skillStretchDownUp2", "skillStretchDownUp3"]
     symbols = load_symbols(file_names["file_symbols"])
     workspace_bnds = np.array(dmp_opts["workspace_bnds"])
 
@@ -795,46 +848,46 @@ if __name__ == "__main__":
     # Create DMP from the generated trajectories and save them in the dmp folder #
     ##############################################################################
 
-    dmp_opts['enforce_type'] = 'unconstrained'
-    dmp_opts['symbols'] = symbols
-    dmp_opts['plot_limits'] = np.array(dmp_opts['plot_limits'])
-    dmp_opts['use_previous'] = False
-    for skill in skill_names:
-        dmp_opts['skill_name'] = skill
-        dmp_opts['demo_folder'] = folder_trajectories + '/' + skill + '/'
-        learned_model, results_folder = learn_skill_with_constraints(dmp_opts['skill_name'],
-                                                                                          None,
-                                                                                          dmp_opts['base_folder'],
-                                                                                          dmp_opts['demo_folder'],
-                                                                                          old_demo_folder=None,
-                                                                                          previous_model_path=None,
-                                                                                          enforce_type="unconstrained",
-                                                                                          main_loss_weight=1,
-                                                                                          constraint_loss_weight=0,
-                                                                                          basis_fs=dmp_opts['basis_fs'],
-                                                                                          dt=dmp_opts['dt'],
-                                                                                          n_epochs=dmp_opts['n_epochs'],
-                                                                                          output_dimension=dmp_opts[
-                                                                                              'dimension'],
-                                                                                          epsilon=dmp_opts['epsilon'],
-                                                                                            output_model_path="../data/dmps/" + skill + ".pt")
+    # dmp_opts['enforce_type'] = 'unconstrained'
+    # dmp_opts['symbols'] = symbols
+    # dmp_opts['plot_limits'] = np.array(dmp_opts['plot_limits'])
+    # dmp_opts['use_previous'] = False
+    # for skill in skill_names:
+    #     dmp_opts['skill_name'] = skill
+    #     dmp_opts['demo_folder'] = folder_trajectories + '/' + skill + '/'
+    #     learned_model, results_folder = learn_skill_with_constraints(dmp_opts['skill_name'],
+    #                                                                                       None,
+    #                                                                                       dmp_opts['base_folder'],
+    #                                                                                       dmp_opts['demo_folder'],
+    #                                                                                       old_demo_folder=None,
+    #                                                                                       previous_model_path=None,
+    #                                                                                       enforce_type="unconstrained",
+    #                                                                                       main_loss_weight=1,
+    #                                                                                       constraint_loss_weight=0,
+    #                                                                                       basis_fs=dmp_opts['basis_fs'],
+    #                                                                                       dt=dmp_opts['dt'],
+    #                                                                                       n_epochs=dmp_opts['n_epochs'],
+    #                                                                                       output_dimension=dmp_opts[
+    #                                                                                           'dimension'],
+    #                                                                                       epsilon=dmp_opts['epsilon'],
+    #                                                                                         output_model_path="../data/dmps/" + skill + ".pt")
 
-    # ################################################################
-    # # Generate the symbolic/abstract representation of the skills  #
-    # # for use when writing the specification and save it in a json #
-    # # file                                                         #
-    # ################################################################
-    # if file_names['file_symbols'].split('/')[2] == 'stretch':
-    #     new_skill_names = transformStretchSkillsToEntireSpace(folder_trajectories, skill_names, symbols)
-    #     print(new_skill_names)
-    #     skills = load_skills_from_trajectories(folder_trajectories, skill_names, symbols)
-    #     write_skills_json(skills, file_names['file_skills'])
+    ################################################################
+    # Generate the symbolic/abstract representation of the skills  #
+    # for use when writing the specification and save it in a json #
+    # file                                                         #
+    ################################################################
+    if file_names['file_symbols'].split('/')[2] == 'stretch':
+        new_skill_names = transformStretchSkillsToEntireSpaceOnlyRobot(folder_trajectories, skill_names, symbols)
+        print(new_skill_names)
+        skills = load_skills_from_trajectories(folder_trajectories, new_skill_names, symbols)
+        write_skills_json(skills, file_names['file_skills'])
 
     ##############################
     # Plot skills if desired  ####
     ##############################
 
-    symbols_to_plot = ['ee_table_1', 'ee_table_1a', 'ee_table_1b', 'ee_table_1c', 'ee_table_1d', 'ee_table_2', 'ee_table_3', 'base_1', 'base_2', 'base_3'] #, 'duck_a_held', 'duck_a_table']
+    symbols_to_plot = ['ee_table_1', 'ee_table_1a', 'ee_table_1b', 'ee_table_2', 'ee_table_3', 'base_1', 'base_2', 'base_3'] #, 'duck_a_held', 'duck_a_table']
     if args.do_plot:
         os.makedirs(file_names["folder_plot"], exist_ok=True)
         dim = len(dmp_opts["plot_limits"])

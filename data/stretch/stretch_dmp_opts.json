@@ -7,7 +7,7 @@
   "dmp_folder": "../data/dmps/",
   "dt": 0.02,
   "c_weight": 1,
-  "m_weight": 0.1,
+  "m_weight": 0,
   "epsilon": 1E-6,
   "plt_background": "none",
   "plot_limits": [[-2, 1.5], [-2, 1.5], [0, 1]],
@@ -19,6 +19,6 @@
   "base_folder": "../data",
   "use_previous": false,
   "file_physical_log": "../data/logs/stretch_log.txt",
-  "constraints": [["implication_next", "always"]],
+  "constraints": ["implication_next", "always"],
   "l_eff": 0.1
 }
