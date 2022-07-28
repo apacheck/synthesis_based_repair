@@ -215,5 +215,5 @@ ee_E->!(ee_H'|ee_G')
 !skillStretch3to1b
 !skillStretch2to3
 !skillStretch3to1
-!(base_C & base_G & ee_B & ee_H & skillStretch1to2 & base_B' & base_F' & ee_B' & ee_G')
+!(base_C & base_G & ee_C & ee_H & skillStretch1to2 & base_C' & base_G' & ee_B' & ee_H')
 !skill6

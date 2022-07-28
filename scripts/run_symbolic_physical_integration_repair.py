@@ -11,7 +11,7 @@ from synthesis_based_repair.skills import load_skills_from_json, Skill, write_sk
 import json
 from synthesis_based_repair.physical_implementation import learn_skill_with_constraints, create_stretch_base_traj, symbols_and_workspace_to_device
 from dl2_lfd.elaborateDMP import evaluate_constraint
-from dl2_lfd.ltl_diff.constraints import SequenceFormulasMultiplePostsAndAlways
+from dl2_lfd.ltl_diff.constraints import SequenceFormulasMultiplePostsAndAlways, SequenceFormulasMultiplePostsAndAlwaysWithIK
 from dl2_lfd.dmps.dmp import load_dmp_demos, DMP
 from dl2_lfd.helper_funcs.conversions import np_to_pgpu
 from torch.utils.data import TensorDataset, DataLoader
@@ -144,7 +144,7 @@ if __name__ == "__main__":
                                                                                             symbols)
                 unique_states = remove_mutually_exclusive_symbols_list_of_states(suggestion['unique_states'], symbols)
 
-                constraint = SequenceFormulasMultiplePostsAndAlways(symbols_device, intermediate_states, unique_states,
+                constraint = SequenceFormulasMultiplePostsAndAlwaysWithIK(symbols_device, intermediate_states, unique_states,
                                                                     epsilon=dmp_opts['epsilon'])
 
                 base_folder = '../data'

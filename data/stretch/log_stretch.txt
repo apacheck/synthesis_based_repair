@@ -1,22 +1,22 @@
 Seed 0 Suggestion # 1
 ================================
 ================================
-Val_losses: [[0.00685413 0.21875   ]]
+Val_losses: [[0.00584502 0.21875   ]]
 Additional not allowed repair:
 
 ********************
 Seed 0 Suggestion # 2
 ================================
 ================================
-Val_losses: [[0.0194789 0.       ]]
+Val_losses: [[0.20807284 0.        ]]
 Additional not allowed repair:
-Percent satisfy: 0.00!(base_C & base_G & ee_B & ee_H & skillStretch1to2 & base_B' & base_F' & ee_B' & ee_G')
+Percent satisfy: 0.00!(base_C & base_G & ee_C & ee_H & skillStretch1to2 & base_C' & base_G' & ee_B' & ee_H')
 
 ********************
 Seed 0 Suggestion # 3
 ================================
 ================================
-Val_losses: [[0.00874142 0.71875   ]]
+Val_losses: [[0.00817458 0.71875   ]]
 Additional not allowed repair:
 
 ********************

@@ -20,8 +20,12 @@ def plot_trajectories(trajectories, ax, **kwargs):
     :param kwargs:
     :return:
     """
+    # point_plot = True
     for trajectory in trajectories:
         plot_trajectory(trajectory, ax, **kwargs)
+        # if point_plot:
+        #     plot_trajectory(trajectory[[10, 20, 30, 40], :], ax, marker="o")
+        #     point_plot = False
 
 
 def plot_trajectory(trajectory, ax, **kwargs):

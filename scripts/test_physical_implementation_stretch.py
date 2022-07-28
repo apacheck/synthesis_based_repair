@@ -15,7 +15,7 @@ from dl2_lfd.elaborateDMP import evaluate_constraint, evaluate_model
 from dl2_lfd.dmps.dmp import load_dmp_demos, DMP
 from dl2_lfd.helper_funcs.conversions import np_to_pgpu
 from torch.utils.data import TensorDataset, DataLoader
-from dl2_lfd.ltl_diff.constraints import AlwaysFormula, EventuallyOrFormulas, AndEventuallyFormulas, SequenceFormulas, SkillConstraint, SequenceFormulasAndAlways, SequenceFormulasMultiplePostsAndAlways
+from dl2_lfd.ltl_diff.constraints import AlwaysFormula, EventuallyOrFormulas, AndEventuallyFormulas, SequenceFormulas, SkillConstraint, SequenceFormulasAndAlways, SequenceFormulasMultiplePostsAndAlways, SequenceFormulasMultiplePostsAndAlwaysWithIK
 from os.path import join
 
 
@@ -177,7 +177,8 @@ if __name__ == "__main__":
     # constraint = AndEventuallyFormulas(symbols_device, formula, epsilon=dmp_opts['epsilon'])
     # constraint = SequenceFormulas(symbols_device, formula, epsilon=dmp_opts['epsilon'])
     # constraint = SequenceFormulasAndAlways(symbols_device, formula, formula_always, epsilon=dmp_opts['epsilon'])
-    constraint = SequenceFormulasMultiplePostsAndAlways(symbols_device, intermediate_states, unique_states, epsilon=dmp_opts['epsilon'])
+    # constraint = SequenceFormulasMultiplePostsAndAlways(symbols_device, intermediate_states, unique_states, epsilon=dmp_opts['epsilon'])
+    constraint = SequenceFormulasMultiplePostsAndAlwaysWithIK(symbols_device, intermediate_states, unique_states, epsilon=dmp_opts['epsilon'])
     # constraint = SkillConstraint(symbols_device, None, suggestion['intermediate_states'], None, suggestion['unique_states'], None, workspace_bnds, dmp_opts['epsilon'], dmp_opts)
 
     losses, learned_rollouts, c_sat = evaluate_constraint(val_set, constraint, path_to_original_model, basis_fs=dmp_opts['basis_fs'],
