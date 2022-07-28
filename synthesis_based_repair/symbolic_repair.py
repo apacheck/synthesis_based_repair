@@ -19,7 +19,7 @@ DEBUG_PRE = False
 DEBUG = False
 DEBUG_WS_COMPUTE = False
 DEBUG_DETERMINIZE = False
-DEBUG_REVISION = True
+DEBUG_REVISION = False
 
 # PRINT_EXPR = False
 # DEBUG_PRE = False
@@ -833,7 +833,7 @@ def determinize_strategy(arg_bdd, arg_strategy):
 
 
 def perform_repair(arg_bdd, arg_gs, arg_winning_states, arg_target_states, arg_T_previously_changed, arg_opts):
-    print("perform_repair call number: {}".format(arg_opts["post_repair_cnt"]))
+    # print("perform_repair call number: {}".format(arg_opts["post_repair_cnt"]))
     repaired_T_env = arg_gs.get_t_env()
     repaired_T_sys = arg_gs.get_t_sys_not_hard()
 
@@ -966,7 +966,7 @@ def modify_postconditions(arg_bdd, arg_T_env, arg_T_sys, arg_winning_states, arg
     -------
 
     """
-    print("modify postconditions")
+    # print("modify postconditions")
     # These are the states that are winning at the next time that the system must get to
     winning_prime = arg_bdd.let(arg_gs.get_v_to_v_prime(), arg_winning_states)
     winning_p_dp = arg_bdd.let(arg_gs.get_inputprime_to_inputdoubleprime(), winning_prime)
@@ -1050,7 +1050,7 @@ def modify_postconditions(arg_bdd, arg_T_env, arg_T_sys, arg_winning_states, arg
     else:
         T_winning_change_sel = arg_bdd.false
     print_expr(arg_bdd, "T_winning_change_sel", T_winning_change_sel,
-               vars_ordering=arg_gs.get_vars_and_prime_and_dp(), do_print=True)
+               vars_ordering=arg_gs.get_vars_and_prime_and_dp(), do_print=DEBUG)
     if arg_opts['enforce_reactive_variables']:
         T_winning_change_sel = arg_bdd.exist(arg_opts['reactive_variables'], T_winning_change_sel)
         print_expr(arg_bdd, "T_winning_change_sel (after enforcing reactive variables)", T_winning_change_sel,
@@ -1071,7 +1071,7 @@ def modify_postconditions(arg_bdd, arg_T_env, arg_T_sys, arg_winning_states, arg
     print_expr(arg_bdd, "T_env removed",
                arg_bdd.exist(arg_gs.get_output_vars_prime() + arg_gs.get_input_vars_double_prime(),
                              T_winning_change_sel),
-               vars_ordering=arg_gs.get_vars_and_prime_and_dp(), do_print=True)
+               vars_ordering=arg_gs.get_vars_and_prime_and_dp(), do_print=DEBUG)
 
     # # Line 16-21
     # # Modify the preconditions
@@ -1114,7 +1114,7 @@ def find_final_post(arg_bdd, arg_gs, arg_skills, arg_T_env, arg_T_sys_nh):
 
 
 def modify_preconditions(arg_bdd, arg_T_env, arg_T_sys, arg_winning_states, arg_gs, arg_opts):
-    print("modify preconditions")
+    # print("modify preconditions")
     # np.random.seed(42)
     print_expr(arg_bdd, "winning states", arg_winning_states, vars_ordering=arg_gs.get_vars_and_prime_and_dp(),
                do_print=DEBUG_PRE)

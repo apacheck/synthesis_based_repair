@@ -1,0 +1,37 @@
+Seed 0 Suggestion # 1
+================================
+================================
+Val_losses: [[0.00685413 0.21875   ]]
+Additional not allowed repair:
+
+********************
+Seed 0 Suggestion # 2
+================================
+================================
+Val_losses: [[0.0194789 0.       ]]
+Additional not allowed repair:
+Percent satisfy: 0.00!(base_C & base_G & ee_B & ee_H & skillStretch1to2 & base_B' & base_F' & ee_B' & ee_G')
+
+********************
+Seed 0 Suggestion # 3
+================================
+================================
+Val_losses: [[0.00874142 0.71875   ]]
+Additional not allowed repair:
+
+********************
+Seed 0 took 4 iterations
+Skill name: skill6
+Original name: skillStretch1to2
+Initial preconditions: 
+base_C & base_G & ee_C & ee_H
+skill6 & !base_B & base_C & !base_F & base_G & !ee_A & !ee_B & ee_C & !ee_E & !ee_F & !ee_G & ee_H -> ((!base_B' & base_C' & !base_F' & base_G' & !ee_A' & ee_B' & !ee_C' & !ee_E' & !ee_F' & !ee_G' & ee_H'))
+skill6 & !base_B & base_C & !base_F & base_G & !ee_A & ee_B & !ee_C & !ee_E & !ee_F & !ee_G & ee_H -> ((base_B' & !base_C' & !base_F' & base_G' & !ee_A' & ee_B' & !ee_C' & !ee_E' & !ee_F' & !ee_G' & ee_H'))
+skill6 & !base_B & base_C & !base_F & base_G & !ee_A & ee_B & !ee_C & !ee_E & ee_F & !ee_G & !ee_H -> ((base_B' & !base_C' & !base_F' & base_G' & ee_A' & !ee_B' & !ee_C' & !ee_E' & !ee_F' & ee_G' & !ee_H'))
+skill6 & !base_B & base_C & base_F & !base_G & !ee_A & !ee_B & ee_C & !ee_E & ee_F & !ee_G & !ee_H -> ((base_B' & !base_C' & !base_F' & base_G' & ee_A' & !ee_B' & !ee_C' & !ee_E' & !ee_F' & ee_G' & !ee_H'))
+skill6 & !base_B & base_C & base_F & !base_G & !ee_A & ee_B & !ee_C & !ee_E & !ee_F & ee_G & !ee_H -> ((base_B' & !base_C' & !base_F' & base_G' & ee_A' & !ee_B' & !ee_C' & !ee_E' & !ee_F' & ee_G' & !ee_H'))
+skill6 & base_B & !base_C & !base_F & base_G & !ee_A & ee_B & !ee_C & !ee_E & !ee_F & !ee_G & ee_H -> ((!base_B' & base_C' & !base_F' & base_G' & !ee_A' & ee_B' & !ee_C' & !ee_E' & ee_F' & !ee_G' & !ee_H') | (!base_B' & base_C' & base_F' & !base_G' & !ee_A' & !ee_B' & ee_C' & !ee_E' & ee_F' & !ee_G' & !ee_H') | (!base_B' & base_C' & base_F' & !base_G' & !ee_A' & ee_B' & !ee_C' & !ee_E' & !ee_F' & ee_G' & !ee_H') | (base_B' & !base_C' & !base_F' & base_G' & ee_A' & !ee_B' & !ee_C' & !ee_E' & !ee_F' & ee_G' & !ee_H'))
+Final Postconditions:
+base_B & !base_C & !base_F & base_G & ee_A & !ee_B & !ee_C & !ee_E & !ee_F & ee_G & !ee_H
+**********************
+================================

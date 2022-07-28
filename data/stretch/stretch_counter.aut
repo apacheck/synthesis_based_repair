@@ -1,8 +1,0 @@
-State 0 with rank (0,0) -> <base_A:0, base_B:0, base_C:0, base_D:0, base_E:0, base_F:1, base_G:0, base_H:0, base_I:0, base_J:0, base_K:0, base_L:0, base_M:0, base_N:0, base_O:0, base_P:0, ee_A:0, ee_B:0, ee_C:1, ee_D:0, ee_E:0, ee_F:0, ee_G:0, ee_H:0, ee_I:0, ee_J:0, ee_K:0, ee_L:0, ee_M:0, ee_N:0, ee_O:0, ee_P:0, skillStretch1to2:0, skillStretch2to3:0, skillStretch3to1:0, skillStretch1to2b:0, skillStretch2to3b:0, skillStretch3to1b:0>
-	With successors : 0, 1, 2
-State 1 with rank (0,0) -> <base_A:0, base_B:0, base_C:0, base_D:0, base_E:0, base_F:1, base_G:0, base_H:0, base_I:0, base_J:0, base_K:0, base_L:0, base_M:0, base_N:0, base_O:0, base_P:0, ee_A:0, ee_B:0, ee_C:1, ee_D:0, ee_E:0, ee_F:0, ee_G:0, ee_H:0, ee_I:0, ee_J:0, ee_K:0, ee_L:0, ee_M:0, ee_N:0, ee_O:0, ee_P:0, skillStretch1to2:0, skillStretch2to3:0, skillStretch3to1:0, skillStretch1to2b:1, skillStretch2to3b:0, skillStretch3to1b:0>
-	With successors : 3
-State 3 with rank (0,0) -> <base_A:0, base_B:0, base_C:0, base_D:0, base_E:0, base_F:1, base_G:0, base_H:0, base_I:0, base_J:0, base_K:0, base_L:0, base_M:0, base_N:0, base_O:0, base_P:0, ee_A:0, ee_B:1, ee_C:0, ee_D:0, ee_E:0, ee_F:0, ee_G:0, ee_H:0, ee_I:0, ee_J:0, ee_K:0, ee_L:0, ee_M:0, ee_N:0, ee_O:0, ee_P:0>
-	With no successors.
-State 2 with rank (0,0) -> <base_A:0, base_B:0, base_C:0, base_D:0, base_E:0, base_F:1, base_G:0, base_H:0, base_I:0, base_J:0, base_K:0, base_L:0, base_M:0, base_N:0, base_O:0, base_P:0, ee_A:0, ee_B:0, ee_C:1, ee_D:0, ee_E:0, ee_F:0, ee_G:0, ee_H:0, ee_I:0, ee_J:0, ee_K:0, ee_L:0, ee_M:0, ee_N:0, ee_O:0, ee_P:0, skillStretch1to2:1, skillStretch2to3:0, skillStretch3to1:0, skillStretch1to2b:0, skillStretch2to3b:0, skillStretch3to1b:0>
-	With successors : 3

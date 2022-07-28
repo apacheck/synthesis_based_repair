@@ -279,7 +279,8 @@ def find_one_skill_intermediate_states(arg_folder_traj, arg_symbols):
         if traj_syms not in unique_traj:
             unique_traj.append(traj_syms)
         for ii in range(0, len(traj_syms) - 1):
-            poss_changes.append([traj_syms[ii], [traj_syms[ii + 1]]])
+            if [traj_syms[ii], [traj_syms[ii+1]]] not in poss_changes:
+                poss_changes.append([traj_syms[ii], [traj_syms[ii + 1]]])
 
     # print("unique trajs " + arg_folder_traj)
     # for u in unique_traj:

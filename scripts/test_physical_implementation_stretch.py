@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 import copy
 import numpy as np
 from synthesis_based_repair.symbols import load_symbols
-from synthesis_based_repair.skills import load_skills_from_json, Skill, write_skills_str, find_traj_in_syms, reduce_sym_traj, find_one_skill_intermediate_states, find_unique_states, remove_mutually_exclusive_symbols_list_of_states, remove_mutually_exclusive_symbols_intermediate_states
+from synthesis_based_repair.skills import load_skills_from_json, Skill, write_skills_str, find_traj_in_syms, reduce_sym_traj, find_one_skill_intermediate_states, find_unique_states, remove_mutually_exclusive_symbols_list_of_states, remove_mutually_exclusive_symbols_intermediate_states, remove_mutually_exclusive_symbols_one_state
 import json
 from synthesis_based_repair.physical_implementation import learn_skill_with_constraints, fk_stretch, create_stretch_base_traj, symbols_and_workspace_to_device
 import argparse
@@ -82,7 +82,7 @@ if __name__ == "__main__":
     losses, learned_rollouts, c_sat = evaluate_constraint(val_set, None, path_to_original_model,
                                                           basis_fs=dmp_opts['basis_fs'], dt=dmp_opts['dt'],
                                                           output_dimension=dmp_opts['dimension'])
-    symbols_to_plot = ['base_A', 'base_B', 'base_C', 'base_D', 'base_E', 'base_F', 'base_G', 'base_H', 'base_I', 'base_J', 'base_K', 'base_L', 'base_M', 'base_N', 'base_O', 'base_P', 'ee_A', 'ee_B', 'ee_C', 'ee_D', 'ee_E', 'ee_F', 'ee_G', 'ee_H', 'ee_I', 'ee_J', 'ee_K', 'ee_L', 'ee_M', 'ee_N', 'ee_O', 'ee_P']
+    symbols_to_plot = ['base_B', 'base_C', 'base_F', 'base_G', 'ee_A', 'ee_B', 'ee_C', 'ee_E', 'ee_F', 'ee_G', 'ee_H']
     trajectories_ee = learned_rollouts[:, :, 2:]
     trajectories_base = create_stretch_base_traj(learned_rollouts)
     fig, ax = create_ax_array(3)
@@ -109,7 +109,7 @@ if __name__ == "__main__":
             unique_traj.append(reduced_traj)
     for u in unique_traj:
         for s in u:
-            print(s)
+            print(remove_mutually_exclusive_symbols_one_state(s, symbols))
         print("*************")
 
     intermediate_states = find_one_skill_intermediate_states(old_demo_folder + "/val", symbols)
@@ -122,20 +122,24 @@ if __name__ == "__main__":
     # Here we make sure that a sample skill satisfies a constraint that it should
     ####################################################################################################################
     # Constraint is that ee and base are not both in E
-    bad = {'base_E': True, 'ee_B': True}
-    unique_states.remove(bad)
-    unique_states.remove({'base_F': True, 'ee_B': True})
-    unique_states.append({'base_F': True, 'ee_F': True})
-    unique_states.append({'base_F': True, 'ee_E': True})
-    for ii, (pre, posts) in enumerate(intermediate_states):
-        if pre == bad:
-            del intermediate_states[ii]
-        if bad in posts:
-            intermediate_states[ii][1].remove(bad)
-    intermediate_states[0][1] = [{'base_F': True, 'ee_F': True}]
-    intermediate_states[1][0] = {'base_F': True, 'ee_F': True}
-    intermediate_states[1][1] = [{'base_F': True, 'ee_E': True}]
-    intermediate_states.append([{'base_F': True, 'ee_E': True}, [{'base_E': True, 'ee_E': True}]])
+    # bad = {'base_E': True, 'ee_B': True}
+    # unique_states.remove(bad)
+    # unique_states.remove({'base_F': True, 'ee_B': True})
+    # unique_states.append({'base_F': True, 'ee_F': True})
+    # unique_states.append({'base_F': True, 'ee_E': True})
+    # for ii, (pre, posts) in enumerate(intermediate_states):
+    #     if pre == bad:
+    #         del intermediate_states[ii]
+    #     if bad in posts:
+    #         intermediate_states[ii][1].remove(bad)
+    # intermediate_states[0][1] = [{'base_F': True, 'ee_F': True}]
+    # intermediate_states[1][0] = {'base_F': True, 'ee_F': True}
+    # intermediate_states[1][1] = [{'base_F': True, 'ee_E': True}]
+    # intermediate_states.append([{'base_F': True, 'ee_E': True}, [{'base_E': True, 'ee_E': True}]])
+    intermediate_states = [[{'base_C': True, 'base_G': True, 'ee_C': True, 'ee_H': True}, [{'base_C': True, 'base_G': True, 'ee_C': True, 'ee_G': True}]],
+                           [{'base_C': True, 'base_G': True, 'ee_C': True, 'ee_G': True}, [{'base_C': True, 'base_G': True, 'ee_B': True, 'ee_G': True}]],
+                           [{'base_C': True, 'base_G': True, 'ee_B': True, 'ee_G': True}, [{'base_B': True, 'base_G': True, 'ee_B': True, 'ee_G': True}]],
+                           [{'base_B': True, 'base_G': True, 'ee_B': True, 'ee_G': True}, [{'base_B': True, 'base_G': True, 'ee_A': True, 'ee_G': True}]]]
     print("Intermiate states")
     for pre, posts in intermediate_states:
         print("pre: ", pre)
@@ -143,6 +147,11 @@ if __name__ == "__main__":
             print("post: ", post)
         print("====")
 
+    unique_states = [{'base_C': True, 'base_G': True, 'ee_C': True, 'ee_H': True},
+                     {'base_C': True, 'base_G': True, 'ee_C': True, 'ee_G': True},
+                     {'base_C': True, 'base_G': True, 'ee_B': True, 'ee_G': True},
+                     {'base_B': True, 'base_G': True, 'ee_B': True, 'ee_G': True},
+                     {'base_B': True, 'base_G': True, 'ee_A': True, 'ee_G': True}]
     print("Unique states", unique_states)
 
     # formula = [

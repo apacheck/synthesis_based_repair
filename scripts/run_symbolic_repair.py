@@ -73,11 +73,11 @@ if __name__ == "__main__":
                 fid.close()
                 write_skills_str(skills, file_names["file_log"], only_suggestions=True)
 
-                # Plot the suggestions
-                for skill_name, skill in skills.items():
-                    if skill.is_suggestion():
-                        fig, ax = skill.plot_symbolic_skill(symbols, [-0.5, 3.5], [-0.5, 3.5])
-                        plt.savefig(file_names["folder_plot"] + "seed_" + str(seed) + "_" + skill_name)
+                # # Plot the suggestions
+                # for skill_name, skill in skills.items():
+                #     if skill.is_suggestion():
+                #         fig, ax = skill.plot_symbolic_skill(symbols, [-0.5, 3.5], [-0.5, 3.5])
+                #         plt.savefig(file_names["folder_plot"] + "seed_" + str(seed) + "_" + skill_name)
 
                 break
 

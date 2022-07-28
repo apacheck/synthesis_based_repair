@@ -110,3 +110,53 @@ def load_intermediate_data(results_folder):
     c_sats = np.stack([np.load(join(results_folder, cp)) for cp in c_sat_paths])
 
     return learned_rollouts, c_sats
+
+
+def plot_sym_intersection(syms_to_plot, symbols, ax, **kwargs):
+    plot_bnds = symbols[syms_to_plot[0]].get_plot_bnds()
+    for sym in syms_to_plot:
+        tmp_plot_bnds = symbols[sym].get_plot_bnds()
+        plot_bnds[:, 0] = np.max([plot_bnds[:, 0], tmp_plot_bnds[:, 0]])
+        plot_bnds[:, 1] = np.min([plot_bnds[:, 1], tmp_plot_bnds[:, 1]])
+
+    x_low = plot_bnds[0, 0]
+    x_high = plot_bnds[0, 1]
+    y_low = plot_bnds[1, 0]
+    y_high = plot_bnds[1, 1]
+    z_low = plot_bnds[2, 0]
+    z_high = plot_bnds[2, 1]
+
+    plot_cube(ax, x_low, x_high, y_low, y_high, z_low, z_high, **kwargs)
+
+def plot_cube(ax, x_low, x_high, y_low, y_high, z_low, z_high, **kwargs):
+    x = np.array(
+        [
+            [x_high, x_low, x_low, x_high, x_high],
+            [x_high, x_low, x_low, x_high, x_high],
+            [x_low, x_high, x_high, x_low, x_low],
+            [x_low, x_high, x_high, x_low, x_low],
+            [x_high, x_low, x_low, x_high, x_high],
+        ]
+    )
+
+    y = np.array(
+        [
+            [y_high, y_high, y_low, y_low, y_high],
+            [y_high, y_high, y_low, y_low, y_high],
+            [y_low, y_low, y_high, y_high, y_low],
+            [y_low, y_low, y_high, y_high, y_low],
+            [y_high, y_high, y_low, y_low, y_high],
+        ]
+    )
+
+    z = np.array(
+        [
+            [z_high, z_high, z_high, z_high, z_high],
+            [z_low, z_low, z_low, z_low, z_low],
+            [z_low, z_low, z_low, z_low, z_low],
+            [z_high, z_high, z_high, z_high, z_high],
+            [z_high, z_high, z_high, z_high, z_high],
+        ]
+    )
+    kwargs.pop("fill", None)
+    ax.plot_surface(x, y, z, **kwargs)

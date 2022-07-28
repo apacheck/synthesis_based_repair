@@ -8,7 +8,7 @@ from synthesis_based_repair.tools import json_load_wrapper
 from synthesis_based_repair.skills import load_skills_from_trajectories, write_skills_json
 import matplotlib.pyplot as plt
 from dl2_lfd.dmps.dmp import load_dmp_demos, DMP
-from synthesis_based_repair.visualization import plot_trajectories, create_ax_array
+from synthesis_based_repair.visualization import plot_trajectories, create_ax_array, apply_plot_limits
 
 
 
@@ -327,12 +327,12 @@ def generate_trajectories_stretch(folder_demo_trajectories, n_train_trajs, n_val
     for ii in range(n_train_trajs + n_val_trajs):
 
         start_point = np.zeros([2])
-        start_point[0] = 0.5 + 0.5 * np.random.random(1)
-        start_point[1] = 1 + 0.2 * np.random.random(1)
+        start_point[0] = 0.6 + 0.2 * np.random.random(1)
+        start_point[1] = 0.3 + 0.1 * np.random.random(1)
 
         end_point = np.zeros([2])
-        end_point[0] = -1.2 + 0.2 * np.random.random(1)
-        end_point[1] = -0.25 + 0.5 * np.random.random(1)
+        end_point[0] = -1.3 + 0.1 * np.random.random(1)
+        end_point[1] = -0.1 + 0.2 * np.random.random(1)
 
         theta_robot = np.zeros([n_staff + n_curve + n_end])
         theta_robot[:n_staff] = np.pi
@@ -358,12 +358,12 @@ def generate_trajectories_stretch(folder_demo_trajectories, n_train_trajs, n_val
     for ii in range(n_train_trajs + n_val_trajs):
 
         start_point = np.zeros([2])
-        start_point[0] = -1.2 + 0.2 * np.random.random(1)
-        start_point[1] = -0.25 + 0.5 * np.random.random(1)
+        start_point[0] = -1.3 + 0.1 * np.random.random(1)
+        start_point[1] = -0.1 + 0.2 * np.random.random(1)
 
         end_point = np.zeros([2])
-        end_point[0] = 0.5 + 0.5 * np.random.random(1)
-        end_point[1] = -1 + 0.2 * np.random.random(1)
+        end_point[0] = 0.6 + 0.2 * np.random.random(1)
+        end_point[1] = -1.3 + 0.1 * np.random.random(1)
 
         theta_robot = np.zeros([n_staff + n_curve + n_end])
         theta_robot[:n_staff] = 3 * np.pi/2
@@ -384,21 +384,21 @@ def generate_trajectories_stretch(folder_demo_trajectories, n_train_trajs, n_val
     skill_name = "skillStretch3to1"
     folder_demo_skill = folder_demo_trajectories + "/" + skill_name
     n_staff = 10
-    n_curve = 7
-    n_end = 8
+    n_curve = 10
+    n_end = 5
     for ii in range(n_train_trajs + n_val_trajs):
 
         start_point = np.zeros([2])
-        start_point[0] = 0.5 + 0.5 * np.random.random(1)
-        start_point[1] = -1 + 0.2 * np.random.random(1)
+        start_point[0] = 0.6 + 0.2 * np.random.random(1)
+        start_point[1] = -1.3 + 0.1 * np.random.random(1)
 
         mid_point = np.zeros([2])
-        mid_point[0] = 1.75 + 0.5 * np.random.random(1)
-        mid_point[1] = -0.1 + 0.2 * np.random.random(1)
+        mid_point[0] = 1.5 + 0.2 * np.random.random(1)
+        mid_point[1] = -0.7 + 0.1 * np.random.random(1)
 
         end_point = np.zeros([2])
-        end_point[0] = 0.5 + 0.5 * np.random.random(1)
-        end_point[1] = 1 + 0.2 * np.random.random(1)
+        end_point[0] = 0.6 + 0.2 * np.random.random(1)
+        end_point[1] = 0.3 + 0.1 * np.random.random(1)
 
         theta_robot = np.zeros([2 * (n_staff + n_curve + n_end)])
         theta_robot[:n_staff] = 0
@@ -410,7 +410,7 @@ def generate_trajectories_stretch(folder_demo_trajectories, n_train_trajs, n_val
         lift = 0.8 + 0.1 * np.random.random(1)
         theta_wrist = 0 #2 * np.pi * np.random.random(1)
 
-        xy_robot = generate_half_oval_trajectory_base(start_point, end_point, mid_point, 0.5, n_staff, n_curve, n_end)
+        xy_robot = generate_half_oval_trajectory_base(start_point, end_point, mid_point, 0.3, n_staff, n_curve, n_end)
         data = generate_xy_xyz_trajectory(xy_robot, theta_robot, extension, lift, theta_wrist)
 
         start_state = data[0, :]
@@ -850,8 +850,10 @@ if __name__ == "__main__":
     # Plot skills if desired  ####
     ##############################
 
-    symbols_to_plot = ['base_A', 'base_B', 'base_C', 'base_D', 'base_E', 'base_F', 'base_G', 'base_H', 'base_I', 'base_J', 'base_K', 'base_L', 'base_M', 'base_N', 'base_O', 'base_P']
+    symbols_to_plot = ['base_B', 'base_C', 'base_F', 'base_G']
     fig_all, ax_all = create_ax_array(3, ncols=1)
+    plot_limits = np.array([[-2.25, 3], [-2.25, 2.25], [0, 1.25]])
+    apply_plot_limits(ax_all[0], plot_limits)
     colors = {'skillStretch1to2': 'blue', 'skillStretch2to3': 'red', 'skillStretch3to1': 'green'}
     if args.do_plot:
         os.makedirs(file_names["folder_plot"], exist_ok=True)
@@ -871,6 +873,7 @@ if __name__ == "__main__":
             plot_trajectories(trajectories_base, ax_all[0], color=colors[skill_name])
             plot_trajectories(trajectories_ee, ax[0], color='y')
             plot_trajectories(trajectories_base, ax[0], color='k')
+            apply_plot_limits(ax[0], plot_limits)
             for sym in symbols_to_plot:
                 symbols[sym].plot(ax[0], dim=3, alpha=0.05)
                 symbols[sym].plot(ax_all[0], dim=3, alpha=0.01)
@@ -881,4 +884,4 @@ if __name__ == "__main__":
 
     plt.figure(fig_all.number)
     plt.savefig(file_names["folder_plot"] + "all.png")
-    # plt.show()
+    plt.show()

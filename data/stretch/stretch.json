@@ -1,13 +1,13 @@
 {
-  "env_init_true": ["base_F", "ee_C"],
-  "env_init_false": ["base_A", "base_B", "base_C", "base_D", "base_E", "base_G", "base_H", "base_I", "base_J", "base_K", "base_L", "base_M", "base_N", "base_O", "base_P", "ee_A", "ee_B", "ee_D", "ee_E", "ee_F", "ee_G", "ee_H", "ee_I", "ee_J", "ee_K", "ee_L", "ee_M", "ee_N", "ee_O", "ee_P"],
+  "env_init_true": ["base_C", "base_G", "ee_C", "ee_H"],
+  "env_init_false": ["base_B", "base_F", "ee_A", "ee_B", "ee_E", "ee_F", "ee_G"],
   "sys_init_true": [],
   "sys_init_false": ["skillStretch1to2", "skillStretch2to3", "skillStretch3to1", "skillStretch1to2b", "skillStretch2to3b", "skillStretch3to1b"],
-  "sys_live": "ee_G\nee_C",
+  "sys_live": "(ee_G & ee_A)\n(ee_C & ee_H)",
   "env_live": "",
-  "sys_trans_hard": "!ee_B\n!ee_B'",
+  "sys_trans_hard": "!(ee_A & ee_H)\n!(ee_A' & ee_H')",
   "reactive_variables": [],
-  "change_cons": "",
-  "not_allowed_repair": "!skillStretch1to2b\n!skillStretch2to3b\n!skillStretch3to1b",
+  "change_cons": "!(base_B' & base_C')\n!(base_F' & base_G')\n!(ee_A' & ee_B')\n!(ee_A' & ee_C')\n!(ee_B' & ee_C')\n!(ee_E' & ee_F')\n!(ee_E' & ee_G')\n!(ee_E' & ee_H')\n!(ee_F' & ee_G')\n!(ee_F' & ee_H')\n!(ee_G' & ee_H')\n(base_B' | base_C')\n(base_F' | base_G')\n(ee_A' | ee_B' | ee_C')\n(ee_E' | ee_F' | ee_G' | ee_H')\n!(base_B & base_C)\n!(base_F & base_G)\n!(ee_A & ee_B)\n!(ee_A & ee_C)\n!(ee_B & ee_C)\n!(ee_E & ee_F)\n!(ee_E & ee_G)\n!(ee_E & ee_H)\n!(ee_F & ee_G)\n!(ee_F & ee_H)\n!(ee_G & ee_H)\n(base_B | base_C)\n(base_F | base_G)\n(ee_A | ee_B | ee_C)\n(ee_E | ee_F | ee_G | ee_H)\n(base_C & base_G) -> !(base_B' & base_F')\n(base_C & base_F) -> !(base_B' & base_G')\n(base_B & base_G) -> !(base_C' & base_F')\n(base_F & base_B) -> !(base_C' & base_G')\nee_A->!(ee_C')\nee_C->!ee_A'\nee_H->!(ee_F'|ee_E')\nee_G->!ee_E'\nee_F->!ee_H'\nee_E->!(ee_H'|ee_G')\n(ee_C & ee_H) -> !(ee_B' & ee_G')\n(ee_C & ee_G) -> !((ee_B' & ee_H') | (ee_B' | ee_F'))",
+  "not_allowed_repair": "!skillStretch1to2b\n!skillStretch2to3b\n!skillStretch3to1b\n!skillStretch2to3\n!skillStretch3to1",
   "hard_constraints": []
 }

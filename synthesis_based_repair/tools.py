@@ -100,9 +100,9 @@ def write_env_trans(file_spec, symbols, skills, opts):
                 inter = symbols_intersect(s1_sym, s2_sym)
                 if not inter and s1_sym.get_index() < s2_sym.get_index():
                     fid.write('!({}\' & {}\')\n'.format(sym1, sym2))
-    # for syms in syms_by_var:
-    #     sym_str = '(' + '\' | '.join(syms) + '\')\n'
-    #     fid.write(sym_str)
+    for syms in syms_by_var:
+        sym_str = '(' + '\' | '.join(syms) + '\')\n'
+        fid.write(sym_str)
 
     for syms in syms_by_var:
         for ii, sym1 in enumerate(syms):
@@ -112,9 +112,9 @@ def write_env_trans(file_spec, symbols, skills, opts):
                 inter = symbols_intersect(s1_sym, s2_sym)
                 if not inter and s1_sym.get_index() < s2_sym.get_index():
                     fid.write('!({} & {})\n'.format(sym1, sym2))
-    # for syms in syms_by_var:
-    #     sym_str = '(' + ' | '.join(syms) + ')\n'
-    #     fid.write(sym_str)
+    for syms in syms_by_var:
+        sym_str = '(' + ' | '.join(syms) + ')\n'
+        fid.write(sym_str)
 
     # If no actions are taken, no symbols change
     # First writes the formula saying no actions are taken

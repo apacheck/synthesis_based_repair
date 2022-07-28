@@ -6,6 +6,7 @@ from matplotlib.patches import Rectangle, Circle
 import json
 import copy
 import os
+from synthesis_based_repair.visualization import plot_cube
 
 
 class Symbol:
@@ -106,6 +107,35 @@ class Symbol:
 
         return sample
 
+    def get_plot_bnds(self, ax):
+        if 0 in self.plot_dims:
+            idx = self.plot_dims.index(0)
+            x_low = self.bounds[idx, 0]
+            x_high = self.bounds[idx, 1]
+        else:
+            x_lim = ax.get_xlim()
+            x_low = x_lim[0]
+            x_high = x_lim[1]
+
+        if 1 in self.plot_dims:
+            idx = self.plot_dims.index(1)
+            y_low = self.bounds[idx, 0]
+            y_high = self.bounds[idx, 1]
+        else:
+            y_lim = ax.get_ylim()
+            y_low = y_lim[0]
+            y_high = y_lim[1]
+        if 2 in self.plot_dims:
+            idx = self.plot_dims.index(2)
+            z_low = self.bounds[idx, 0]
+            z_high = self.bounds[idx, 1]
+        else:
+            z_lim = ax.get_zlim()
+            z_low = z_lim[0]
+            z_high = z_lim[1]
+
+        return np.array([[x_low, x_high], [y_low, y_high], [z_low, z_high]])
+
     def plot(self, ax, dim=2, **kwargs):
         """
         Plots the symbol on the provided axis. The user supplies the dimensionality of how the symbol should be plotted.
@@ -134,63 +164,15 @@ class Symbol:
                                     facecolor=self.color
                                     **kwargs))
         elif dim == 3:
-            if 0 in self.plot_dims:
-                idx = self.plot_dims.index(0)
-                x_low = self.bounds[idx, 0]
-                x_high = self.bounds[idx, 1]
-            else:
-                x_lim = ax.get_xlim()
-                x_low = x_lim[0]
-                x_high = x_lim[1]
+            plot_bnds = self.get_plot_bnds(ax)
+            x_low = plot_bnds[0, 0]
+            x_high = plot_bnds[0, 1]
+            y_low = plot_bnds[1, 0]
+            y_high = plot_bnds[1, 1]
+            z_low = plot_bnds[2, 0]
+            z_high = plot_bnds[2, 1]
 
-            if 1 in self.plot_dims:
-                idx = self.plot_dims.index(1)
-                y_low = self.bounds[idx, 0]
-                y_high = self.bounds[idx, 1]
-            else:
-                y_lim = ax.get_ylim()
-                y_low = y_lim[0]
-                y_high = y_lim[1]
-            if 2 in self.plot_dims:
-                idx = self.plot_dims.index(2)
-                z_low = self.bounds[idx, 0]
-                z_high = self.bounds[idx, 1]
-            else:
-                z_lim = ax.get_zlim()
-                z_low = z_lim[0]
-                z_high = z_lim[1]
-
-            x = np.array(
-                [
-                    [x_high, x_low, x_low, x_high, x_high],
-                    [x_high, x_low, x_low, x_high, x_high],
-                    [x_low, x_high, x_high, x_low, x_low],
-                    [x_low, x_high, x_high, x_low, x_low],
-                    [x_high, x_low, x_low, x_high, x_high],
-                ]
-            )
-
-            y = np.array(
-                [
-                    [y_high, y_high, y_low, y_low, y_high],
-                    [y_high, y_high, y_low, y_low, y_high],
-                    [y_low, y_low, y_high, y_high, y_low],
-                    [y_low, y_low, y_high, y_high, y_low],
-                    [y_high, y_high, y_low, y_low, y_high],
-                ]
-            )
-
-            z = np.array(
-                [
-                    [z_high, z_high, z_high, z_high, z_high],
-                    [z_low, z_low, z_low, z_low, z_low],
-                    [z_low, z_low, z_low, z_low, z_low],
-                    [z_high, z_high, z_high, z_high, z_high],
-                    [z_high, z_high, z_high, z_high, z_high],
-                ]
-            )
-            kwargs.pop("fill", None)
-            ax.plot_surface(x, y, z, **kwargs)
+            plot_cube(ax, x_low, x_high, y_low, y_high, z_low, z_high, **kwargs)
 
     def get_factor(self):
         return self.factor
