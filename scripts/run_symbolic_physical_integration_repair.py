@@ -7,7 +7,7 @@ import copy
 from synthesis_based_repair.symbolic_repair import run_repair
 import numpy as np
 from synthesis_based_repair.symbols import load_symbols
-from synthesis_based_repair.skills import load_skills_from_json, Skill, write_skills_str, remove_mutually_exclusive_symbols_intermediate_states, remove_mutually_exclusive_symbols_list_of_states
+from synthesis_based_repair.skills import load_skills_from_json, Skill, write_skills_str, remove_mutually_exclusive_symbols_intermediate_states, remove_mutually_exclusive_symbols_list_of_states, write_skills_json
 import json
 from synthesis_based_repair.physical_implementation import learn_skill_with_constraints, create_stretch_base_traj, symbols_and_workspace_to_device
 from dl2_lfd.elaborateDMP import evaluate_constraint
@@ -236,3 +236,6 @@ if __name__ == "__main__":
             fid.close()
 
             iteration_count += 1
+
+    write_skills_json(skills, file_names['file_skills'])
+
