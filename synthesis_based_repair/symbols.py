@@ -130,9 +130,13 @@ class Symbol:
             z_low = self.bounds[idx, 0]
             z_high = self.bounds[idx, 1]
         else:
-            z_lim = ax.get_zlim()
-            z_low = z_lim[0]
-            z_high = z_lim[1]
+            if ax.name == "3d":
+                z_lim = ax.get_zlim()
+                z_low = z_lim[0]
+                z_high = z_lim[1]
+            else:
+                z_low = np.nan
+                z_high = np.nan
 
         return np.array([[x_low, x_high], [y_low, y_high], [z_low, z_high]])
 
@@ -150,10 +154,11 @@ class Symbol:
             kwargs["alpha"] = 0.2
         if dim == 2:
             if self.type == 'rectangle':
-                x_low = self.bounds[0, 0]
-                x_high = self.bounds[0, 1]
-                y_low = self.bounds[1, 0]
-                y_high = self.bounds[1, 1]
+                plot_bnds = self.get_plot_bnds(ax)
+                x_low = plot_bnds[0, 0]
+                x_high = plot_bnds[0, 1]
+                y_low = plot_bnds[1, 0]
+                y_high = plot_bnds[1, 1]
                 ax.add_patch(Rectangle((x_low, y_low), x_high - x_low, y_high - y_low,
                                        edgecolor='black',
                                        facecolor=self.color,

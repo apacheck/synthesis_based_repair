@@ -1,7 +1,7 @@
 {"version": 0,
  "slugs": "0.0.1",
 
- "variables": ["base_B", "base_C", "base_F", "base_G", "ee_A", "ee_B", "ee_C", "ee_E", "ee_F", "ee_G", "ee_H", "skillStretch1to2", "skillStretch2to3", "skillStretch3to1", "skillStretch1to2b", "skillStretch2to3b", "skillStretch3to1b", "skill6"],
+ "variables": ["base_B", "base_C", "base_F", "base_G", "ee_A", "ee_B", "ee_C", "ee_E", "ee_F", "ee_G", "ee_H", "skillStretch1to2", "skillStretch2to3", "skillStretch3to1", "skillStretch1to2b", "skillStretch2to3b", "skillStretch3to1b", "skillStretch1to2_3_new"],
 
  "nodes": {
 "0": {

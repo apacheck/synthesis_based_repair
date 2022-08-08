@@ -213,33 +213,38 @@ class Skill:
 
     def get_final_robot_pose(self, joint_state, world_state, symbols):
         world_state = np.squeeze(world_state)
-        if self.name.split("_")[0] in ['skillStretch3to1', 'skillStretch1to2', 'skillStretch2to3']:
-            ee_final_region = self.get_ee_final_region()
-            ee_final_symbol = self.get_ee_final_symbol()
-            if self.final_posts[0]['duck_a_' + ee_final_region] and self.final_posts[0]['duck_a_table']:
-                final_ee_xyz = np.copy(world_state[6:9])
-                final_ee_xyz[2] += 0.2
-            elif self.final_posts[0]['duck_b_' + ee_final_region] and self.final_posts[0]['duck_b_table']:
-                final_ee_xyz = np.copy(world_state[9:12])
-                final_ee_xyz[2] += 0.2
-            else:
-                final_ee_xyz = symbols[ee_final_symbol].sample_from()
-            final_robot = np.zeros([6])
-            if ee_final_region == "1":
-                final_robot[0] = final_ee_xyz[0] - 0.04
-                final_robot[1] = final_ee_xyz[1] - 0.75
-                final_robot[2] = np.pi
-            elif ee_final_region == "2":
-                final_robot[0] = final_ee_xyz[0] + 0.75
-                final_robot[1] = final_ee_xyz[1] - 0.04
-                final_robot[2] = 3 * np.pi / 2
-            elif ee_final_region == "3":
-                final_robot[0] = final_ee_xyz[0] + 0.04
-                final_robot[1] = final_ee_xyz[1] + 0.75
-                final_robot[2] = 0
-            final_robot[3] = 0.75 - self.stretch_eff
-            final_robot[4] = 0.9
-            final_robot[5] = 0
+        if self.name.split("_")[0]  == 'skillStretch1to2':
+            return np.array([-1.35, 0, -1.35 - 0.14 - 0.4 - 0.23, 0 - 0.16, 0.75])
+        elif self.name.split("_")[0]  == 'skillStretch2to3':
+            return np.array([0.7, -1.35, 0.7 + 0.16, -1.35 - 0.14 - 0.4 - 0.23, 0.75])
+        elif self.name.split("_")[0]  == 'skillStretch3to1':
+            return np.array([0.7, 0.35, 0.7 - 0.16, 0.35 + (0.14 + 0.4 + 0.23), 0.75])
+            # ee_final_region = self.get_ee_final_region()
+            # ee_final_symbol = self.get_ee_final_symbol()
+            # if self.final_posts[0]['duck_a_' + ee_final_region] and self.final_posts[0]['duck_a_table']:
+            #     final_ee_xyz = np.copy(world_state[6:9])
+            #     final_ee_xyz[2] += 0.2
+            # elif self.final_posts[0]['duck_b_' + ee_final_region] and self.final_posts[0]['duck_b_table']:
+            #     final_ee_xyz = np.copy(world_state[9:12])
+            #     final_ee_xyz[2] += 0.2
+            # else:
+            #     final_ee_xyz = symbols[ee_final_symbol].sample_from()
+            # final_robot = np.zeros([6])
+            # if ee_final_region == "1":
+            #     final_robot[0] = final_ee_xyz[0] - 0.04
+            #     final_robot[1] = final_ee_xyz[1] - 0.75
+            #     final_robot[2] = np.pi
+            # elif ee_final_region == "2":
+            #     final_robot[0] = final_ee_xyz[0] + 0.75
+            #     final_robot[1] = final_ee_xyz[1] - 0.04
+            #     final_robot[2] = 3 * np.pi / 2
+            # elif ee_final_region == "3":
+            #     final_robot[0] = final_ee_xyz[0] + 0.04
+            #     final_robot[1] = final_ee_xyz[1] + 0.75
+            #     final_robot[2] = 0
+            # final_robot[3] = 0.75 - self.stretch_eff
+            # final_robot[4] = 0.9
+            # final_robot[5] = 0
         else:
             final_robot = np.copy(joint_state)
 

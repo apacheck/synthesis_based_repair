@@ -35,12 +35,12 @@ def plot_trajectory(trajectory, ax, **kwargs):
     :param kwargs:
     :return:
     """
-    if trajectory.shape[1] == 3:
+    if ax.name == "3d":
         ax.plot3D(trajectory[:, 0], trajectory[:, 1], trajectory[:, 2], **kwargs)
-    elif trajectory.shape[1] == 2:
-        ax.plot(trajectory[:, 1], trajectory[:, 1], **kwargs)
     else:
-        raise Exception("Can't plot with these dimensions: {}".format(trajectories.shape))
+        ax.plot(trajectory[:, 0], trajectory[:, 1], **kwargs)
+    # else:
+    #     raise Exception("Can't plot with these dimensions: {}".format(trajectories.shape))
 
 
 def plot_sat_unsat_trajectories(trajectories, sat_array, ax_sat, ax_unsat, **kwargs):
