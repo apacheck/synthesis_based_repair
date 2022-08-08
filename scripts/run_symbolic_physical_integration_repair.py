@@ -134,6 +134,7 @@ if __name__ == "__main__":
                 dmp_opts['previous_skill_name'] = dict_to_formula(suggestion['original_skill'], include_false=False)
                 dmp_opts['skill_name'] = dict_to_formula(suggestion['new_skill'], include_false=False) + "_" + str(
                     iteration_count) + "_new"
+                suggestion['name'] = dmp_opts['skill_name']
 
                 old_demo_folder = folder_trajectories + dmp_opts['previous_skill_name'] + "/"
                 demo_folder = folder_trajectories + dmp_opts['skill_name']
@@ -204,6 +205,8 @@ if __name__ == "__main__":
                 # constraint not to change it
                 if losses[0][1] > loss_threshold:
                     new_skill_name = suggestions[idx]['name']
+                    # new_skill_name = dict_to_formula(suggestion[idx]['new_skill'], include_false=False) + suggestions[idx]['name'].split('skill')[0]
+                    # suggestions[idx]['name'] = new_skill_name
                     skills[new_skill_name] = Skill(suggestions[idx], True)
                     user_spec['sys_init_false'].append(new_skill_name)
                     not_allowed_repair += "\n!" + new_skill_name
