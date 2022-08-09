@@ -89,7 +89,9 @@ def create_ax_array(dim, ncols=3):
     """
 
     if dim == 2:
-        fig, ax = plt.subplots(ncols=3, figsize=(12, 4))
+        fig, ax = plt.subplots(ncols=ncols, figsize=(4 * ncols, 4))
+        if ncols == 1:
+            ax = np.array([ax])
     else:
         fig = plt.figure(figsize=(5 * ncols, 5))
         ax = [None] * ncols

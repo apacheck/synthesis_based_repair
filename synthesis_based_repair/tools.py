@@ -1,6 +1,7 @@
 #!/usr/bin/env
 from synthesis_based_repair.symbols import find_symbols_by_var, symbols_intersect
 import json
+import numpy as np
 
 
 def json_load_wrapper(arg_file):
@@ -254,3 +255,62 @@ def write_spec(file_spec, symbols, skills, user_spec, change_cons, not_allowed_r
     write_section(file_spec, "CHANGE_CONS", change_cons)
 
     write_section(file_spec, "NOT_ALLOWED_REPAIR", not_allowed_repair)
+
+
+def fk_stretch(rollouts):
+    """
+    Calculates the forward kinematics for a set of rollouts. Each rollout has [n different trajectories, m points in
+    a trajectory, and 6 dimensions (for x_robot, y_robot, theta_robot, arm_extension, lift, theta_wrist]
+    :param rollouts:
+    :return:
+    """
+    wrist_x_in_base_frame = 0.14
+    wrist_y_in_base_frame = -0.16
+    gripper_length_xy = 0.23
+    gripper_offset_z = -0.1
+    base_height_z = 0.05
+
+    xyz_ee_in_global_frame = np.zeros([rollouts.shape[0], rollouts.shape[1], 3]
+                                      )
+    for rr, rollout in enumerate(rollouts):
+        for pp, point in enumerate(rollout):
+            x_robot = point[0]
+            y_robot = point[1]
+            t_robot = point[2]
+            arm_extension = point[3]
+            lift = point[4]
+            t_wrist = point[5]
+
+            # Transform to robot frame by taking into account offsets and extension
+            xy_ee_in_robot_frame = np.zeros([2])
+            xy_ee_in_robot_frame[0] = wrist_x_in_base_frame + gripper_length_xy * np.sin(t_wrist)
+            xy_ee_in_robot_frame[1] = wrist_y_in_base_frame - arm_extension - gripper_length_xy * np.cos(t_wrist)
+
+            xy_ee_in_global_frame = robot_to_global(point[:3], xy_ee_in_robot_frame)
+            xyz_ee_in_global_frame[rr, pp, :2] = xy_ee_in_global_frame
+            xyz_ee_in_global_frame[rr, pp, 2] = lift + gripper_offset_z + base_height_z
+
+    return xyz_ee_in_global_frame
+
+
+def robot_to_global(robot_xytheta, point_in_robot_frame):
+    """
+    Transforms a point in the robot's frame to be in the global frame
+    :param robot_xytheta:
+    :param point_in_robot_frame:
+    :return:
+    """
+    R = np.zeros([3, 3])
+    R[0, 0] = np.cos(robot_xytheta[2])
+    R[0, 1] = -np.sin(robot_xytheta[2])
+    R[0, 2] = robot_xytheta[0]
+    R[1, 0] = np.sin(robot_xytheta[2])
+    R[1, 1] = np.cos(robot_xytheta[2])
+    R[1, 2] = robot_xytheta[1]
+    R[2, 2] = 1
+
+    point_in_robot_frame_with_one = np.ones([3, 1])
+    point_in_robot_frame_with_one[:2, 0] = point_in_robot_frame
+    xy_out = np.matmul(R, point_in_robot_frame_with_one)
+
+    return xy_out[:2].squeeze()

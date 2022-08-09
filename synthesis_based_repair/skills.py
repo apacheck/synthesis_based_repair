@@ -6,7 +6,7 @@ from synthesis_based_repair.tools import dict_to_formula, pre_posts_to_env_formu
 import os
 from synthesis_based_repair.symbols import in_symbols, find_symbols_true_and_false, load_symbols, plot_symbolic_state
 import json
-
+from synthesis_based_repair.tools import fk_stretch
 
 class Skill:
 
@@ -214,11 +214,47 @@ class Skill:
     def get_final_robot_pose(self, joint_state, world_state, symbols):
         world_state = np.squeeze(world_state)
         if self.name.split("_")[0]  == 'skillStretch1to2':
-            return np.array([-1.35, 0, -1.35 - 0.14 - 0.4 - 0.23, 0 - 0.16, 0.75])
+            end_point = np.zeros([1, 1, 6])
+            end_point[0, 0, 0] = -1.3 + 0.1 * np.random.random(1)
+            end_point[0, 0, 1] = -0.1 + 0.2 * np.random.random(1)
+            end_point[0, 0, 2] = 3 * np.pi / 2
+            end_point[0, 0, 3] = 0.4 + 0.1 * np.random.random(1)
+            end_point[0, 0, 4] = 0.8 + 0.1 * np.random.random(1)
+            end_point[0, 0, 5] = 0
+            fk = fk_stretch(end_point)
+            out = np.empty([5])
+            out[0] = end_point[0, 0, 0]
+            out[1] = end_point[0, 0, 1]
+            out[2:] = fk[0][0]
+            return out
         elif self.name.split("_")[0]  == 'skillStretch2to3':
-            return np.array([0.7, -1.35, 0.7 + 0.16, -1.35 - 0.14 - 0.4 - 0.23, 0.75])
+            end_point = np.zeros([1, 1, 6])
+            end_point[0, 0, 0] = 0.6 + 0.2 * np.random.random(1)
+            end_point[0, 0, 1] = -1.3 + 0.1 * np.random.random(1)
+            end_point[0, 0, 2] = 2 * np.pi
+            end_point[0, 0, 3] = 0.4 + 0.1 * np.random.random(1)
+            end_point[0, 0, 4] = 0.8 + 0.1 * np.random.random(1)
+            end_point[0, 0, 5] = 0
+            fk = fk_stretch(end_point)
+            out = np.empty([5])
+            out[0] = end_point[0, 0, 0]
+            out[1] = end_point[0, 0, 1]
+            out[2:] = fk[0][0]
+            return out
         elif self.name.split("_")[0]  == 'skillStretch3to1':
-            return np.array([0.7, 0.35, 0.7 - 0.16, 0.35 + (0.14 + 0.4 + 0.23), 0.75])
+            end_point = np.zeros([1, 1, 6])
+            end_point[0, 0, 0] = 0.6 + 0.2 * np.random.random(1)
+            end_point[0, 0, 1] = 0.3 + 0.1 * np.random.random(1)
+            end_point[0, 0, 2] = np.pi
+            end_point[0, 0, 3] = 0.4 + 0.1 * np.random.random(1)
+            end_point[0, 0, 4] = 0.8 + 0.1 * np.random.random(1)
+            end_point[0, 0, 5] = 0
+            fk = fk_stretch(end_point)
+            out = np.empty([5])
+            out[0] = end_point[0, 0, 0]
+            out[1] = end_point[0, 0, 1]
+            out[2:] = fk[0][0]
+            return out
             # ee_final_region = self.get_ee_final_region()
             # ee_final_symbol = self.get_ee_final_symbol()
             # if self.final_posts[0]['duck_a_' + ee_final_region] and self.final_posts[0]['duck_a_table']:

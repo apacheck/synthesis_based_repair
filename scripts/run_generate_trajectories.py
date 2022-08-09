@@ -1,10 +1,10 @@
 #!/usr/bin/env python
 import os
 import numpy as np
-from synthesis_based_repair.physical_implementation import learn_skill_with_constraints, fk_stretch, create_stretch_base_traj
+from synthesis_based_repair.physical_implementation import learn_skill_with_constraints, create_stretch_base_traj
 from synthesis_based_repair.symbols import load_symbols
 import argparse
-from synthesis_based_repair.tools import json_load_wrapper
+from synthesis_based_repair.tools import json_load_wrapper, fk_stretch
 from synthesis_based_repair.skills import load_skills_from_trajectories, write_skills_json
 import matplotlib.pyplot as plt
 from dl2_lfd.dmps.dmp import load_dmp_demos, DMP
