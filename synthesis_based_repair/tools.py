@@ -94,6 +94,8 @@ def write_env_trans(file_spec, symbols, skills, opts):
     # state variable can be true at a time
     syms_by_var = find_symbols_by_var(symbols, opts['n_factors'])
     for syms in syms_by_var:
+        if len(syms) == 1:
+            continue
         for ii, sym1 in enumerate(syms):
             s1_sym = symbols[sym1]
             for jj, sym2 in enumerate(syms):
@@ -102,10 +104,14 @@ def write_env_trans(file_spec, symbols, skills, opts):
                 if not inter and s1_sym.get_index() < s2_sym.get_index():
                     fid.write('!({}\' & {}\')\n'.format(sym1, sym2))
     for syms in syms_by_var:
+        if len(syms) == 1:
+            continue
         sym_str = '(' + '\' | '.join(syms) + '\')\n'
         fid.write(sym_str)
 
     for syms in syms_by_var:
+        if len(syms) == 1:
+            continue
         for ii, sym1 in enumerate(syms):
             s1_sym = symbols[sym1]
             for jj, sym2 in enumerate(syms):
@@ -114,6 +120,8 @@ def write_env_trans(file_spec, symbols, skills, opts):
                 if not inter and s1_sym.get_index() < s2_sym.get_index():
                     fid.write('!({} & {})\n'.format(sym1, sym2))
     for syms in syms_by_var:
+        if len(syms) == 1:
+            continue
         sym_str = '(' + ' | '.join(syms) + ')\n'
         fid.write(sym_str)
 

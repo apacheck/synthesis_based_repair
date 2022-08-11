@@ -1,0 +1,298 @@
+{"skillPickupDuck1": {
+  "name": "skillPickupDuck1",
+  "intermediate_states": [
+   [
+    {
+     "base_B": false,
+     "base_C": true,
+     "base_F": false,
+     "base_G": true,
+     "ee_A": false,
+     "ee_B": false,
+     "ee_C": true,
+     "ee_E": false,
+     "ee_F": false,
+     "ee_G": false,
+     "ee_H": true,
+     "duck_A": false,
+     "duck_B": false,
+     "duck_C": true,
+     "duck_E": false,
+     "duck_F": false,
+     "duck_G": false,
+     "duck_H": true,
+     "duckHeld": false
+    },
+    [
+     {
+     "base_B": false,
+     "base_C": true,
+     "base_F": false,
+     "base_G": true,
+     "ee_A": false,
+     "ee_B": false,
+     "ee_C": true,
+     "ee_E": false,
+     "ee_F": false,
+     "ee_G": false,
+     "ee_H": true,
+     "duck_A": false,
+     "duck_B": false,
+     "duck_C": true,
+     "duck_E": false,
+     "duck_F": false,
+     "duck_G": false,
+     "duck_H": true,
+     "duckHeld": true
+     }
+    ]
+  ]
+],
+  "initial_preconditions": [
+   {
+   "base_B": false,
+   "base_C": true,
+   "base_F": false,
+   "base_G": true,
+   "ee_A": false,
+   "ee_B": false,
+   "ee_C": true,
+   "ee_E": false,
+   "ee_F": false,
+   "ee_G": false,
+   "ee_H": true,
+   "duck_A": false,
+   "duck_B": false,
+   "duck_C": true,
+   "duck_E": false,
+   "duck_F": false,
+   "duck_G": false,
+   "duck_H": true,
+   "duckHeld": false
+   }
+  ],
+  "final_postconditions": [
+   {
+   "base_B": false,
+   "base_C": true,
+   "base_F": false,
+   "base_G": true,
+   "ee_A": false,
+   "ee_B": false,
+   "ee_C": true,
+   "ee_E": false,
+   "ee_F": false,
+   "ee_G": false,
+   "ee_H": true,
+   "duck_A": false,
+   "duck_B": false,
+   "duck_C": true,
+   "duck_E": false,
+   "duck_F": false,
+   "duck_G": false,
+   "duck_H": true,
+   "duckHeld": true
+   }
+  ],
+  "folder_train": "",
+  "folder_val": ""
+ },
+ "skillPickupDuck2": {
+   "name": "skillPickupDuck2",
+   "intermediate_states": [
+    [
+     {
+      "base_B": true,
+      "base_C": false,
+      "base_F": false,
+      "base_G": true,
+      "ee_A": true,
+      "ee_B": false,
+      "ee_C": false,
+      "ee_E": false,
+      "ee_F": false,
+      "ee_G": true,
+      "ee_H": false,
+      "duck_A": true,
+      "duck_B": false,
+      "duck_C": false,
+      "duck_E": false,
+      "duck_F": false,
+      "duck_G": true,
+      "duck_H": false,
+      "duckHeld": false
+     },
+     [
+      {
+      "base_B": true,
+      "base_C": false,
+      "base_F": false,
+      "base_G": true,
+      "ee_A": true,
+      "ee_B": false,
+      "ee_C": false,
+      "ee_E": false,
+      "ee_F": false,
+      "ee_G": true,
+      "ee_H": false,
+      "duck_A": true,
+      "duck_B": false,
+      "duck_C": false,
+      "duck_E": false,
+      "duck_F": false,
+      "duck_G": true,
+      "duck_H": false,
+      "duckHeld": true
+      }
+     ]
+   ]
+ ],
+   "initial_preconditions": [
+    {
+    "base_B": true,
+    "base_C": false,
+    "base_F": false,
+    "base_G": true,
+    "ee_A": true,
+    "ee_B": false,
+    "ee_C": false,
+    "ee_E": false,
+    "ee_F": false,
+    "ee_G": true,
+    "ee_H": false,
+    "duck_A": true,
+    "duck_B": false,
+    "duck_C": false,
+    "duck_E": false,
+    "duck_F": false,
+    "duck_G": true,
+    "duck_H": false,
+    "duckHeld": false
+    }
+   ],
+   "final_postconditions": [
+    {
+    "base_B": true,
+    "base_C": false,
+    "base_F": false,
+    "base_G": true,
+    "ee_A": true,
+    "ee_B": false,
+    "ee_C": false,
+    "ee_E": false,
+    "ee_F": false,
+    "ee_G": true,
+    "ee_H": false,
+    "duck_A": true,
+    "duck_B": false,
+    "duck_C": false,
+    "duck_E": false,
+    "duck_F": false,
+    "duck_G": true,
+    "duck_H": false,
+    "duckHeld": true
+    }
+   ],
+   "folder_train": "",
+   "folder_val": ""
+  },
+  "skillPickupDuck3": {
+    "name": "skillPickupDuck3",
+    "intermediate_states": [
+     [
+      {
+       "base_B": false,
+       "base_C": true,
+       "base_F": true,
+       "base_G": false,
+       "ee_A": false,
+       "ee_B": false,
+       "ee_C": true,
+       "ee_E": true,
+       "ee_F": false,
+       "ee_G": false,
+       "ee_H": false,
+       "duck_A": false,
+       "duck_B": false,
+       "duck_C": true,
+       "duck_E": true,
+       "duck_F": false,
+       "duck_G": true,
+       "duck_H": false,
+       "duckHeld": false
+      },
+      [
+       {
+       "base_B": false,
+       "base_C": true,
+       "base_F": true,
+       "base_G": false,
+       "ee_A": false,
+       "ee_B": false,
+       "ee_C": true,
+       "ee_E": true,
+       "ee_F": false,
+       "ee_G": false,
+       "ee_H": false,
+       "duck_A": false,
+       "duck_B": false,
+       "duck_C": true,
+       "duck_E": true,
+       "duck_F": false,
+       "duck_G": true,
+       "duck_H": false,
+       "duckHeld": true
+       }
+      ]
+    ]
+  ],
+    "initial_preconditions": [
+     {
+     "base_B": false,
+     "base_C": true,
+     "base_F": true,
+     "base_G": false,
+     "ee_A": false,
+     "ee_B": false,
+     "ee_C": true,
+     "ee_E": true,
+     "ee_F": false,
+     "ee_G": false,
+     "ee_H": false,
+     "duck_A": false,
+     "duck_B": false,
+     "duck_C": true,
+     "duck_E": true,
+     "duck_F": false,
+     "duck_G": true,
+     "duck_H": false,
+     "duckHeld": false
+     }
+    ],
+    "final_postconditions": [
+     {
+     "base_B": false,
+     "base_C": true,
+     "base_F": true,
+     "base_G": false,
+     "ee_A": false,
+     "ee_B": false,
+     "ee_C": true,
+     "ee_E": true,
+     "ee_F": false,
+     "ee_G": false,
+     "ee_H": false,
+     "duck_A": false,
+     "duck_B": false,
+     "duck_C": true,
+     "duck_E": true,
+     "duck_F": false,
+     "duck_G": true,
+     "duck_H": false,
+     "duckHeld": true
+     }
+    ],
+    "folder_train": "",
+    "folder_val": ""
+   }
+   }

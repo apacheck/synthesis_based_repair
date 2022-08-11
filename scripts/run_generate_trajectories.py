@@ -1,14 +1,15 @@
 #!/usr/bin/env python
 import os
 import numpy as np
-from synthesis_based_repair.physical_implementation import learn_skill_with_constraints, create_stretch_base_traj
+# from synthesis_based_repair.physical_implementation import learn_skill_with_constraints, create_stretch_base_traj
 from synthesis_based_repair.symbols import load_symbols
 import argparse
 from synthesis_based_repair.tools import json_load_wrapper, fk_stretch
-from synthesis_based_repair.skills import load_skills_from_trajectories, write_skills_json
+from synthesis_based_repair.skills import load_skills_from_trajectories, write_skills_json, Skill, load_skills_from_json
 import matplotlib.pyplot as plt
 from dl2_lfd.dmps.dmp import load_dmp_demos, DMP
 from synthesis_based_repair.visualization import plot_trajectories, create_ax_array, apply_plot_limits
+import copy
 
 
 
@@ -818,22 +819,22 @@ if __name__ == "__main__":
     for skill in skill_names:
         dmp_opts['skill_name'] = skill
         dmp_opts['demo_folder'] = folder_trajectories + '/' + skill + '/'
-        learned_model, results_folder = learn_skill_with_constraints(dmp_opts['skill_name'],
-                                                                                          None,
-                                                                                          dmp_opts['base_folder'],
-                                                                                          dmp_opts['demo_folder'],
-                                                                                          old_demo_folder=None,
-                                                                                          previous_model_path=None,
-                                                                                          enforce_type="unconstrained",
-                                                                                          main_loss_weight=1,
-                                                                                          constraint_loss_weight=0,
-                                                                                          basis_fs=dmp_opts['basis_fs'],
-                                                                                          dt=dmp_opts['dt'],
-                                                                                          n_epochs=dmp_opts['n_epochs'],
-                                                                                          output_dimension=dmp_opts[
-                                                                                              'dimension'],
-                                                                                          epsilon=dmp_opts['epsilon'],
-                                                                                            output_model_path="../data/dmps/" + skill + ".pt")
+        # learned_model, results_folder = learn_skill_with_constraints(dmp_opts['skill_name'],
+        #                                                                                   None,
+        #                                                                                   dmp_opts['base_folder'],
+        #                                                                                   dmp_opts['demo_folder'],
+        #                                                                                   old_demo_folder=None,
+        #                                                                                   previous_model_path=None,
+        #                                                                                   enforce_type="unconstrained",
+        #                                                                                   main_loss_weight=1,
+        #                                                                                   constraint_loss_weight=0,
+        #                                                                                   basis_fs=dmp_opts['basis_fs'],
+        #                                                                                   dt=dmp_opts['dt'],
+        #                                                                                   n_epochs=dmp_opts['n_epochs'],
+        #                                                                                   output_dimension=dmp_opts[
+        #                                                                                       'dimension'],
+        #                                                                                   epsilon=dmp_opts['epsilon'],
+        #                                                                                     output_model_path="../data/dmps/" + skill + ".pt")
 
     ################################################################
     # Generate the symbolic/abstract representation of the skills  #
@@ -843,45 +844,152 @@ if __name__ == "__main__":
     if file_names['file_symbols'].split('/')[2] == 'stretch':
         # new_skill_names = transformStretchSkillsToEntireSpaceOnlyRobot(folder_trajectories, skill_names, symbols)
         # print(new_skill_names)
-        skills = load_skills_from_trajectories(folder_trajectories, skill_names, symbols)
-        write_skills_json(skills, file_names['file_skills'])
+        symbols_load = {}
+        for sym_name in ['base_B', 'base_C', 'base_F', 'base_G', 'ee_A', 'ee_B', 'ee_C', 'ee_E', 'ee_F', 'ee_G', 'ee_H']:
+            symbols_load[sym_name] = symbols[sym_name]
+        skills = load_skills_from_trajectories(folder_trajectories, skill_names, symbols_load)
+        new_skills = {}
+        for skill_name, skill in skills.items():
+            for tag in ['withDuck', 'duckin1', 'duckin2', 'duckin3']:
+                new_skill_name = skill_name + tag
+                new_skill = {}
+                new_skill['name'] = new_skill_name
+                new_skill['initial_preconditions'] = copy.deepcopy(skill.init_pres)
+                new_skill['final_postconditions'] = copy.deepcopy(skill.final_posts)
+                new_skill['intermediate_states'] = copy.deepcopy(skill.intermediate_states)
+                new_skill['folder_val'] = skill.folder_val
+                new_skill['folder_train'] = skill.folder_train
+                for ii, pre in enumerate(skill.init_pres):
+                    if tag == 'withDuck':
+                        new_skill['initial_preconditions'][ii]['duckHeld'] = True
+                    else:
+                        new_skill['initial_preconditions'][ii]['duckHeld'] = False
+                    for key, val in pre.items():
+                        key_split = key.split('_')
+                        if key_split[0] == 'ee':
+                            if tag == 'withDuck':
+                                new_skill['initial_preconditions'][ii]['duck_' + key_split[1]] = val
+                            elif tag == 'duck1in' and key_split[1] in ['C', 'H']:
+                                new_skill['initial_preconditions'][ii]['duck_' + key_split[1]] = True
+                            elif tag == 'duckin1' and key_split[1] not in ['C', 'H']:
+                                new_skill['initial_preconditions'][ii]['duck_' + key_split[1]] = False
+                            elif tag == 'duckin2' and key_split[1] in ['G', 'A']:
+                                new_skill['initial_preconditions'][ii]['duck_' + key_split[1]] = True
+                            elif tag == 'duckin2' and key_split[1] not in ['A', 'G']:
+                                new_skill['initial_preconditions'][ii]['duck_' + key_split[1]] = False
+                            elif tag == 'duckin3' and key_split[1] in ['C', 'E']:
+                                new_skill['initial_preconditions'][ii]['duck_' + key_split[1]] = True
+                            elif tag == 'duckin3' and key_split[1] not in ['C', 'E']:
+                                new_skill['initial_preconditions'][ii]['duck_' + key_split[1]] = False
+                for ii, post in enumerate(skill.final_posts):
+                    if tag == 'withDuck':
+                        new_skill['final_postconditions'][ii]['duckHeld'] = True
+                    else:
+                        new_skill['final_postconditions'][ii]['duckHeld'] = False
+                    for key, val in post.items():
+                        key_split = key.split('_')
+                        if key_split[0] == 'ee':
+                            if tag == 'withDuck':
+                                new_skill['final_postconditions'][ii]['duck_' + key_split[1]] = val
+                            elif tag == 'duckin1' and key_split[1] in ['C', 'H']:
+                                new_skill['final_postconditions'][ii]['duck_' + key_split[1]] = True
+                            elif tag == 'duckin1' and key_split[1] not in ['C', 'H']:
+                                new_skill['final_postconditions'][ii]['duck_' + key_split[1]] = False
+                            elif tag == 'duckin2' and key_split[1] in ['G', 'A']:
+                                new_skill['final_postconditions'][ii]['duck_' + key_split[1]] = True
+                            elif tag == 'duckin2' and key_split[1] not in ['A', 'G']:
+                                new_skill['final_postconditions'][ii]['duck_' + key_split[1]] = False
+                            elif tag == 'duckin3' and key_split[1] in ['C', 'E']:
+                                new_skill['final_postconditions'][ii]['duck_' + key_split[1]] = True
+                            elif tag == 'duckin3' and key_split[1] not in ['C', 'E']:
+                                new_skill['final_postconditions'][ii]['duck_' + key_split[1]] = False
+                for ii, (i_state_pre, i_state_posts) in enumerate(skill.intermediate_states):
+                    if tag == 'withDuck':
+                        new_skill['intermediate_states'][ii][0]['duckHeld'] = True
+                    else:
+                        new_skill['intermediate_states'][ii][0]['duckHeld'] = False
+                    for key, val in i_state_pre.items():
+                        key_split = key.split('_')
+                        if key_split[0] == 'ee':
+                            if tag == 'withDuck':
+                                new_skill['intermediate_states'][ii][0]['duck_' + key_split[1]] = val
+                            elif tag == 'duckin1' and key_split[1] in ['C', 'H']:
+                                new_skill['intermediate_states'][ii][0]['duck_' + key_split[1]] = True
+                            elif tag == 'duckin1' and key_split[1] not in ['C', 'H']:
+                                new_skill['intermediate_states'][ii][0]['duck_' + key_split[1]] = False
+                            elif tag == 'duckin2' and key_split[1] in ['G', 'A']:
+                                new_skill['intermediate_states'][ii][0]['duck_' + key_split[1]] = True
+                            elif tag == 'duckin2' and key_split[1] not in ['A', 'G']:
+                                new_skill['intermediate_states'][ii][0]['duck_' + key_split[1]] = False
+                            elif tag == 'duckin3' and key_split[1] in ['C', 'E']:
+                                new_skill['intermediate_states'][ii][0]['duck_' + key_split[1]] = True
+                            elif tag == 'duckin3' and key_split[1] not in ['C', 'E']:
+                                new_skill['intermediate_states'][ii][0]['duck_' + key_split[1]] = False
+                    for jj, post in enumerate(i_state_posts):
+                        if tag == 'withDuck':
+                            new_skill['intermediate_states'][ii][1][jj]['duckHeld'] = True
+                        else:
+                            new_skill['intermediate_states'][ii][1][jj]['duckHeld'] = False
+                        for key, val in post.items():
+                            key_split = key.split('_')
+                            if key_split[0] == 'ee':
+                                if tag == 'withDuck':
+                                    new_skill['intermediate_states'][ii][1][jj]['duck_' + key_split[1]] = val
+                                elif tag == 'duckin1' and key_split[1] in ['C', 'H']:
+                                    new_skill['intermediate_states'][ii][1][jj]['duck_' + key_split[1]] = True
+                                elif tag == 'duckin1' and key_split[1] not in ['C', 'H']:
+                                    new_skill['intermediate_states'][ii][1][jj]['duck_' + key_split[1]] = False
+                                elif tag == 'duckin2' and key_split[1] in ['G', 'A']:
+                                    new_skill['intermediate_states'][ii][1][jj]['duck_' + key_split[1]] = True
+                                elif tag == 'duckin2' and key_split[1] not in ['A', 'G']:
+                                    new_skill['intermediate_states'][ii][1][jj]['duck_' + key_split[1]] = False
+                                elif tag == 'duckin3' and key_split[1] in ['C', 'E']:
+                                    new_skill['intermediate_states'][ii][1][jj]['duck_' + key_split[1]] = True
+                                elif tag == 'duckin3' and key_split[1] not in ['C', 'E']:
+                                    new_skill['intermediate_states'][ii][1][jj]['duck_' + key_split[1]] = False
+                new_skills[new_skill_name] = Skill(new_skill)
+        skill_pick = load_skills_from_json("/home/adam/repos/synthesis_based_repair/data/stretch/stretch_pickup_skill.json")
+        skill_place = load_skills_from_json("/home/adam/repos/synthesis_based_repair/data/stretch/stretch_putdown_skill.json")
+        new_skills.update(skill_pick)
+        new_skills.update(skill_place)
+        write_skills_json(new_skills, file_names['file_skills'])
 
     ##############################
     # Plot skills if desired  ####
     ##############################
 
     symbols_to_plot = ['base_B', 'base_C', 'base_F', 'base_G']
-    fig_all, ax_all = create_ax_array(3, ncols=1)
-    plot_limits = np.array([[-2.25, 3], [-2.25, 2.25], [0, 1.25]])
-    apply_plot_limits(ax_all[0], plot_limits)
-    colors = {'skillStretch1to2': 'blue', 'skillStretch2to3': 'red', 'skillStretch3to1': 'green'}
-    if args.do_plot:
-        os.makedirs(file_names["folder_plot"], exist_ok=True)
-        dim = len(dmp_opts["plot_limits"])
-        for skill_name in skill_names:
-            fig, ax = create_ax_array(dim, ncols=1)
-
-            folder_trajectories_skill = folder_trajectories + '/' + skill_name + '/train/'
-            files_folder = [f for f in os.listdir(folder_trajectories_skill) if
-                            os.path.isfile(os.path.join(folder_trajectories_skill, f))]
-            files_traj = [f for f in files_folder if 'rollout' in f]
-            data = np.stack([np.loadtxt(os.path.join(folder_trajectories_skill, rp), ndmin=2) for rp in files_traj])
-
-            trajectories_ee = data[:, :, 2:]
-            trajectories_base = create_stretch_base_traj(data)
-            plot_trajectories(trajectories_ee, ax_all[0], color=colors[skill_name])
-            plot_trajectories(trajectories_base, ax_all[0], color=colors[skill_name])
-            plot_trajectories(trajectories_ee, ax[0], color='y')
-            plot_trajectories(trajectories_base, ax[0], color='k')
-            apply_plot_limits(ax[0], plot_limits)
-            for sym in symbols_to_plot:
-                symbols[sym].plot(ax[0], dim=3, alpha=0.05)
-                symbols[sym].plot(ax_all[0], dim=3, alpha=0.01)
-
-            plt.savefig(file_names["folder_plot"] + skill_name + ".png")
-
-            # plt.close()
-
-    plt.figure(fig_all.number)
-    plt.savefig(file_names["folder_plot"] + "all.png")
-    plt.show()
+    # fig_all, ax_all = create_ax_array(3, ncols=1)
+    # plot_limits = np.array([[-2.25, 3], [-2.25, 2.25], [0, 1.25]])
+    # apply_plot_limits(ax_all[0], plot_limits)
+    # colors = {'skillStretch1to2': 'blue', 'skillStretch2to3': 'red', 'skillStretch3to1': 'green'}
+    # if args.do_plot:
+    #     os.makedirs(file_names["folder_plot"], exist_ok=True)
+    #     dim = len(dmp_opts["plot_limits"])
+    #     for skill_name in skill_names:
+    #         fig, ax = create_ax_array(dim, ncols=1)
+    #
+    #         folder_trajectories_skill = folder_trajectories + '/' + skill_name + '/train/'
+    #         files_folder = [f for f in os.listdir(folder_trajectories_skill) if
+    #                         os.path.isfile(os.path.join(folder_trajectories_skill, f))]
+    #         files_traj = [f for f in files_folder if 'rollout' in f]
+    #         data = np.stack([np.loadtxt(os.path.join(folder_trajectories_skill, rp), ndmin=2) for rp in files_traj])
+    #
+    #         trajectories_ee = data[:, :, 2:]
+    #         trajectories_base = create_stretch_base_traj(data)
+    #         plot_trajectories(trajectories_ee, ax_all[0], color=colors[skill_name])
+    #         plot_trajectories(trajectories_base, ax_all[0], color=colors[skill_name])
+    #         plot_trajectories(trajectories_ee, ax[0], color='y')
+    #         plot_trajectories(trajectories_base, ax[0], color='k')
+    #         apply_plot_limits(ax[0], plot_limits)
+    #         for sym in symbols_to_plot:
+    #             symbols[sym].plot(ax[0], dim=3, alpha=0.05)
+    #             symbols[sym].plot(ax_all[0], dim=3, alpha=0.01)
+    #
+    #         plt.savefig(file_names["folder_plot"] + skill_name + ".png")
+    #
+    #         # plt.close()
+    #
+    # plt.figure(fig_all.number)
+    # plt.savefig(file_names["folder_plot"] + "all.png")
+    # plt.show()

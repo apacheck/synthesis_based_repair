@@ -12,6 +12,6 @@
   "existing_skills": ["skillStretch1to2", "skillStretch2to3", "skillStretch3to1", "skillStretch1to2b", "skillStretch2to3b", "skillStretch3to1b"],
   "reactive_variables": [],
   "reactive_variables_current": [],
-  "n_factors": 4,
+  "n_factors": 7,
   "generate_figure": ""
 }
