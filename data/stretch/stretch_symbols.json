@@ -145,7 +145,7 @@
 "duckHeld": {"dims": [7],
       "plot_dims": [2],
       "name": "duckHeld",
-      "bounds": [[-10, -10]],
+      "bounds": [[0, 0]],
       "index": 24,
       "factor": 6,
       "color": "x",

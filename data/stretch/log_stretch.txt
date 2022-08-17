@@ -1,37 +1,44 @@
 Seed 0 Suggestion # 1
 ================================
 ================================
-Val_losses: [[0.00584502 0.21875   ]]
+Val_losses: [[0.20806457 0.        ]]
 Additional not allowed repair:
+Percent satisfy: 0.00!(base_C & base_G & ee_C & ee_H & duck_C & duck_H & duckHeld & skillStretch1to2withDuck & base_C' & base_G' & ee_B' & ee_H' & duck_B' & duck_H' & duckHeld')
 
 ********************
 Seed 0 Suggestion # 2
 ================================
 ================================
-Val_losses: [[0.20807286 0.        ]]
+Val_losses: [[0.20913454 0.        ]]
 Additional not allowed repair:
-Percent satisfy: 0.00!(base_C & base_G & ee_C & ee_H & skillStretch1to2 & base_C' & base_G' & ee_B' & ee_H')
+Percent satisfy: 0.00!(base_C & base_G & ee_C & ee_H & duck_C & duckHeld & duck_H & skillStretch1to2withDuck & base_C' & base_G' & ee_B' & ee_H' & duck_B' & duckHeld' & duck_H')
 
 ********************
 Seed 0 Suggestion # 3
 ================================
 ================================
-Val_losses: [[0.00816629 0.71875   ]]
+Val_losses: [[0.21000659 0.        ]]
+Additional not allowed repair:
+Percent satisfy: 0.00!(base_C & base_G & ee_C & ee_H & duck_C & duckHeld & duck_H & skillStretch1to2withDuck & base_C' & base_G' & ee_B' & ee_H' & duck_B' & duckHeld' & duck_H')
+
+********************
+Seed 0 Suggestion # 4
+================================
+================================
+Val_losses: [[0.00826515 0.75      ]]
 Additional not allowed repair:
 
 ********************
-Seed 0 took 4 iterations
-Skill name: skillStretch1to2_3_new
-Original name: skillStretch1to2
+Seed 0 took 5 iterations
+Skill name: skillStretch1to2withDuck_4_new
+Original name: skillStretch1to2withDuck
 Initial preconditions: 
-base_C & base_G & ee_C & ee_H
-skillStretch1to2_3_new & !base_B & base_C & !base_F & base_G & !ee_A & !ee_B & ee_C & !ee_E & !ee_F & !ee_G & ee_H -> ((!base_B' & base_C' & !base_F' & base_G' & !ee_A' & ee_B' & !ee_C' & !ee_E' & !ee_F' & !ee_G' & ee_H'))
-skillStretch1to2_3_new & !base_B & base_C & !base_F & base_G & !ee_A & ee_B & !ee_C & !ee_E & !ee_F & !ee_G & ee_H -> ((base_B' & !base_C' & !base_F' & base_G' & !ee_A' & ee_B' & !ee_C' & !ee_E' & !ee_F' & !ee_G' & ee_H'))
-skillStretch1to2_3_new & !base_B & base_C & !base_F & base_G & !ee_A & ee_B & !ee_C & !ee_E & ee_F & !ee_G & !ee_H -> ((base_B' & !base_C' & !base_F' & base_G' & ee_A' & !ee_B' & !ee_C' & !ee_E' & !ee_F' & ee_G' & !ee_H'))
-skillStretch1to2_3_new & !base_B & base_C & base_F & !base_G & !ee_A & !ee_B & ee_C & !ee_E & ee_F & !ee_G & !ee_H -> ((base_B' & !base_C' & !base_F' & base_G' & ee_A' & !ee_B' & !ee_C' & !ee_E' & !ee_F' & ee_G' & !ee_H'))
-skillStretch1to2_3_new & !base_B & base_C & base_F & !base_G & !ee_A & ee_B & !ee_C & !ee_E & !ee_F & ee_G & !ee_H -> ((base_B' & !base_C' & !base_F' & base_G' & ee_A' & !ee_B' & !ee_C' & !ee_E' & !ee_F' & ee_G' & !ee_H'))
-skillStretch1to2_3_new & base_B & !base_C & !base_F & base_G & !ee_A & ee_B & !ee_C & !ee_E & !ee_F & !ee_G & ee_H -> ((!base_B' & base_C' & !base_F' & base_G' & !ee_A' & ee_B' & !ee_C' & !ee_E' & ee_F' & !ee_G' & !ee_H') | (!base_B' & base_C' & base_F' & !base_G' & !ee_A' & !ee_B' & ee_C' & !ee_E' & ee_F' & !ee_G' & !ee_H') | (!base_B' & base_C' & base_F' & !base_G' & !ee_A' & ee_B' & !ee_C' & !ee_E' & !ee_F' & ee_G' & !ee_H') | (base_B' & !base_C' & !base_F' & base_G' & ee_A' & !ee_B' & !ee_C' & !ee_E' & !ee_F' & ee_G' & !ee_H'))
+base_C & base_G & ee_C & ee_H & duck_C & duckHeld & duck_H
+skillStretch1to2withDuck_4_new & !base_B & base_C & !base_F & base_G & !ee_C & !ee_A & ee_B & !ee_H & ee_G & !ee_F & !ee_E & duck_B & !duck_A & !duck_C & duck_G & !duck_F & duckHeld & !duck_E & !duck_H -> ((base_B' & !base_C' & !base_F' & base_G' & !ee_C' & ee_A' & !ee_B' & !ee_H' & ee_G' & !ee_F' & !ee_E' & !duck_B' & duck_A' & !duck_C' & duck_G' & !duck_F' & duckHeld' & !duck_E' & !duck_H'))
+skillStretch1to2withDuck_4_new & !base_B & base_C & !base_F & base_G & !ee_C & !ee_A & ee_B & ee_H & !ee_G & !ee_F & !ee_E & duck_B & !duck_A & !duck_C & !duck_G & !duck_F & duckHeld & !duck_E & duck_H -> ((base_B' & !base_C' & !base_F' & base_G' & !ee_C' & !ee_A' & ee_B' & ee_H' & !ee_G' & !ee_F' & !ee_E' & duck_B' & !duck_A' & !duck_C' & !duck_G' & !duck_F' & duckHeld' & !duck_E' & duck_H'))
+skillStretch1to2withDuck_4_new & !base_B & base_C & !base_F & base_G & ee_C & !ee_A & !ee_B & ee_H & !ee_G & !ee_F & !ee_E & !duck_B & !duck_A & duck_C & !duck_G & !duck_F & duckHeld & !duck_E & duck_H -> ((!base_B' & base_C' & !base_F' & base_G' & !ee_C' & !ee_A' & ee_B' & ee_H' & !ee_G' & !ee_F' & !ee_E' & duck_B' & !duck_A' & !duck_C' & !duck_G' & !duck_F' & duckHeld' & !duck_E' & duck_H'))
+skillStretch1to2withDuck_4_new & base_B & !base_C & !base_F & base_G & !ee_C & !ee_A & ee_B & ee_H & !ee_G & !ee_F & !ee_E & duck_B & !duck_A & !duck_C & !duck_G & !duck_F & duckHeld & !duck_E & duck_H -> ((!base_B' & base_C' & !base_F' & base_G' & !ee_C' & !ee_A' & ee_B' & !ee_H' & ee_G' & !ee_F' & !ee_E' & duck_B' & !duck_A' & !duck_C' & duck_G' & !duck_F' & duckHeld' & !duck_E' & !duck_H') | (base_B' & !base_C' & !base_F' & base_G' & !ee_C' & ee_A' & !ee_B' & !ee_H' & ee_G' & !ee_F' & !ee_E' & !duck_B' & duck_A' & !duck_C' & duck_G' & !duck_F' & duckHeld' & !duck_E' & !duck_H'))
 Final Postconditions:
-base_B & !base_C & !base_F & base_G & ee_A & !ee_B & !ee_C & !ee_E & !ee_F & ee_G & !ee_H
+base_B & !base_C & !base_F & base_G & !ee_C & ee_A & !ee_B & !ee_H & ee_G & !ee_F & !ee_E & !duck_B & duck_A & !duck_C & duck_G & !duck_F & duckHeld & !duck_E & !duck_H
 **********************
 ================================
